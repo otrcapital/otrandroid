@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--button pressed-->
+    <item android:drawable="@drawable/otr_9_patch_buton_light"
+          android:state_pressed="true" />
+    <!--button focused-->
+    <item android:drawable="@drawable/otr_9_patch_buton_light"
+          android:state_focused="true" />
+    <!--button default-->
+    <item android:drawable="@drawable/otr_9_patch_buton_light" />
+</selector>

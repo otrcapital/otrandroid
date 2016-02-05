@@ -1,0 +1,107 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+    android:background="@android:color/black"
+    tools:context="com.mobile.otrcapital.Activities.RefineCapture">
+
+    <ImageView
+        android:id="@+id/editImageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/buttons"
+        android:layout_alignParentEnd="true" />
+
+    <com.mobile.otrcapital.Helpers.DrawView
+        android:id="@+id/EdgeCornersDV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/editImageView"
+        android:layout_alignTop="@id/editImageView"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:visibility="visible"/>
+
+    <LinearLayout
+        android:id="@+id/buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="10dp"
+        android:background="#000000"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/undoBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:alpha="0.5"
+            android:background="#00ffffff"
+            android:enabled="false"
+            android:src="@drawable/icon_undo"
+            android:visibility="visible" />
+
+        <ImageButton
+            android:id="@+id/brightnessContrastBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#00ffffff"
+            android:src="@drawable/icon_brightness_contrast" />
+
+        <ImageButton
+            android:id="@+id/rotateBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#00ffffff"
+            android:src="@drawable/icon_rotate"
+            android:text="UNDO" />
+
+        <ImageButton
+            android:id="@+id/executeBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#00ffffff"
+            android:src="@drawable/icon_done" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/progressIndicatorGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="#A0ffffff"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="invisible">
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            android:indeterminateBehavior="repeat"
+            android:indeterminateOnly="true"
+            android:paddingLeft="15dp"
+            android:progressTint="@color/blue_dark"
+            android:progressTintMode="src_in"/>
+
+        <TextView
+            android:id="@+id/verifyUserTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:text="Cropping image..."
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/blue_dark"/>
+    </LinearLayout>
+
+</RelativeLayout>

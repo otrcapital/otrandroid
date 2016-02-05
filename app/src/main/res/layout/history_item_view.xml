@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/documentNameTV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="10dp"
+        android:clickable="true"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:text="Document Name"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <RelativeLayout
+        android:id="@+id/fileInfoGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/documentNameTV"
+        android:layout_below="@+id/documentNameTV"
+        android:layout_marginRight="10dp">
+
+        <TextView
+            android:id="@+id/statusTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="false"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/loadNoTV"
+            android:gravity="left"
+            android:text="Status: ????"
+            android:textAlignment="gravity"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:id="@+id/loadNoTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:gravity="left"
+            android:text="Load# ????"
+            android:textAlignment="gravity"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:id="@+id/timeStampTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/statusTV"
+            android:layout_alignEnd="@+id/rateTV"
+            android:layout_alignParentBottom="false"
+            android:layout_alignParentEnd="false"
+            android:gravity="right"
+            android:text="Time Stamp"
+            android:textAlignment="gravity"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/rateTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:gravity="right"
+            android:text="Rate: ????"
+            android:textAlignment="gravity"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    </RelativeLayout>
+
+    <ImageButton
+        android:id="@+id/emailImgBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/documentNameTV"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:background="#00000000"
+        android:src="@drawable/open_button"
+        android:visibility="gone"/>
+
+    <ImageButton
+        android:id="@+id/resendImgBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/emailImgBtn"
+        android:layout_marginRight="10dp"
+        android:layout_toStartOf="@+id/emailImgBtn"
+        android:background="#00000000"
+        android:src="@drawable/resend_button"
+        android:visibility="gone"/>
+
+</RelativeLayout>

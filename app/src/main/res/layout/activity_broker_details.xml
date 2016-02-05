@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/truck_bg">
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/otr_logo" />
+    <Button
+        android:id="@+id/factorLoadButton"
+        style="@style/ButtonBlue_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:ems="10"
+        android:minWidth="60dp"
+        android:text="Factor a Load" />
+
+    <Button
+        android:id="@+id/advanceLoadButton"
+        style="@style/ButtonBlue_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/factorLoadButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:ems="10"
+        android:minWidth="60dp"
+        android:text="Advance a Load" />
+
+    <LinearLayout
+        android:id="@+id/detailsGroup"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="2"
+            android:background="@drawable/otr_9_patch_text_field_dark"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:maxLines="2"
+                android:minLines="2"
+                android:paddingLeft="10dp"
+                android:text="Broker Name:"
+                android:textColor="@android:color/white"
+                android:textSize="15sp" />
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#50ffffff"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:minHeight="25dp"
+                android:paddingLeft="10dp"
+                android:text="MC:"
+                android:textColor="@android:color/white"
+                android:textSize="15sp" />
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:minHeight="25dp"
+                android:paddingLeft="10dp"
+                android:text="Factorable:"
+                android:textColor="@android:color/white"
+                android:textSize="15sp" />
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#50ffffff"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:minHeight="25dp"
+                android:paddingLeft="10dp"
+                android:text="Dot Number:"
+                android:textColor="@android:color/white"
+                android:textSize="15sp" />
+            <TextView
+                android:id="@+id/textView13"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:minHeight="25dp"
+                android:paddingLeft="10dp"
+                android:text="Location:"
+                android:textColor="@android:color/white"
+                android:textSize="15sp" />
+            <TextView
+                android:id="@+id/textView14"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#50ffffff"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:minHeight="25dp"
+                android:paddingLeft="10dp"
+                android:text="Phone number:"
+                android:textColor="@android:color/white"
+                android:textSize="15sp" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="@drawable/otr_9_patch_input_field_light"
+            android:divider="@android:color/white"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/brokerNameTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#500d5cab"
+                android:gravity="center_vertical"
+                android:maxLines="2"
+                android:minLines="2"
+                android:paddingLeft="10dp"
+                android:text="Lorem Ipsum Lorem Ipsum lorem"
+                android:textColor="@android:color/black"
+                android:textSize="15sp" />
+            <TextView
+                android:id="@+id/mcTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:minHeight="25dp"
+                android:paddingLeft="10dp"
+                android:text="123456"
+                android:textColor="@android:color/black"
+                android:textSize="15sp" />
+            <TextView
+                android:id="@+id/factorableTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#500d5cab"
+                android:gravity="center_vertical"
+                android:minHeight="25dp"
+                android:paddingLeft="10dp"
+                android:text="Yes"
+                android:textColor="@android:color/black"
+                android:textSize="15sp" />
+            <TextView
+                android:id="@+id/dotNumberTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:minHeight="25dp"
+                android:paddingLeft="10dp"
+                android:text="123434"
+                android:textColor="@android:color/black"
+                android:textSize="15sp" />
+            <TextView
+                android:id="@+id/locationTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#500d5cab"
+                android:gravity="center_vertical"
+                android:minHeight="25dp"
+                android:paddingLeft="10dp"
+                android:text="Roswell, GA"
+                android:textColor="@android:color/black"
+                android:textSize="15sp" />
+            <TextView
+                android:id="@+id/phoneNumberTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:minHeight="25dp"
+                android:paddingLeft="10dp"
+                android:text="770-509-1100"
+                android:textColor="@android:color/black"
+                android:textSize="15sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/networkErrorTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="15dp"
+        android:gravity="center"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/red" />
+
+    <LinearLayout
+        android:id="@+id/verifyUserGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:background="#D0ffffff"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="invisible">
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            android:indeterminateBehavior="repeat"
+            android:indeterminateOnly="true"
+            android:paddingLeft="15dp"
+            android:progressTint="@color/blue_dark"
+            android:progressTintMode="src_in"
+            android:visibility="visible"/>
+
+        <TextView
+            android:id="@+id/verifyUserTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:text="Getting Details"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/blue_dark"/>
+    </LinearLayout>
+</RelativeLayout>
