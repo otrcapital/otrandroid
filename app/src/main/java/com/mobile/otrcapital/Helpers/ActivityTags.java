@@ -7,6 +7,11 @@ import android.os.Environment;
  */
 public final class ActivityTags
 {
+    public enum TAKE_PHOTO_TYPE {
+        CAMERA,
+        GALLERY
+    }
+
     public static final String TAG_LOG = "OTR";
     public static final String TAG_FACTOR_LOAD = "Factor a Load";
     public static final String TAG_FACTOR_ADVANCE = "Fuel Advance";
@@ -26,6 +31,7 @@ public final class ActivityTags
     public static final String HOST_NAME = "customer.otrcapital.com";
     public static final String API_URL_PROD = "http://customer.otrcapital.com/api";
     public static final String LOGIN_TOKEN = "login_token";
+    public static final String TAG_PHOTO_TYPE = "photo_type";
     //shared prefs tags
     public static final String SHARED_PREFS_TAG = "OTR_Prefs";
     public static final String PREFS_TOKEN_VALID = "token_valid";

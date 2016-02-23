@@ -11,6 +11,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.BaseColumns;
 import android.provider.MediaStore;
@@ -29,6 +30,7 @@ import com.itextpdf.text.Image;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.mobile.otrcapital.Helpers.ActivityTags;
 import com.mobile.otrcapital.Helpers.RESTAPIs;
+import com.mobile.otrcapital.Helpers.RealPathUtil;
 import com.mobile.otrcapital.Helpers.apiInvoiceDataJson;
 import com.mobile.otrcapital.R;
 
@@ -36,6 +38,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -60,6 +64,7 @@ public class LoadDetails extends Activity
     private static final int TAKE_PICTURE = 1;
     private static final int REQUEST_CROP_PICTURE = 2;
     private static final int EDIT_IMAGE = 3;
+    private static final int PICK_PICTURE = 4;
     private final Activity activity = this;
     @Bind(R.id.brokerNameTV) TextView brokerNameTV;
     @Bind(R.id.loadNumberET) TextView loadNumberET;
@@ -250,14 +255,11 @@ public class LoadDetails extends Activity
             advReqAmount = bundle.getFloat(ActivityTags.TAG_ADV_REQ_AMOUNT);
         verifyUserGroup.setVisibility(View.INVISIBLE);
 
-        loadNumberET.setOnKeyListener(new View.OnKeyListener()
-        {
+        loadNumberET.setOnKeyListener(new View.OnKeyListener() {
             @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event)
-            {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
-                        (keyCode == KeyEvent.KEYCODE_ENTER))
-                {
+                        (keyCode == KeyEvent.KEYCODE_ENTER)) {
                     InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(loadNumberET.getWindowToken(), 0);
                     return true;
@@ -266,7 +268,12 @@ public class LoadDetails extends Activity
             }
         });
 
-        takePicture();
+        String type = bundle.getString(ActivityTags.TAG_PHOTO_TYPE);
+        if (ActivityTags.TAKE_PHOTO_TYPE.CAMERA.name().equals(type)) {
+            takePicture();
+        } else if (ActivityTags.TAKE_PHOTO_TYPE.GALLERY.name().equals(type)){
+            takePictureFromGallery();
+        }
     }
 
     private void setLayout(String loadFactorAdvance)
@@ -293,6 +300,16 @@ public class LoadDetails extends Activity
 
     }
 
+    private void takePictureFromGallery()
+    {
+        createImageFile();
+        FillPhotoList();
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_PICTURE);
+    }
+
     private void createImageFile()
     {
         // Create an image file name
@@ -301,6 +318,27 @@ public class LoadDetails extends Activity
         File myDir = new File(ActivityTags.TEMP_STORAGE_DIR);
         myDir.mkdirs();
         imageFiles.add(new File(myDir, imageFileName));
+    }
+
+    private void copyImageFile(String path)
+    {
+        try {
+            FileChannel source;
+            FileChannel destination;
+            source = new FileInputStream(new File(path)).getChannel();
+            destination = new FileOutputStream(imageFiles.get(imageFiles.size() - 1)).getChannel();
+            if (destination != null && source != null) {
+                destination.transferFrom(source, 0, source.size());
+            }
+            if (source != null) {
+                source.close();
+            }
+            if (destination != null) {
+                destination.close();
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
     private void createPDFfile()
@@ -365,6 +403,8 @@ public class LoadDetails extends Activity
     {
         super.onActivityResult(requestCode, resultCode, data);
 
+
+
         if ((requestCode == TAKE_PICTURE) && (resultCode == RESULT_OK))
         {
 
@@ -385,6 +425,26 @@ public class LoadDetails extends Activity
             intent.putExtra("image_path",imageFiles.get(imageFiles.size()-1).getAbsolutePath());
             startActivityForResult(intent, REQUEST_CROP_PICTURE);
         }
+        else if ((requestCode == PICK_PICTURE) && (resultCode == RESULT_OK))
+        {
+            String realPath;
+            if (Build.VERSION.SDK_INT < 11) {
+                realPath = RealPathUtil.getRealPathFromURI_BelowAPI11(this, data.getData());
+            } else if (Build.VERSION.SDK_INT < 19) {
+                realPath = RealPathUtil.getRealPathFromURI_API11to18(this, data.getData());
+            } else {
+                realPath = RealPathUtil.getRealPathFromURI_API19(this, data.getData());
+            }
+
+            copyImageFile(realPath);
+
+            getContentResolver().notifyChange(data.getData(), null);
+            DeleteGalleryDuplicates();
+
+            Intent intent = new Intent(this, CropImage.class);
+            intent.putExtra("image_path", imageFiles.get(imageFiles.size() - 1).getAbsolutePath());
+            startActivityForResult(intent, REQUEST_CROP_PICTURE);
+        }
         else if (requestCode == REQUEST_CROP_PICTURE)
         {
             // When we are done cropping, display it in the ImageView.
@@ -396,6 +456,8 @@ public class LoadDetails extends Activity
                 startActivityForResult(intent, EDIT_IMAGE);
             }
 
+        } else if (resultCode == RESULT_CANCELED) {
+            finish();
         }
 
 

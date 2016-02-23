@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.mobile.otrcapital.Helpers.ActivityTags;
 import com.mobile.otrcapital.Helpers.Broker;
 import com.mobile.otrcapital.Helpers.BrokerDatabase;
+import com.mobile.otrcapital.Helpers.CustomError;
 import com.mobile.otrcapital.Helpers.FilterWithSpaceAdapter;
 import com.mobile.otrcapital.R;
 
@@ -48,75 +49,27 @@ public class FactorAdvanceLoad extends Activity
 
     @OnClick (R.id.scanButton) public void scanButton (View view)
     {
-        String errorMessage = "A required field is empty: ";
-        boolean isError = false;
-        String brokerName = brokerNameET.getText().toString();
-        if (brokerName.isEmpty())
+        CustomError error = checkFields();
+        if (error.isError())
         {
-            isError = true;
-            errorMessage += "\n\tBroker Name";
-        }
-        else if (brokerDetails(brokerName) == null)
-        {
-            isError = true;
-            errorMessage += "\n\tInvalid Broker Name";
-        }
-
-        if (loadNumberET.getText().toString().isEmpty())
-        {
-            isError = true;
-            errorMessage += "\n\tLoad Number";
-        }
-
-        if (totalPayET.getText().toString().isEmpty())
-        {
-            isError = true;
-            if (activityType.equals(ActivityTags.TAG_FACTOR_ADVANCE))
-                errorMessage += "\n\tTotal Load Amount";
-            else
-                errorMessage += "\n\tTotal Pay";
-        }
-
-        if (totalDeductionET.getText().toString().isEmpty())
-        {
-            totalDeductionET.setText("0.0");
-            if (activityType.equals(ActivityTags.TAG_FACTOR_ADVANCE))
-            {
-                isError = true;
-                errorMessage += "\n\tAdvance Request Amount";
-            }
-        }
-
-        if (isError)
-        {
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-            alertDialogBuilder
-                    .setMessage(errorMessage)
-                    .setCancelable(false)
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener()
-                    {
-                        public void onClick(DialogInterface dialog, int id)
-                        {
-
-                        }
-                    });
-            AlertDialog alertDialog = alertDialogBuilder.create();
-            alertDialog.show();
+            showAlertDialog(error.getDescription());
         }
         else
         {
-            float invoiceAmount = Float.parseFloat(totalPayET.getText().toString())
-                    -Float.parseFloat(totalDeductionET.getText().toString());
-            Bundle extras = new Bundle();
-            extras.putString(ActivityTags.TAG_BROKER_NAME, brokerName);
-            extras.putString(ActivityTags.TAG_LOAD_NUMBER, loadNumberET.getText().toString());
-            extras.putString(ActivityTags.TAG_PKEY, brokerDetails(brokerName).get_pKey());
-            extras.putString(ActivityTags.TAG_MC_NUMBER, brokerDetails(brokerName).get_mcnumber());
-            extras.putFloat(ActivityTags.TAG_INVOICE_AMOUNT, invoiceAmount);
-            extras.putString(ActivityTags.TAG_ACTIVITY_TYPE,activityType);
-            Intent intent = new Intent(FactorAdvanceLoad.this, LoadDetails.class);
-            intent.putExtra("data_extra", extras);
-            startActivity(intent);
+            openNextScreen(ActivityTags.TAKE_PHOTO_TYPE.CAMERA);
+        }
+    }
+
+    @OnClick (R.id.galleryButton) public void galleryButton (View view)
+    {
+        CustomError error = checkFields();
+        if (error.isError())
+        {
+            showAlertDialog(error.getDescription());
+        }
+        else
+        {
+            openNextScreen(ActivityTags.TAKE_PHOTO_TYPE.GALLERY);
         }
     }
 
@@ -177,6 +130,48 @@ public class FactorAdvanceLoad extends Activity
                 android.R.layout.simple_dropdown_item_1line, brokerNames);
         brokerNameET.setAdapter(adapter);
 
+    }
+
+    private CustomError checkFields() {
+        String errorMessage = "A required field is empty: ";
+        boolean isError = false;
+        String brokerName = brokerNameET.getText().toString();
+        if (brokerName.isEmpty())
+        {
+            isError = true;
+            errorMessage += "\n\tBroker Name";
+        }
+        else if (brokerDetails(brokerName) == null)
+        {
+            isError = true;
+            errorMessage += "\n\tInvalid Broker Name";
+        }
+
+        if (loadNumberET.getText().toString().isEmpty())
+        {
+            isError = true;
+            errorMessage += "\n\tLoad Number";
+        }
+
+        if (totalPayET.getText().toString().isEmpty())
+        {
+            isError = true;
+            if (activityType.equals(ActivityTags.TAG_FACTOR_ADVANCE))
+                errorMessage += "\n\tTotal Load Amount";
+            else
+                errorMessage += "\n\tTotal Pay";
+        }
+
+        if (totalDeductionET.getText().toString().isEmpty())
+        {
+            totalDeductionET.setText("0.0");
+            if (activityType.equals(ActivityTags.TAG_FACTOR_ADVANCE))
+            {
+                isError = true;
+                errorMessage += "\n\tAdvance Request Amount";
+            }
+        }
+        return new CustomError(isError, errorMessage);
     }
 
     private void SetListeners()
@@ -286,5 +281,37 @@ public class FactorAdvanceLoad extends Activity
         return null;
     }
 
+    private void openNextScreen(ActivityTags.TAKE_PHOTO_TYPE type) {
+        String brokerName = brokerNameET.getText().toString();
+        float invoiceAmount = Float.parseFloat(totalPayET.getText().toString())
+                -Float.parseFloat(totalDeductionET.getText().toString());
+        Bundle extras = new Bundle();
+        extras.putString(ActivityTags.TAG_BROKER_NAME, brokerName);
+        extras.putString(ActivityTags.TAG_LOAD_NUMBER, loadNumberET.getText().toString());
+        extras.putString(ActivityTags.TAG_PKEY, brokerDetails(brokerName).get_pKey());
+        extras.putString(ActivityTags.TAG_MC_NUMBER, brokerDetails(brokerName).get_mcnumber());
+        extras.putFloat(ActivityTags.TAG_INVOICE_AMOUNT, invoiceAmount);
+        extras.putString(ActivityTags.TAG_ACTIVITY_TYPE, activityType);
+        extras.putString(ActivityTags.TAG_PHOTO_TYPE,type.name());
+        Intent intent = new Intent(FactorAdvanceLoad.this, LoadDetails.class);
+        intent.putExtra("data_extra", extras);
+        startActivity(intent);
+    }
+
+    private void showAlertDialog(String message) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder
+                .setMessage(message)
+                .setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener()
+                {
+                    public void onClick(DialogInterface dialog, int id)
+                    {
+
+                    }
+                });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
 
 }
