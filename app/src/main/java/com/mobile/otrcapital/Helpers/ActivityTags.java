@@ -30,8 +30,10 @@ public final class ActivityTags
     public static final String API_URL = "http://customer.otrcapital.com/api";
     public static final String HOST_NAME = "customer.otrcapital.com";
     public static final String API_URL_PROD = "http://customer.otrcapital.com/api";
+    public static final String API_URL_STAGE = "http://192.168.13.15/FactorHawkPortal/api";
     public static final String LOGIN_TOKEN = "login_token";
     public static final String TAG_PHOTO_TYPE = "photo_type";
+    public static final String TAG_PAYMENT_OPTION = "payment_option";
     //shared prefs tags
     public static final String SHARED_PREFS_TAG = "OTR_Prefs";
     public static final String PREFS_TOKEN_VALID = "token_valid";

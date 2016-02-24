@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -18,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.mobile.otrcapital.CustomViews.CustomSwitch;
 import com.mobile.otrcapital.Helpers.ActivityTags;
 import com.mobile.otrcapital.Helpers.Broker;
 import com.mobile.otrcapital.Helpers.BrokerDatabase;
@@ -43,6 +45,8 @@ public class FactorAdvanceLoad extends Activity
     @Bind(R.id.totalDeductionTV) TextView totalDeductionTV;
     @Bind(R.id.totalDeductionsInfo) TextView totalDeductionsInfo;
     @Bind(R.id.textClearImgBtn)ImageButton textClearImgBtn;
+    @Bind({ R.id.custom_switch1, R.id.custom_switch2, R.id.custom_switch3, R.id.custom_switch4 }) List<CustomSwitch> switchViews;
+
     List<Broker> brokers;
     private boolean getInput = true;
     private String activityType;
@@ -77,6 +81,11 @@ public class FactorAdvanceLoad extends Activity
     {
         brokerNameET.setText("");
         textClearImgBtn.setVisibility(View.INVISIBLE);
+    }
+
+    @OnClick({ R.id.custom_switch1, R.id.custom_switch2, R.id.custom_switch3, R.id.custom_switch4 }) public void switchClick(CustomSwitch aSwitch)
+    {
+        ButterKnife.apply(switchViews, UNCHECKED, aSwitch.getId());
     }
 
     @Override
@@ -114,7 +123,7 @@ public class FactorAdvanceLoad extends Activity
         totalPayInfo.setVisibility(View.GONE);
         totalDeductionsInfo.setVisibility(View.GONE);
 
-        SetListeners();
+        setListeners();
 
         AssetManager assetManager = getAssets();
         List <String> brokerNames = new ArrayList();
@@ -130,6 +139,15 @@ public class FactorAdvanceLoad extends Activity
                 android.R.layout.simple_dropdown_item_1line, brokerNames);
         brokerNameET.setAdapter(adapter);
 
+        String[] types;
+        if (activityType.equals(ActivityTags.TAG_FACTOR_ADVANCE)) {
+            types = getResources().getStringArray(R.array.advance_load);
+        } else {
+            types = getResources().getStringArray(R.array.factor_load);
+        }
+        for (int i = 0; i < switchViews.size(); i++) {
+            switchViews.get(i).setText(types[i]);
+        }
     }
 
     private CustomError checkFields() {
@@ -171,10 +189,20 @@ public class FactorAdvanceLoad extends Activity
                 errorMessage += "\n\tAdvance Request Amount";
             }
         }
+
+        boolean isChecked = false;
+        for (CustomSwitch cs: switchViews) {
+            if (cs.isChecked()) isChecked = true;
+        }
+        if (!isChecked) {
+            isError = true;
+            errorMessage += "\n\tNeeds to select an option";
+        }
+
         return new CustomError(isError, errorMessage);
     }
 
-    private void SetListeners()
+    private void setListeners()
     {
         brokerNameET.setOnTouchListener(new View.OnTouchListener()
         {
@@ -269,6 +297,7 @@ public class FactorAdvanceLoad extends Activity
 
     }
 
+    @Nullable
     private Broker brokerDetails(String brokerName)
     {
         for (Broker b: brokers)
@@ -293,20 +322,21 @@ public class FactorAdvanceLoad extends Activity
         extras.putFloat(ActivityTags.TAG_INVOICE_AMOUNT, invoiceAmount);
         extras.putString(ActivityTags.TAG_ACTIVITY_TYPE, activityType);
         extras.putString(ActivityTags.TAG_PHOTO_TYPE,type.name());
+        extras.putString(ActivityTags.TAG_PAYMENT_OPTION, getPaymentOption());
+        extras.putFloat(ActivityTags.TAG_ADV_REQ_AMOUNT, Float.parseFloat(totalDeductionET.getText().toString()));
         Intent intent = new Intent(FactorAdvanceLoad.this, LoadDetails.class);
         intent.putExtra("data_extra", extras);
         startActivity(intent);
     }
 
-    private void showAlertDialog(String message) {
+    private void showAlertDialog(String message)
+    {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder
                 .setMessage(message)
                 .setCancelable(false)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener()
-                {
-                    public void onClick(DialogInterface dialog, int id)
-                    {
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
 
                     }
                 });
@@ -314,4 +344,22 @@ public class FactorAdvanceLoad extends Activity
         alertDialog.show();
     }
 
+    @Nullable
+    private String getPaymentOption() {
+        for (CustomSwitch cs: switchViews) {
+            if (cs.isChecked()) return cs.getText();
+        }
+        return null;
+    }
+
+    static final ButterKnife.Setter<CustomSwitch, Integer> UNCHECKED = new ButterKnife.Setter<CustomSwitch, Integer>() {
+        @Override public void set(CustomSwitch view, Integer id, int index) {
+            if (view.getId() == id) {
+                view.setChecked(!view.isChecked());
+            } else {
+                if (view.isChecked()) view.setChecked(false);
+            }
+
+        }
+    };
 }

@@ -118,7 +118,7 @@ public class History extends ListActivity
         {
             invoiceData.ClientLogin = prefs.getString(ActivityTags.PREFS_USER_EMAIL, "");
             invoiceData.ClientPassword = prefs.getString(ActivityTags.PREFS_USER_PASSWORD, "");
-            invoiceData.PKey = fileAttribues.get(ActivityTags.FILE_PKEY).substring(2);
+            invoiceData.CustomerPKey = Integer.parseInt(fileAttribues.get(ActivityTags.FILE_PKEY).substring(2));
             invoiceData.CustomerMCNumber = fileAttribues.get(ActivityTags.FILE_MC_NUMBER).substring(2);
             invoiceData.InvoiceAmount = Float.parseFloat(fileAttribues.get(ActivityTags.FILE_INVOICE_AMOUNT).substring(2));
             invoiceData.PoNumber = fileAttribues.get(ActivityTags.FILE_LOAD_NUMBER).substring(2);

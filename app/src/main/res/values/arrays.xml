@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="advance_load">
+        <item>EFS</item>
+        <item>Text Comchek</item>
+        <item>Email Comchek</item>
+        <item>Comdata Fuel Card</item>
+    </string-array>
+
+    <string-array name="factor_load">
+        <item>ACH</item>
+        <item>WIRE</item>
+        <item>EFS</item>
+        <item>Comdata Fuel Card</item>
+    </string-array>
+</resources>

@@ -82,7 +82,7 @@ public class LoadDetails extends Activity
     private ArrayList<String> stringArray = new ArrayList<String>();
     private File pdfFile;
     private String activityType;
-    private String mcNumber, pKey;
+    private String mcNumber, pKey, paymentOption;
     private float invoiceAmount, advReqAmount;
     private ArrayList<String> GalleryList = new ArrayList<String>();
 
@@ -118,7 +118,7 @@ public class LoadDetails extends Activity
         fileSet.add(ActivityTags.FILE_MC_NUMBER + "_" + InvoiceData.CustomerMCNumber);
         fileSet.add(ActivityTags.FILE_INVOICE_AMOUNT + "_" + InvoiceData.InvoiceAmount);
         fileSet.add(ActivityTags.FILE_DOCUMENT_TYPES + "_" + documentTypesString);
-        fileSet.add(ActivityTags.FILE_PKEY + "_" + InvoiceData.PKey);
+        fileSet.add(ActivityTags.FILE_PKEY + "_" + String.valueOf(InvoiceData.CustomerPKey));
         fileSet.add(ActivityTags.FILE_FACTOR_TYPE + "_" + FactorType);
         if (FactorType.equals("ADV"))
             fileSet.add(ActivityTags.FILE_ADV_REQ_AMOUNT + "_" + InvoiceData.AdvanceRequestAmount);
@@ -201,12 +201,15 @@ public class LoadDetails extends Activity
             final String userEmail = prefs.getString(ActivityTags.PREFS_USER_EMAIL, "");
             final String userPassword = prefs.getString(ActivityTags.PREFS_USER_PASSWORD, "");
             apiInvoiceDataJson invoiceData = new apiInvoiceDataJson();
-            invoiceData.PKey = pKey;
+            invoiceData.CustomerPKey = Integer.parseInt(pKey);
             invoiceData.CustomerMCNumber = mcNumber;
             invoiceData.PoNumber = loadNumberET.getText().toString();
             invoiceData.InvoiceAmount = invoiceAmount;
             invoiceData.ClientLogin = userEmail;
             invoiceData.ClientPassword = userPassword;
+            invoiceData.AdvanceRequestType = paymentOption;
+            if (activityType.equals(ActivityTags.TAG_FACTOR_ADVANCE))
+                invoiceData.AdvanceRequestAmount = advReqAmount;
 
             String factorType = "";
             if (activityType.equals(ActivityTags.TAG_FACTOR_ADVANCE))
@@ -250,6 +253,7 @@ public class LoadDetails extends Activity
         loadNumberET.setText(bundle.getString(ActivityTags.TAG_LOAD_NUMBER));
         mcNumber = bundle.getString(ActivityTags.TAG_MC_NUMBER);
         pKey = bundle.getString(ActivityTags.TAG_PKEY);
+        paymentOption = bundle.getString(ActivityTags.TAG_PAYMENT_OPTION);
         invoiceAmount = bundle.getFloat(ActivityTags.TAG_INVOICE_AMOUNT);
         if (activityType.equals(ActivityTags.TAG_FACTOR_ADVANCE))
             advReqAmount = bundle.getFloat(ActivityTags.TAG_ADV_REQ_AMOUNT);

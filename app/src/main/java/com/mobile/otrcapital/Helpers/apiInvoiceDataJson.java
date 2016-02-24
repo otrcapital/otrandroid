@@ -8,10 +8,11 @@ public class apiInvoiceDataJson
     public String CustomerMCNumber;
     public String PoNumber;
     public float InvoiceAmount;
-    public String PKey;
+    public int CustomerPKey;
     public String ClientLogin;
     public String ClientPassword;
     public float AdvanceRequestAmount;
+    public String AdvanceRequestType;
 
     public apiInvoiceDataJson(){}
 }
