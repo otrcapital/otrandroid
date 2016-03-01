@@ -1,66 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.mobile.otrcapital" >
+<manifest
+    package="com.mobile.otrcapital"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-feature
         android:name="android.hardware.camera"
-        android:required="true" />
+        android:required="true"/>
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/OTRThemeNoActionBar" >
+        android:theme="@style/OTRThemeNoActionBar">
         <activity
             android:name=".Activities.LoginScreen"
             android:label="@string/app_name"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
                 <category
                     android:name="android.intent.category.LAUNCHER"
-                    android:theme="@style/OTRThemeNoActionBar" />
+                    android:theme="@style/OTRThemeNoActionBar"/>
             </intent-filter>
         </activity>
         <activity
             android:name=".Activities.MainDashboard"
             android:label="@string/title_activity_main_dashboard"
             android:screenOrientation="portrait"
-            android:theme="@style/OTRThemeNoActionBar" >
+            android:theme="@style/OTRThemeNoActionBar">
         </activity>
         <activity
             android:name=".Activities.SignUp"
             android:label="@string/title_activity_sign_up"
             android:parentActivityName=".Activities.LoginScreen"
             android:screenOrientation="portrait"
-            android:theme="@style/OTRTheme" >
+            android:theme="@style/OTRTheme">
         </activity>
         <activity
             android:name=".Activities.ContactUs"
             android:label="@string/title_activity_contact_us"
             android:screenOrientation="portrait"
-            android:theme="@style/OTRTheme" >
+            android:theme="@style/OTRTheme">
         </activity>
         <activity
             android:name=".Activities.History"
             android:label="@string/title_activity_history"
             android:parentActivityName=".Activities.MainDashboard"
             android:screenOrientation="portrait"
-            android:theme="@style/OTRTheme" >
+            android:theme="@style/OTRTheme">
         </activity>
         <activity
             android:name=".Activities.FactorAdvanceLoad"
             android:label="@string/title_activity_factor_advance_load"
             android:parentActivityName=".Activities.MainDashboard"
             android:screenOrientation="portrait"
-            android:theme="@style/OTRTheme" >
+            android:theme="@style/OTRTheme">
         </activity>
         <activity
             android:name=".Activities.BrokerCheck"
@@ -74,34 +75,33 @@
             android:label="@string/title_activity_broker_details"
             android:parentActivityName=".Activities.BrokerCheck"
             android:screenOrientation="portrait"
-            android:theme="@style/OTRTheme" >
+            android:theme="@style/OTRTheme">
         </activity>
         <activity
             android:name=".Activities.LoadDetails"
             android:label="@string/title_activity_load_details"
             android:parentActivityName=".Activities.MainDashboard"
             android:screenOrientation="portrait"
-            android:theme="@style/OTRTheme" >
+            android:theme="@style/OTRTheme">
         </activity>
         <activity
             android:name=".Activities.RefineCapture"
             android:label="@string/title_activity_refine_capture"
             android:parentActivityName=".Activities.LoadDetails"
             android:screenOrientation="portrait"
-            android:theme="@style/OTRThemeNoActionBar" >
+            android:theme="@style/OTRThemeNoActionBar">
         </activity>
         <activity
             android:name=".Activities.CropImage"
             android:label="@string/title_activity_crop_image"
             android:parentActivityName=".Activities.LoadDetails"
             android:screenOrientation="portrait"
-            android:theme="@style/OTRThemeNoActionBar" >
->
+            android:theme="@style/OTRThemeNoActionBar">
         </activity>
 
         <service
             android:name=".Activities.GetBrokers"
-            android:exported="false" >
+            android:exported="false">
         </service>
     </application>
 

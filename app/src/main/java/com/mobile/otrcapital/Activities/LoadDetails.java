@@ -437,7 +437,12 @@ public class LoadDetails extends Activity
             } else if (Build.VERSION.SDK_INT < 19) {
                 realPath = RealPathUtil.getRealPathFromURI_API11to18(this, data.getData());
             } else {
-                realPath = RealPathUtil.getRealPathFromURI_API19(this, data.getData());
+                try {
+                    realPath = RealPathUtil.getRealPathFromURI_API19(this, data.getData());
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    realPath = RealPathUtil.getRealPathFromURI_API11to18(this, data.getData());
+                }
             }
 
             copyImageFile(realPath);

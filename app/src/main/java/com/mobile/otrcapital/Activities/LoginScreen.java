@@ -13,11 +13,13 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.mobile.otrcapital.BuildConfig;
 import com.mobile.otrcapital.Helpers.ActivityTags;
 import com.mobile.otrcapital.Helpers.RESTAPIs;
 import com.mobile.otrcapital.R;
@@ -46,6 +48,7 @@ public class LoginScreen extends Activity
     @Bind (R.id.signUpImgBtn) ImageButton signUpImgBtn;
     @Bind (R.id.contactUsImgBtn) ImageButton contactUsImgBtn;
     @Bind (R.id.loginResultTV) TextView loginResultTV;
+    @Bind(R.id.testBtn) Button mButton;
     private String date = "";
     private boolean isFirstRun;
 
@@ -64,7 +67,7 @@ public class LoginScreen extends Activity
         final String credentials = userEmail+":"+password;
         final String passwordEncoded = Base64.encodeToString(password.getBytes(), Base64.NO_WRAP);
         final String credentialsEncoded = Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
-        verifyAgent(userEmail, passwordEncoded,credentialsEncoded);
+        verifyAgent(userEmail, passwordEncoded, credentialsEncoded);
     }
 
     @OnClick (R.id.signUpImgBtn) public void signUp (View view)
@@ -120,6 +123,10 @@ public class LoginScreen extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_screen);
         ButterKnife.bind(this);
+
+        if (!BuildConfig.DEBUG) {
+            mButton.setVisibility(View.GONE);
+        }
 
         loginEmailET.getBackground().setColorFilter(getResources().getColor(R.color.blue_light), PorterDuff.Mode.SRC_ATOP);
         loginPasswordET.getBackground().setColorFilter(getResources().getColor(R.color.blue_light), PorterDuff.Mode.SRC_ATOP);
