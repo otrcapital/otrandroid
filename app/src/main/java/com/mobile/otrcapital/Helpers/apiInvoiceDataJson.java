@@ -13,6 +13,7 @@ public class apiInvoiceDataJson
     public String ClientPassword;
     public float AdvanceRequestAmount;
     public String AdvanceRequestType;
+    public String Phone;
 
     public apiInvoiceDataJson(){}
 }

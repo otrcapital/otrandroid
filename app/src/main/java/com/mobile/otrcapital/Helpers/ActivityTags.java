@@ -27,13 +27,14 @@ public final class ActivityTags
     public static final String TAG_DATE = "Date";
     public static final String TAG_FIRST_RUN = "First_Run";
     public static final String TAG_DOWNLOAD_STATUS = "Download_Status";
-    public static final String API_URL = "http://customer.otrcapital.com/api";
-    public static final String HOST_NAME = "customer.otrcapital.com";
-    public static final String API_URL_PROD = "http://customer.otrcapital.com/api";
-    public static final String API_URL_STAGE = "http://192.168.13.15/FactorHawkPortal/api";
+    public static final String HOST_NAME = "stgportal.otrcapital.com";
+    public static final String API_URL_PROD = "http://stgportal.otrcapital.com/api";
+    public static final String API_URL_STAGE = "http://stgportal.otrcapital.com/api";
+    public static final String API_URL_MOCK = "http://192.168.13.15/FactorHawkPortal/api";
     public static final String LOGIN_TOKEN = "login_token";
     public static final String TAG_PHOTO_TYPE = "photo_type";
     public static final String TAG_PAYMENT_OPTION = "payment_option";
+    public static final String TAG_CELL_NUMBER = "cell_number";
     //shared prefs tags
     public static final String SHARED_PREFS_TAG = "OTR_Prefs";
     public static final String PREFS_TOKEN_VALID = "token_valid";
@@ -51,6 +52,8 @@ public final class ActivityTags
     public static final int FILE_TIMESTAMP = 6;
     public static final int FILE_FACTOR_TYPE = 7;
     public static final int FILE_ADV_REQ_AMOUNT = 8;
+    public static final int FILE_PAYMENT_OPTION = 9;
+    public static final int FILE_ADV_CELL_NUMBER = 91;
 
     private ActivityTags() {
     }

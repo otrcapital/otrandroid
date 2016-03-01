@@ -82,7 +82,7 @@ public class LoadDetails extends Activity
     private ArrayList<String> stringArray = new ArrayList<String>();
     private File pdfFile;
     private String activityType;
-    private String mcNumber, pKey, paymentOption;
+    private String mcNumber, pKey, paymentOption, cellNumber;
     private float invoiceAmount, advReqAmount;
     private ArrayList<String> GalleryList = new ArrayList<String>();
 
@@ -116,12 +116,14 @@ public class LoadDetails extends Activity
         fileSet.add(ActivityTags.FILE_LOAD_NUMBER + "_" + InvoiceData.PoNumber);
         fileSet.add(ActivityTags.FILE_INVOICE_AMOUNT + "_" + InvoiceData.InvoiceAmount);
         fileSet.add(ActivityTags.FILE_MC_NUMBER + "_" + InvoiceData.CustomerMCNumber);
-        fileSet.add(ActivityTags.FILE_INVOICE_AMOUNT + "_" + InvoiceData.InvoiceAmount);
         fileSet.add(ActivityTags.FILE_DOCUMENT_TYPES + "_" + documentTypesString);
         fileSet.add(ActivityTags.FILE_PKEY + "_" + String.valueOf(InvoiceData.CustomerPKey));
         fileSet.add(ActivityTags.FILE_FACTOR_TYPE + "_" + FactorType);
-        if (FactorType.equals("ADV"))
+        fileSet.add(ActivityTags.FILE_PAYMENT_OPTION + "_" + InvoiceData.AdvanceRequestType);
+        if (FactorType.equals("ADV")) {
             fileSet.add(ActivityTags.FILE_ADV_REQ_AMOUNT + "_" + InvoiceData.AdvanceRequestAmount);
+            fileSet.add(ActivityTags.FILE_ADV_CELL_NUMBER + "_" + InvoiceData.Phone);
+        }
 
 
         methods.Upload(InvoiceData, DocumentType, typedFile, FactorType, "android", new Callback<String>() {
@@ -208,8 +210,10 @@ public class LoadDetails extends Activity
             invoiceData.ClientLogin = userEmail;
             invoiceData.ClientPassword = userPassword;
             invoiceData.AdvanceRequestType = paymentOption;
-            if (activityType.equals(ActivityTags.TAG_FACTOR_ADVANCE))
+            if (activityType.equals(ActivityTags.TAG_FACTOR_ADVANCE)) {
                 invoiceData.AdvanceRequestAmount = advReqAmount;
+                invoiceData.Phone = cellNumber;
+            }
 
             String factorType = "";
             if (activityType.equals(ActivityTags.TAG_FACTOR_ADVANCE))
@@ -226,6 +230,12 @@ public class LoadDetails extends Activity
     public void addPageButton (View view)
     {
         takePicture();
+    }
+
+    @OnClick (R.id.addPageButtonGallery)
+    public void addPageButtonGallery (View view)
+    {
+        takePictureFromGallery();
     }
 
     @Override
@@ -255,6 +265,7 @@ public class LoadDetails extends Activity
         pKey = bundle.getString(ActivityTags.TAG_PKEY);
         paymentOption = bundle.getString(ActivityTags.TAG_PAYMENT_OPTION);
         invoiceAmount = bundle.getFloat(ActivityTags.TAG_INVOICE_AMOUNT);
+        cellNumber = bundle.getString(ActivityTags.TAG_CELL_NUMBER);
         if (activityType.equals(ActivityTags.TAG_FACTOR_ADVANCE))
             advReqAmount = bundle.getFloat(ActivityTags.TAG_ADV_REQ_AMOUNT);
         verifyUserGroup.setVisibility(View.INVISIBLE);

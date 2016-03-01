@@ -2,6 +2,7 @@ package com.mobile.otrcapital.Activities;
 
 import android.app.Activity;
 import android.app.ListActivity;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -13,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mobile.otrcapital.Helpers.ActivityTags;
 import com.mobile.otrcapital.Helpers.HistoryFilesAdapter;
@@ -78,10 +80,14 @@ public class History extends ListActivity
 
     public void OpenFile(final String fileName)
     {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setDataAndType(Uri.fromFile(new File(ActivityTags.EXT_STORAGE_DIR + fileName)), "application/pdf");
-        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        startActivity(intent);
+        try {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setDataAndType(Uri.fromFile(new File(ActivityTags.EXT_STORAGE_DIR + fileName)), "application/pdf");
+            intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            startActivity(intent);
+        }catch (ActivityNotFoundException ex) {
+            Toast.makeText(this, "No app found for view pdf", Toast.LENGTH_LONG).show();
+        }
     }
 
     public void EmailFile(final String fileName)
@@ -123,8 +129,12 @@ public class History extends ListActivity
             invoiceData.InvoiceAmount = Float.parseFloat(fileAttribues.get(ActivityTags.FILE_INVOICE_AMOUNT).substring(2));
             invoiceData.PoNumber = fileAttribues.get(ActivityTags.FILE_LOAD_NUMBER).substring(2);
             factoryType = fileAttribues.get(ActivityTags.FILE_FACTOR_TYPE).substring(2);
-            if (factoryType.equals("ADV"))
-                invoiceData.AdvanceRequestAmount = Float.parseFloat(fileAttribues.get(ActivityTags.FILE_ADV_REQ_AMOUNT));
+            invoiceData.AdvanceRequestType = fileAttribues.get(ActivityTags.FILE_PAYMENT_OPTION).substring(2);
+
+            if (factoryType.equals("ADV")) {
+                invoiceData.AdvanceRequestAmount = Float.parseFloat(fileAttribues.get(ActivityTags.FILE_ADV_REQ_AMOUNT).substring(2));
+                invoiceData.Phone = fileAttribues.get(ActivityTags.FILE_ADV_CELL_NUMBER).substring(2);
+            }
             documentTypeArray = fileAttribues.get(ActivityTags.FILE_DOCUMENT_TYPES).substring(2).split("/");
         }catch (IndexOutOfBoundsException e)
         {

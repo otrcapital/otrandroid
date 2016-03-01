@@ -60,6 +60,13 @@ public class HistoryFilesAdapter extends ArrayAdapter<String>
             invoiceData.CustomerMCNumber = fileAttribues.get(ActivityTags.FILE_MC_NUMBER).substring(2);
             invoiceData.InvoiceAmount = Float.parseFloat(fileAttribues.get(ActivityTags.FILE_INVOICE_AMOUNT).substring(2));
             invoiceData.PoNumber = fileAttribues.get(ActivityTags.FILE_LOAD_NUMBER).substring(2);
+            String factoryType = fileAttribues.get(ActivityTags.FILE_FACTOR_TYPE).substring(2);
+            invoiceData.AdvanceRequestType = fileAttribues.get(ActivityTags.FILE_PAYMENT_OPTION).substring(2);
+
+            if (factoryType.equals("ADV")) {
+                invoiceData.AdvanceRequestAmount = Float.parseFloat(fileAttribues.get(ActivityTags.FILE_ADV_REQ_AMOUNT).substring(2));
+                invoiceData.Phone = fileAttribues.get(ActivityTags.FILE_ADV_CELL_NUMBER).substring(2);
+            }
             documentTypeArray = fileAttribues.get(ActivityTags.FILE_DOCUMENT_TYPES).substring(2).split("/");
         }catch (IndexOutOfBoundsException e)
         {

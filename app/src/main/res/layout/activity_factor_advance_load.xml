@@ -79,6 +79,7 @@
                             android:paddingRight="15dp"
                             android:textColor="@android:color/background_dark"
                             android:textColorHint="@android:color/black"
+                            android:textCursorDrawable="@null"
                             android:textSize="16sp"
                             android:textStyle="italic"
                             />
@@ -132,6 +133,7 @@
                         android:background="@drawable/otr_9_patch_input_field_light"
                         android:hint="*Required"
                         android:maxLines="2"
+                        android:textCursorDrawable="@null"
                         android:minHeight="43dp"
                         android:minLines="2"
                         android:paddingLeft="4dp"
@@ -185,6 +187,7 @@
                         android:paddingLeft="4dp"
                         android:paddingRight="4dp"
                         android:singleLine="true"
+                        android:textCursorDrawable="@null"
                         android:textColor="@android:color/background_dark"
                         android:textColorHint="@android:color/black"
                         android:textSize="16sp"
@@ -248,6 +251,7 @@
                         android:paddingLeft="4dp"
                         android:paddingRight="4dp"
                         android:singleLine="true"
+                        android:textCursorDrawable="@null"
                         android:textColor="@android:color/background_dark"
                         android:textColorHint="@android:color/black"
                         android:textSize="16sp"
@@ -328,6 +332,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:ems="10"
+                android:layout_marginBottom="10dp"
                 android:minWidth="60dp"
                 android:text="Photo Gallery"/>
 
