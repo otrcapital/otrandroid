@@ -43,18 +43,6 @@ public final class ActivityTags
     public static final String PREFS_USER_PASSWORD = "user_password";
     public static final String PREFS_USER_CREDENTIALS = "user_credentials";
     public static final String PREFS_NOT_FIRST_RUN = "first_run";
-    //file upload tags
-    public static final int FILE_LOAD_NUMBER = 0;   //po number
-    public static final int FILE_INVOICE_AMOUNT = 1;
-    public static final int FILE_MC_NUMBER = 2;
-    public static final int FILE_DOCUMENT_TYPES = 3;
-    public static final int FILE_PKEY = 4;
-    public static final int FILE_STATUS = 5;
-    public static final int FILE_TIMESTAMP = 6;
-    public static final int FILE_FACTOR_TYPE = 7;
-    public static final int FILE_ADV_REQ_AMOUNT = 8;
-    public static final int FILE_PAYMENT_OPTION = 9;
-    public static final int FILE_ADV_CELL_NUMBER = 91;
 
     private ActivityTags() {
     }

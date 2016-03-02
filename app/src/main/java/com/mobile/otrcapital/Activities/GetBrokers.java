@@ -13,10 +13,9 @@ import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
 import com.mobile.otrcapital.Helpers.ActivityTags;
-import com.mobile.otrcapital.Helpers.Broker;
+import com.mobile.otrcapital.Models.Broker;
 import com.mobile.otrcapital.Helpers.BrokerDatabase;
-import com.mobile.otrcapital.Helpers.CustomerViewModel;
-import com.mobile.otrcapital.Helpers.RESTAPIs;
+import com.mobile.otrcapital.Models.CustomerViewModel;
 import com.mobile.otrcapital.Helpers.RestClient;
 import com.mobile.otrcapital.R;
 
@@ -24,8 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import retrofit.Callback;
-import retrofit.RequestInterceptor;
-import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
@@ -65,9 +62,8 @@ public class GetBrokers extends IntentService
                     Log.d(ActivityTags.TAG_LOG, "Broker list fetched from the server");
                     List<Broker> brokers = new ArrayList<Broker>();
 
-                    for (CustomerViewModel cvm : customerViewModels)
-                    {
-                        brokers.add(new Broker(cvm.McNumber,cvm.Name,cvm.PKey));
+                    for (CustomerViewModel cvm : customerViewModels) {
+                        brokers.add(new Broker(cvm.McNumber, cvm.Name, cvm.PKey));
                     }
 
                     //Save downloaded records to local database in a background AsyncTask
@@ -79,7 +75,7 @@ public class GetBrokers extends IntentService
                 public void failure(RetrofitError error) {
                     Log.d(ActivityTags.TAG_LOG, error.toString());
                     result = Activity.RESULT_CANCELED;
-                    publishResults (result);
+                    publishResults(result);
                 }
             });
         }

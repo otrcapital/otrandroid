@@ -1,4 +1,4 @@
-package com.mobile.otrcapital.Helpers;
+package com.mobile.otrcapital.Models;
 
 /**
  * Created by jawad on 9/21/2015.

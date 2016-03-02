@@ -18,7 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 
 import com.mobile.otrcapital.Helpers.ActivityTags;
-import com.mobile.otrcapital.Helpers.Broker;
+import com.mobile.otrcapital.Models.Broker;
 import com.mobile.otrcapital.Helpers.BrokerDatabase;
 import com.mobile.otrcapital.R;
 

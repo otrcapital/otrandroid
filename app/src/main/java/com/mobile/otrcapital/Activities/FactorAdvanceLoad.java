@@ -24,9 +24,9 @@ import android.widget.TextView;
 
 import com.mobile.otrcapital.CustomViews.CustomSwitch;
 import com.mobile.otrcapital.Helpers.ActivityTags;
-import com.mobile.otrcapital.Helpers.Broker;
+import com.mobile.otrcapital.Models.Broker;
 import com.mobile.otrcapital.Helpers.BrokerDatabase;
-import com.mobile.otrcapital.Helpers.CustomError;
+import com.mobile.otrcapital.Models.CustomError;
 import com.mobile.otrcapital.Helpers.FilterWithSpaceAdapter;
 import com.mobile.otrcapital.R;
 

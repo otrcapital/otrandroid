@@ -1,4 +1,4 @@
-package com.mobile.otrcapital.Helpers;
+package com.mobile.otrcapital.Models;
 
 public class CustomError {
 

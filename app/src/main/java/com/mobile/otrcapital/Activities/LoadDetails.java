@@ -25,22 +25,21 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.mobile.otrcapital.Helpers.ActivityTags;
-import com.mobile.otrcapital.Helpers.RESTAPIs;
 import com.mobile.otrcapital.Helpers.RealPathUtil;
 import com.mobile.otrcapital.Helpers.RestClient;
-import com.mobile.otrcapital.Helpers.apiInvoiceDataJson;
+import com.mobile.otrcapital.Models.ApiInvoiceDataJson;
+import com.mobile.otrcapital.Models.HistoryInvoiceModel;
 import com.mobile.otrcapital.R;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -52,10 +51,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import retrofit.Callback;
-import retrofit.RequestInterceptor;
-import retrofit.RestAdapter;
 import retrofit.RetrofitError;
-import retrofit.android.AndroidLog;
 import retrofit.client.Response;
 import retrofit.mime.TypedFile;
 
@@ -88,8 +84,8 @@ public class LoadDetails extends Activity
     private ArrayList<String> GalleryList = new ArrayList<String>();
 
     public static void UploadDocument(final String FileName, final Context ContextActivity, final Activity activity,
-                                      final View VerifyUserGroup, final apiInvoiceDataJson InvoiceData,
-                                      final ArrayList<String> DocumentType, final String FactorType, final SharedPreferences Prefs) {
+                                      final View VerifyUserGroup, final ApiInvoiceDataJson invoiceData,
+                                      final ArrayList<String> DocumentType, final String factorType, final SharedPreferences Prefs) {
         final String userCredentials = Prefs.getString(ActivityTags.PREFS_USER_CREDENTIALS, "");
 
         TypedFile typedFile = new TypedFile("application/pdf", new File(ActivityTags.EXT_STORAGE_DIR + FileName));
@@ -98,20 +94,12 @@ public class LoadDetails extends Activity
         for (String s : DocumentType) {
             documentTypesString += s + "/";
         }
-        final Set fileSet = new LinkedHashSet<String>();
-        fileSet.add(ActivityTags.FILE_LOAD_NUMBER + "_" + InvoiceData.PoNumber);
-        fileSet.add(ActivityTags.FILE_INVOICE_AMOUNT + "_" + InvoiceData.InvoiceAmount);
-        fileSet.add(ActivityTags.FILE_MC_NUMBER + "_" + InvoiceData.CustomerMCNumber);
-        fileSet.add(ActivityTags.FILE_DOCUMENT_TYPES + "_" + documentTypesString);
-        fileSet.add(ActivityTags.FILE_PKEY + "_" + String.valueOf(InvoiceData.CustomerPKey));
-        fileSet.add(ActivityTags.FILE_FACTOR_TYPE + "_" + FactorType);
-        fileSet.add(ActivityTags.FILE_PAYMENT_OPTION + "_" + InvoiceData.AdvanceRequestType);
-        if (FactorType.equals("ADV")) {
-            fileSet.add(ActivityTags.FILE_ADV_REQ_AMOUNT + "_" + InvoiceData.AdvanceRequestAmount);
-            fileSet.add(ActivityTags.FILE_ADV_CELL_NUMBER + "_" + InvoiceData.Phone);
-        }
 
-        RestClient.getInstance(userCredentials).getApiService().Upload(InvoiceData, DocumentType, typedFile, FactorType, "android", new Callback<String>() {
+        final HistoryInvoiceModel historyInvoiceModel = new HistoryInvoiceModel(invoiceData);
+        historyInvoiceModel.setDocumentTypesString(documentTypesString);
+        historyInvoiceModel.setFactorType(factorType);
+
+        RestClient.getInstance(userCredentials).getApiService().Upload(invoiceData, DocumentType, typedFile, factorType, "android", new Callback<String>() {
             SharedPreferences.Editor editor = Prefs.edit();
 
             @Override
@@ -119,9 +107,9 @@ public class LoadDetails extends Activity
                 Toast.makeText(ContextActivity, "Document upload success", Toast.LENGTH_LONG).show();
                 VerifyUserGroup.setVisibility(View.INVISIBLE);
                 String timeStamp = new SimpleDateFormat("dd/MM/yyy HH:mm:ss").format(new Date());
-                fileSet.add(ActivityTags.FILE_STATUS + "_success");
-                fileSet.add(ActivityTags.FILE_TIMESTAMP + "_" + timeStamp);
-                editor.putStringSet(FileName, fileSet);
+                historyInvoiceModel.setTimestamp(timeStamp);
+                historyInvoiceModel.setStatus("success");
+                editor.putString(FileName, new Gson().toJson(historyInvoiceModel));
                 editor.commit();
 
                 Intent intent = new Intent(ContextActivity, History.class);
@@ -147,11 +135,13 @@ public class LoadDetails extends Activity
                 Toast.makeText(ContextActivity, toastText, Toast.LENGTH_LONG).show();
                 VerifyUserGroup.setVisibility(View.INVISIBLE);
                 String timeStamp = new SimpleDateFormat("dd/MM/yyy HH:mm:ss").format(new Date());
-                fileSet.add(ActivityTags.FILE_STATUS + "_failure");
-                fileSet.add(ActivityTags.FILE_TIMESTAMP + "_" + timeStamp);
-                editor.putStringSet(FileName, fileSet);
+                historyInvoiceModel.setTimestamp(timeStamp);
+                historyInvoiceModel.setStatus("success");
+                editor.putString(FileName, new Gson().toJson(historyInvoiceModel));
                 editor.commit();
 
+                historyInvoiceModel.setTimestamp(timeStamp);
+                historyInvoiceModel.setStatus("failure");
 
                 Intent intent = new Intent(ContextActivity, History.class);
                 activity.finish();
@@ -186,7 +176,7 @@ public class LoadDetails extends Activity
             final SharedPreferences prefs = getSharedPreferences(ActivityTags.SHARED_PREFS_TAG, 0);
             final String userEmail = prefs.getString(ActivityTags.PREFS_USER_EMAIL, "");
             final String userPassword = prefs.getString(ActivityTags.PREFS_USER_PASSWORD, "");
-            apiInvoiceDataJson invoiceData = new apiInvoiceDataJson();
+            ApiInvoiceDataJson invoiceData = new ApiInvoiceDataJson();
             invoiceData.CustomerPKey = Integer.parseInt(pKey);
             invoiceData.CustomerMCNumber = mcNumber;
             invoiceData.PoNumber = loadNumberET.getText().toString();

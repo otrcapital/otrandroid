@@ -1,9 +1,9 @@
-package com.mobile.otrcapital.Helpers;
+package com.mobile.otrcapital.Models;
 
 /**
  * Created by jawad on 9/24/2015.
  */
-public class apiInvoiceDataJson
+public class ApiInvoiceDataJson
 {
     public String CustomerMCNumber;
     public String PoNumber;
@@ -15,5 +15,5 @@ public class apiInvoiceDataJson
     public String AdvanceRequestType;
     public String Phone;
 
-    public apiInvoiceDataJson(){}
+    public ApiInvoiceDataJson(){}
 }

@@ -5,6 +5,8 @@ package com.mobile.otrcapital.Helpers;
  */
 
 import com.mobile.otrcapital.Activities.LoginScreen;
+import com.mobile.otrcapital.Models.ApiInvoiceDataJson;
+import com.mobile.otrcapital.Models.CustomerViewModel;
 
 import java.util.List;
 
@@ -30,7 +32,7 @@ public interface RESTAPIs
     @Multipart
     @POST("/Upload")
     void Upload(
-            @Part ("apiInvoiceDataJson") apiInvoiceDataJson invoiceData,
+            @Part ("apiInvoiceDataJson") ApiInvoiceDataJson invoiceData,
             @Part("DocumentType") List<String> DocumentType,
             @Part ("file.pdf") TypedFile file,
             @Part ("FactorType") String FactorType,

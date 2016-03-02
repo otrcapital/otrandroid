@@ -12,24 +12,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mobile.otrcapital.Helpers.ActivityTags;
-import com.mobile.otrcapital.Helpers.CustomerViewModel;
-import com.mobile.otrcapital.Helpers.RESTAPIs;
+import com.mobile.otrcapital.Models.CustomerViewModel;
 import com.mobile.otrcapital.Helpers.RestClient;
 import com.mobile.otrcapital.R;
-import com.squareup.okhttp.OkHttpClient;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import retrofit.Callback;
-import retrofit.RequestInterceptor;
-import retrofit.RestAdapter;
 import retrofit.RetrofitError;
-import retrofit.android.AndroidLog;
-import retrofit.client.OkClient;
 import retrofit.client.Response;
 
 

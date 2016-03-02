@@ -16,9 +16,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.mobile.otrcapital.Helpers.ActivityTags;
 import com.mobile.otrcapital.Helpers.HistoryFilesAdapter;
-import com.mobile.otrcapital.Helpers.apiInvoiceDataJson;
+import com.mobile.otrcapital.Models.ApiInvoiceDataJson;
+import com.mobile.otrcapital.Models.HistoryInvoiceModel;
 import com.mobile.otrcapital.R;
 
 import java.io.File;
@@ -30,39 +32,36 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 
-public class History extends ListActivity
-{
+public class History extends ListActivity {
     private final Activity activity = this;
-    @Bind(R.id.verifyUserGroup) LinearLayout verifyUserGroup;
-    @Bind(R.id.verifyUserTV) TextView verifyUserTV;
+    @Bind(R.id.verifyUserGroup)
+    LinearLayout verifyUserGroup;
+    @Bind(R.id.verifyUserTV)
+    TextView verifyUserTV;
     HistoryFilesAdapter adapter;
     private ArrayList<String> fileList;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
         ButterKnife.bind(this);
 
         fileList = getFileList();
-        adapter = new HistoryFilesAdapter(this,fileList);
+        adapter = new HistoryFilesAdapter(this, fileList);
         setListAdapter(adapter);
         registerForContextMenu(getListView());
 
         verifyUserGroup.setVisibility(View.INVISIBLE);
     }
 
-    private ArrayList<String> getFileList()
-    {
+    private ArrayList<String> getFileList() {
         File myDir = new File(ActivityTags.EXT_STORAGE_DIR);
         myDir.mkdirs();
-        ArrayList<String> files = new ArrayList<String>();
+        ArrayList<String> files = new ArrayList<>();
 
-        for (File f : myDir.listFiles())
-        {
-            if (f.isFile() && f != null)
-            {
+        for (File f : myDir.listFiles()) {
+            if (f.isFile() && f != null) {
                 files.add(f.getName().toString());
             }
 
@@ -72,119 +71,94 @@ public class History extends ListActivity
     }
 
     @Override
-    protected void onListItemClick(ListView l, View v, int position, long id)
-    {
+    protected void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
         OpenFile(fileList.get(position));
     }
 
-    public void OpenFile(final String fileName)
-    {
+    public void OpenFile(final String fileName) {
         try {
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setDataAndType(Uri.fromFile(new File(ActivityTags.EXT_STORAGE_DIR + fileName)), "application/pdf");
             intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(intent);
-        }catch (ActivityNotFoundException ex) {
+        } catch (ActivityNotFoundException ex) {
             Toast.makeText(this, "No app found for view pdf", Toast.LENGTH_LONG).show();
         }
     }
 
-    public void EmailFile(final String fileName)
-    {
+    public void EmailFile(final String fileName) {
         Intent emailIntent = new Intent(Intent.ACTION_SEND);
         emailIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        emailIntent .setType("*/*");
-        emailIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(ActivityTags.EXT_STORAGE_DIR + fileName )));
+        emailIntent.setType("*/*");
+        emailIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(ActivityTags.EXT_STORAGE_DIR + fileName)));
         startActivity(Intent.createChooser(emailIntent, "Choose an email provider:"));
     }
 
-    public void DeleteFile(int position)
-    {
+    public void DeleteFile(int position) {
         File file = new File(ActivityTags.EXT_STORAGE_DIR + fileList.get(position));
-        if (file.exists()){
+        if (file.exists()) {
             file.delete();
         }
 
         adapter.RemoveFileFromList(position);
         adapter.notifyDataSetChanged();
-
     }
 
-    public void ResendFile(final String fileName)
-    {
+    public void ResendFile(final String fileName) {
         SharedPreferences prefs = this.getSharedPreferences(ActivityTags.SHARED_PREFS_TAG, 0);
 
-        ArrayList<String> fileAttribues = new ArrayList<String>(prefs.getStringSet(fileName, new LinkedHashSet<String>()));
-        Collections.sort(fileAttribues);
-        final apiInvoiceDataJson invoiceData = new apiInvoiceDataJson();
-        String[] documentTypeArray;
-        String factoryType = "";
-        try
-        {
-            invoiceData.ClientLogin = prefs.getString(ActivityTags.PREFS_USER_EMAIL, "");
-            invoiceData.ClientPassword = prefs.getString(ActivityTags.PREFS_USER_PASSWORD, "");
-            invoiceData.CustomerPKey = Integer.parseInt(fileAttribues.get(ActivityTags.FILE_PKEY).substring(2));
-            invoiceData.CustomerMCNumber = fileAttribues.get(ActivityTags.FILE_MC_NUMBER).substring(2);
-            invoiceData.InvoiceAmount = Float.parseFloat(fileAttribues.get(ActivityTags.FILE_INVOICE_AMOUNT).substring(2));
-            invoiceData.PoNumber = fileAttribues.get(ActivityTags.FILE_LOAD_NUMBER).substring(2);
-            factoryType = fileAttribues.get(ActivityTags.FILE_FACTOR_TYPE).substring(2);
-            invoiceData.AdvanceRequestType = fileAttribues.get(ActivityTags.FILE_PAYMENT_OPTION).substring(2);
+        String jsonInvoice = prefs.getString(fileName, null);
+        if (jsonInvoice == null) {
+            Toast.makeText(this, "Error with resend file", Toast.LENGTH_LONG).show();
+            return;
+        }
+        final HistoryInvoiceModel model = new Gson().fromJson(jsonInvoice, HistoryInvoiceModel.class);
 
-            if (factoryType.equals("ADV")) {
-                invoiceData.AdvanceRequestAmount = Float.parseFloat(fileAttribues.get(ActivityTags.FILE_ADV_REQ_AMOUNT).substring(2));
-                invoiceData.Phone = fileAttribues.get(ActivityTags.FILE_ADV_CELL_NUMBER).substring(2);
-            }
-            documentTypeArray = fileAttribues.get(ActivityTags.FILE_DOCUMENT_TYPES).substring(2).split("/");
-        }catch (IndexOutOfBoundsException e)
-        {
+        String[] documentTypeArray;
+        try {
+            documentTypeArray = model.getDocumentTypesString().split("/");
+        } catch (IndexOutOfBoundsException e) {
             documentTypeArray = new String[0];
         }
-
-        final ArrayList<String> documentTypeList = new ArrayList<String>();
-        for (String s: documentTypeArray)
-        {
+        final ArrayList<String> documentTypeList = new ArrayList<>();
+        for (String s : documentTypeArray) {
             documentTypeList.add(s);
         }
 
-        LoadDetails.UploadDocument(fileName,this,activity,verifyUserGroup,invoiceData,documentTypeList,factoryType,prefs);
+        if (model.getStatus().equals("success")) {
+            Toast.makeText(this, "Document has been sent already", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        LoadDetails.UploadDocument(fileName, this, activity, verifyUserGroup, model.getApiInvoiceFromModel(), documentTypeList, model.getFactorType(), prefs);
 
     }
 
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo)
-    {
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
         menu.add(0, 0, 0, "Delete");//groupId, itemId, order, title
         menu.add(0, 1, 1, "Open");
         menu.add(0, 2, 2, "Email");
         menu.add(0, 3, 3, "Resend");
     }
+
     @Override
-    public boolean onContextItemSelected(MenuItem item)
-    {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         String listItemName = fileList.get(info.position);
 
-        if(item.getTitle().equals("Delete"))
-        {
+        if (item.getTitle().equals("Delete")) {
             DeleteFile(info.position);
-        }
-        else if(item.getTitle().equals("Open"))
-        {
+        } else if (item.getTitle().equals("Open")) {
             OpenFile(fileList.get(info.position));
-        }
-        else if (item.getTitle().equals("Email"))
-        {
+        } else if (item.getTitle().equals("Email")) {
             EmailFile(fileList.get(info.position));
-        }
-        else if (item.getTitle().equals("Resend"))
-        {
+        } else if (item.getTitle().equals("Resend")) {
             ResendFile(fileList.get(info.position));
-        }
-        else
-        {
+        } else {
             return false;
         }
         return true;
