@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.mobile.otrcapital.BuildConfig;
 import com.mobile.otrcapital.Helpers.ActivityTags;
 import com.mobile.otrcapital.Helpers.RESTAPIs;
+import com.mobile.otrcapital.Helpers.RestClient;
 import com.mobile.otrcapital.R;
 
 import java.text.SimpleDateFormat;
@@ -208,33 +209,16 @@ public class LoginScreen extends Activity
  private void verifyAgent(final String user_email, final String user_password, final String user_credentials) {
      ProgressIndicatorVisiblity(View.VISIBLE);
 
-     RestAdapter restAdapter = new RestAdapter.Builder()
-             .setEndpoint(ActivityTags.API_URL_PROD)
-             .setLogLevel(RestAdapter.LogLevel.FULL)
-             .setLog(new AndroidLog("RetrofitLog"))
-             .setRequestInterceptor(new RequestInterceptor() {
-                 @Override
-                 public void intercept(RequestFacade request) {
-                     request.addHeader("User-Agent", "Fiddler");
-                     request.addHeader("Host", ActivityTags.HOST_NAME);
-                     request.addHeader("Authorization", "Basic " + user_credentials);
-                 }
-             })
-             .build();
-     RESTAPIs methods = restAdapter.create(RESTAPIs.class);
-
-     Callback callback = new Callback() {
+     RestClient.getInstance(user_credentials).getApiService().GetClientInfo(user_email, user_password, new Callback<AgentViewModel>() {
          @Override
-         public void success(Object o, Response response) {
-             AgentViewModel avm = (AgentViewModel) o;
-
+         public void success(AgentViewModel agentViewModel, Response response) {
              SharedPreferences prefs = getSharedPreferences(ActivityTags.SHARED_PREFS_TAG, 0);
              SharedPreferences.Editor editor = prefs.edit();
 
              //check if the provided login info was valid
 
              //if the callback is valid, then save the user email and password, set the token to valid and launch the main dashboard
-             if (avm.IsValidUser) {
+             if (agentViewModel.IsValidUser) {
                  verifyUserGroup.setVisibility(View.INVISIBLE);
 
                  editor.putBoolean(ActivityTags.PREFS_TOKEN_VALID, true);
@@ -242,11 +226,6 @@ public class LoginScreen extends Activity
                  editor.putString(ActivityTags.PREFS_USER_PASSWORD, user_password);
                  editor.putString(ActivityTags.PREFS_USER_CREDENTIALS, user_credentials);
                  editor.commit();
-
-                 //Intent serviceIntent = new Intent(LoginScreen.this, GetBrokers.class);
-                 //serviceIntent.putExtra(ActivityTags.TAG_DATE,date);
-                 //startService(serviceIntent);
-                 //Log.d(ActivityTags.TAG_LOG,"Service intent requested from login screen, date: " + date);
 
                  Intent intent = new Intent(LoginScreen.this, MainDashboard.class);
                  intent.putExtra(ActivityTags.TAG_DATE, date);
@@ -264,7 +243,6 @@ public class LoginScreen extends Activity
                  editor.putBoolean(ActivityTags.PREFS_TOKEN_VALID, false);
                  editor.commit();
              }
-
          }
 
          @Override
@@ -273,11 +251,8 @@ public class LoginScreen extends Activity
              loginResultTV.setTextColor(getResources().getColor(R.color.red));
              ProgressIndicatorVisiblity(View.INVISIBLE);
              Log.e(ActivityTags.TAG_LOG, error.toString());
-
          }
-     };
-
-     methods.GetClientInfo(user_email, user_password, callback);
+     });
  }
 
     private void ProgressIndicatorVisiblity(final int visibility)

@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.mobile.otrcapital.Helpers.ActivityTags;
 import com.mobile.otrcapital.Helpers.CustomerViewModel;
 import com.mobile.otrcapital.Helpers.RESTAPIs;
+import com.mobile.otrcapital.Helpers.RestClient;
 import com.mobile.otrcapital.R;
 import com.squareup.okhttp.OkHttpClient;
 
@@ -101,34 +102,10 @@ public class BrokerDetails extends Activity
         final String userPassword = prefs.getString(ActivityTags.PREFS_USER_PASSWORD, "");
         final String userCredentials = prefs.getString(ActivityTags.PREFS_USER_CREDENTIALS, "");
         Log.d(ActivityTags.TAG_LOG, "Password: " + userPassword);
-        final OkHttpClient okHttpClient = new OkHttpClient();
-        okHttpClient.setReadTimeout(60, TimeUnit.SECONDS);
-        okHttpClient.setConnectTimeout(60, TimeUnit.SECONDS);
 
-        RestAdapter restAdapter = new RestAdapter.Builder()
-                .setEndpoint(ActivityTags.API_URL_PROD)
-                .setLogLevel(RestAdapter.LogLevel.FULL)
-                .setLog(new AndroidLog("RetrofitLog"))
-                .setClient(new OkClient(okHttpClient))
-                .setRequestInterceptor(new RequestInterceptor()
-                {
-                    @Override
-                    public void intercept(RequestFacade request)
-                    {
-                        request.addHeader("User-Agent", "Fiddler");
-                        request.addHeader("Host", ActivityTags.HOST_NAME);
-                        request.addHeader("Authorization", "Basic " + userCredentials)
-                        ;
-                    }
-                })
-                .build();
-        RESTAPIs methods = restAdapter.create(RESTAPIs.class);
-        Callback callback = new Callback()
-        {
+        RestClient.getInstance(userCredentials).getApiService().BrokerCheck(userEmail, userPassword, this.pKey, new Callback<CustomerViewModel>() {
             @Override
-            public void success(Object o, Response response)
-            {
-                CustomerViewModel cvm = (CustomerViewModel) o;
+            public void success(CustomerViewModel cvm, Response response) {
                 brokerNameTV.setText(cvm.Name);
                 mcTV.setText(cvm.McNumber);
                 dotNumberTV.setText(cvm.DotNumber);
@@ -150,13 +127,10 @@ public class BrokerDetails extends Activity
                     factorableTV.setText("Yes");
                     factorableTV.setTextColor(getResources().getColor(R.color.green));
                 }
-
-
             }
 
             @Override
-            public void failure(RetrofitError error)
-            {
+            public void failure(RetrofitError error) {
                 verifyUserGroup.setVisibility(View.INVISIBLE);
                 networkErrorTV.setVisibility(View.VISIBLE);
                 networkErrorTV.setText("Unable to connect to the server at the moment");
@@ -164,9 +138,7 @@ public class BrokerDetails extends Activity
                 factorLoadButton.setVisibility(View.VISIBLE);
                 Log.e(ActivityTags.TAG_LOG,error.toString());
             }
-        };
-
-        methods.BrokerCheck(userEmail,userPassword,this.pKey, callback);
+        });
 
     }
 

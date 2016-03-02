@@ -17,6 +17,7 @@ import com.mobile.otrcapital.Helpers.Broker;
 import com.mobile.otrcapital.Helpers.BrokerDatabase;
 import com.mobile.otrcapital.Helpers.CustomerViewModel;
 import com.mobile.otrcapital.Helpers.RESTAPIs;
+import com.mobile.otrcapital.Helpers.RestClient;
 import com.mobile.otrcapital.R;
 
 import java.util.ArrayList;
@@ -58,32 +59,13 @@ public class GetBrokers extends IntentService
             mBuilder.setProgress(100, 0, true);
             mNotifyManager.notify(id, mBuilder.build());
 
-
-            RestAdapter restAdapter = new RestAdapter.Builder()
-                    .setEndpoint(ActivityTags.API_URL_PROD)
-                    .setRequestInterceptor(new RequestInterceptor()
-                    {
-                        @Override
-                        public void intercept(RequestFacade request)
-                        {
-                            request.addHeader("User-Agent", "Fiddler");
-                            request.addHeader("Host", ActivityTags.HOST_NAME);
-                            request.addHeader("Authorization", "Basic " + userCredentials);
-                        }
-                    })
-                    .build();
-            RESTAPIs methods = restAdapter.create(RESTAPIs.class);
-
-            Callback callback = new Callback()
-            {
+            RestClient.getInstance(userCredentials).getApiService().GetCustomers(date, new Callback<List<CustomerViewModel>>() {
                 @Override
-                public void success(Object o, Response response)
-                {
+                public void success(List<CustomerViewModel> customerViewModels, Response response) {
                     Log.d(ActivityTags.TAG_LOG, "Broker list fetched from the server");
-                    List<CustomerViewModel> cvmList = (List<CustomerViewModel>) o;
                     List<Broker> brokers = new ArrayList<Broker>();
 
-                    for (CustomerViewModel cvm : cvmList)
+                    for (CustomerViewModel cvm : customerViewModels)
                     {
                         brokers.add(new Broker(cvm.McNumber,cvm.Name,cvm.PKey));
                     }
@@ -91,20 +73,15 @@ public class GetBrokers extends IntentService
                     //Save downloaded records to local database in a background AsyncTask
                     UpdateDatabase updateDB = new UpdateDatabase();
                     updateDB.execute(brokers);
-
                 }
 
                 @Override
-                public void failure(RetrofitError error)
-                {
+                public void failure(RetrofitError error) {
                     Log.d(ActivityTags.TAG_LOG, error.toString());
                     result = Activity.RESULT_CANCELED;
                     publishResults (result);
                 }
-            };
-
-
-            methods.GetCustomers(date,callback);
+            });
         }
     }
 

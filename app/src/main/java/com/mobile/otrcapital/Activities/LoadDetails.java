@@ -31,6 +31,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 import com.mobile.otrcapital.Helpers.ActivityTags;
 import com.mobile.otrcapital.Helpers.RESTAPIs;
 import com.mobile.otrcapital.Helpers.RealPathUtil;
+import com.mobile.otrcapital.Helpers.RestClient;
 import com.mobile.otrcapital.Helpers.apiInvoiceDataJson;
 import com.mobile.otrcapital.R;
 
@@ -91,21 +92,6 @@ public class LoadDetails extends Activity
                                       final ArrayList<String> DocumentType, final String FactorType, final SharedPreferences Prefs) {
         final String userCredentials = Prefs.getString(ActivityTags.PREFS_USER_CREDENTIALS, "");
 
-        RestAdapter restAdapter = new RestAdapter.Builder()
-                .setEndpoint(ActivityTags.API_URL_PROD)
-                .setLogLevel(RestAdapter.LogLevel.FULL)
-                .setLog(new AndroidLog("RetrofitLog"))
-                .setRequestInterceptor(new RequestInterceptor() {
-                    @Override
-                    public void intercept(RequestFacade request) {
-                        request.addHeader("User-Agent", "Fiddler");
-                        request.addHeader("Host", ActivityTags.HOST_NAME);
-                        request.addHeader("Authorization", "Basic " + userCredentials);
-                    }
-                })
-                .build();
-        RESTAPIs methods = restAdapter.create(RESTAPIs.class);
-
         TypedFile typedFile = new TypedFile("application/pdf", new File(ActivityTags.EXT_STORAGE_DIR + FileName));
         VerifyUserGroup.setVisibility(View.VISIBLE);
         String documentTypesString = "";
@@ -125,8 +111,7 @@ public class LoadDetails extends Activity
             fileSet.add(ActivityTags.FILE_ADV_CELL_NUMBER + "_" + InvoiceData.Phone);
         }
 
-
-        methods.Upload(InvoiceData, DocumentType, typedFile, FactorType, "android", new Callback<String>() {
+        RestClient.getInstance(userCredentials).getApiService().Upload(InvoiceData, DocumentType, typedFile, FactorType, "android", new Callback<String>() {
             SharedPreferences.Editor editor = Prefs.edit();
 
             @Override
@@ -172,7 +157,6 @@ public class LoadDetails extends Activity
                 activity.finish();
                 ContextActivity.startActivity(intent);
             }
-
         });
 
     }

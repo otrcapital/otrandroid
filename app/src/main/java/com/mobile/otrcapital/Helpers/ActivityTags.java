@@ -27,8 +27,9 @@ public final class ActivityTags
     public static final String TAG_DATE = "Date";
     public static final String TAG_FIRST_RUN = "First_Run";
     public static final String TAG_DOWNLOAD_STATUS = "Download_Status";
-    public static final String HOST_NAME = "stgportal.otrcapital.com";
-    public static final String API_URL_PROD = "http://stgportal.otrcapital.com/api";
+    public static final String HOST_NAME_PROD = "customer.otrcapital.com";
+    public static final String HOST_NAME_STAGE = "stgportal.otrcapital.com";
+    public static final String API_URL_PROD = "http://customer.otrcapital.com/";
     public static final String API_URL_STAGE = "http://stgportal.otrcapital.com/api";
     public static final String API_URL_MOCK = "http://192.168.13.15/FactorHawkPortal/api";
     public static final String LOGIN_TOKEN = "login_token";
