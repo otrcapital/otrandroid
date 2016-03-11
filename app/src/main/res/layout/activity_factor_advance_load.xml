@@ -281,28 +281,28 @@
                     android:orientation="horizontal"
                     android:weightSum="4">
 
-                    <com.mobile.otrcapital.CustomViews.CustomSwitch
+                    <com.mobile.otrcapitalllc.CustomViews.CustomSwitch
                         android:id="@+id/custom_switch1"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center_horizontal"/>
 
-                    <com.mobile.otrcapital.CustomViews.CustomSwitch
+                    <com.mobile.otrcapitalllc.CustomViews.CustomSwitch
                         android:id="@+id/custom_switch2"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center_horizontal"/>
 
-                    <com.mobile.otrcapital.CustomViews.CustomSwitch
+                    <com.mobile.otrcapitalllc.CustomViews.CustomSwitch
                         android:id="@+id/custom_switch3"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center_horizontal"/>
 
-                    <com.mobile.otrcapital.CustomViews.CustomSwitch
+                    <com.mobile.otrcapitalllc.CustomViews.CustomSwitch
                         android:id="@+id/custom_switch4"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"

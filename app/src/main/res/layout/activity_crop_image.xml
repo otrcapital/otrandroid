@@ -3,7 +3,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
     android:background="@android:color/black"
-    tools:context="com.mobile.otrcapital.Activities.RefineCapture">
+    tools:context="com.mobile.otrcapitalllc.Activities.RefineCapture">
 
     <ImageView
         android:id="@+id/editImageView"
@@ -12,7 +12,7 @@
         android:layout_above="@+id/buttons"
         android:layout_alignParentEnd="true" />
 
-    <com.mobile.otrcapital.Helpers.DrawView
+    <com.mobile.otrcapitalllc.Helpers.DrawView
         android:id="@+id/EdgeCornersDV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
