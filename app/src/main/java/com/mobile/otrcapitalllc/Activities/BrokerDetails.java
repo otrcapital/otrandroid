@@ -108,16 +108,21 @@ public class BrokerDetails extends Activity
                 progressIndicatorVisiblity(View.INVISIBLE);
                 Log.d(ActivityTags.TAG_LOG, "Broker details fetched from server");
 
-                if (cvm.CreditCheckResult.equals("Call Office"))
+                String checkResult = cvm.CreditCheckResult;
+                if (cvm.CreditCheckResult == null || "".equals(cvm.CreditCheckResult)) {
+                    checkResult = "Call Office";
+                }
+
+                factorableTV.setText(checkResult);
+
+                if ("Call Office".equals(checkResult))
                 {
-                    factorableTV.setText("Call Office");
                     factorableTV.setTextColor(getResources().getColor(R.color.red));
                     factorLoadButton.setText("Call Office");
                     advanceLoadButton.setVisibility(View.INVISIBLE);
                 }
-                else
+                else if ("Approved".equals(checkResult))
                 {
-                    factorableTV.setText("Yes");
                     factorableTV.setTextColor(getResources().getColor(R.color.green));
                 }
             }
