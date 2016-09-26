@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mobile.otrcapitalllc.Helpers.ActivityTags;
+import com.mobile.otrcapitalllc.Helpers.CrashlyticsHelper;
 import com.mobile.otrcapitalllc.Models.CustomerViewModel;
 import com.mobile.otrcapitalllc.Helpers.RestClient;
 import com.mobile.otrcapitalllc.R;
@@ -129,6 +130,7 @@ public class BrokerDetails extends Activity
 
             @Override
             public void failure(RetrofitError error) {
+                CrashlyticsHelper.logException(error);
                 verifyUserGroup.setVisibility(View.INVISIBLE);
                 networkErrorTV.setVisibility(View.VISIBLE);
                 networkErrorTV.setText("Unable to connect to the server at the moment");

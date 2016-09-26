@@ -13,6 +13,7 @@ import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
 import com.mobile.otrcapitalllc.Helpers.ActivityTags;
+import com.mobile.otrcapitalllc.Helpers.CrashlyticsHelper;
 import com.mobile.otrcapitalllc.Models.Broker;
 import com.mobile.otrcapitalllc.Helpers.BrokerDatabase;
 import com.mobile.otrcapitalllc.Models.CustomerViewModel;
@@ -73,6 +74,7 @@ public class GetBrokers extends IntentService
 
                 @Override
                 public void failure(RetrofitError error) {
+                    CrashlyticsHelper.logException(error);
                     Log.d(ActivityTags.TAG_LOG, error.toString());
                     result = Activity.RESULT_CANCELED;
                     publishResults(result);

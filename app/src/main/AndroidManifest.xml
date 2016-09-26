@@ -14,6 +14,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
+        android:name=".OTRCapital"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -103,6 +104,11 @@
             android:name="com.mobile.otrcapitalllc.Activities.GetBrokers"
             android:exported="false">
         </service>
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="02e263e038a91f7d4e860c48bc3670eb70371e63"
+        />
     </application>
 
 </manifest>

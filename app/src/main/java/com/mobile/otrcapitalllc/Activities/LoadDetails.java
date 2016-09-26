@@ -30,6 +30,7 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.mobile.otrcapitalllc.Helpers.ActivityTags;
+import com.mobile.otrcapitalllc.Helpers.CrashlyticsHelper;
 import com.mobile.otrcapitalllc.Helpers.RealPathUtil;
 import com.mobile.otrcapitalllc.Helpers.RestClient;
 import com.mobile.otrcapitalllc.Models.ApiInvoiceDataJson;
@@ -117,6 +118,7 @@ public class LoadDetails extends Activity
 
             @Override
             public void failure(RetrofitError error) {
+                CrashlyticsHelper.logException(error);
                 String toastText = "";
                 try {
                     if (error.getResponse().getStatus() == 400) {
