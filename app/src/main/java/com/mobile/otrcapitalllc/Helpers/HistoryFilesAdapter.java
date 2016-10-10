@@ -1,7 +1,8 @@
 package com.mobile.otrcapitalllc.Helpers;
 
+import java.util.ArrayList;
+
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,21 +15,17 @@ import com.google.gson.Gson;
 import com.mobile.otrcapitalllc.Models.HistoryInvoiceModel;
 import com.mobile.otrcapitalllc.R;
 
-import java.util.ArrayList;
-
 /**
  * Created by jawad on 8/3/2015.
  */
 public class HistoryFilesAdapter extends ArrayAdapter<String> {
     private final Context context;
     private final ArrayList<String> fileNames;
-    private SharedPreferences prefs;
 
     public HistoryFilesAdapter(Context context, ArrayList<String> fileNames) {
         super(context, R.layout.history_item_view, fileNames);
         this.context = context;
         this.fileNames = fileNames;
-        prefs = context.getSharedPreferences(ActivityTags.SHARED_PREFS_TAG, 0);
     }
 
     @Override
@@ -43,7 +40,7 @@ public class HistoryFilesAdapter extends ArrayAdapter<String> {
         RelativeLayout fileInfoGroup = (RelativeLayout) historyFilesView.findViewById(R.id.fileInfoGroup);
         documentNameTV.setText(fileNames.get(position));
 
-        String jsonInvoice = prefs.getString(fileNames.get(position), null);
+        String jsonInvoice = PreferenceManager.with(context).getStringWithKey(fileNames.get(position));
         if (jsonInvoice == null) {
             return null;
         }

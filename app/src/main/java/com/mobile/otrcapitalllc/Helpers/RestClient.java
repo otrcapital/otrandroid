@@ -16,26 +16,6 @@ public class RestClient {
     private String mUserCredentials;
     private String mHostName;
 
-    public static volatile RestClient instance;
-
-    public static RestClient getInstance(String userCredentials) {
-        RestClient localInstance = instance;
-        // check if credintials not equal
-        if (localInstance != null && localInstance.getUserCredentials() != null
-                && !localInstance.getUserCredentials().equals(userCredentials)) {
-            localInstance = null;
-        }
-        if (localInstance == null) {
-            synchronized (RestClient.class) {
-                localInstance = instance;
-                if (localInstance == null) {
-                    instance = localInstance = new RestClient(userCredentials);
-                }
-            }
-        }
-        return localInstance;
-    }
-
     public RestClient(String userCredentials) {
         String endpointUrl = ActivityTags.API_URL_PROD;
         mHostName = ActivityTags.HOST_NAME_PROD;
@@ -75,9 +55,5 @@ public class RestClient {
 
     public String getUserCredentials() {
         return mUserCredentials;
-    }
-
-    public void clear() {
-        instance = null;
     }
 }

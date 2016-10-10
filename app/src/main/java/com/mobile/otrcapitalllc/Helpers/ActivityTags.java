@@ -36,13 +36,6 @@ public final class ActivityTags
     public static final String TAG_PHOTO_TYPE = "photo_type";
     public static final String TAG_PAYMENT_OPTION = "payment_option";
     public static final String TAG_CELL_NUMBER = "cell_number";
-    //shared prefs tags
-    public static final String SHARED_PREFS_TAG = "OTR_Prefs";
-    public static final String PREFS_TOKEN_VALID = "token_valid";
-    public static final String PREFS_USER_EMAIL = "user_email";
-    public static final String PREFS_USER_PASSWORD = "user_password";
-    public static final String PREFS_USER_CREDENTIALS = "user_credentials";
-    public static final String PREFS_NOT_FIRST_RUN = "first_run";
 
     private ActivityTags() {
     }

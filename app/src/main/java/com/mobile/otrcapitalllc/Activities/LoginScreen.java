@@ -7,7 +7,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -25,6 +24,7 @@ import android.widget.TextView;
 import com.mobile.otrcapitalllc.BuildConfig;
 import com.mobile.otrcapitalllc.Helpers.ActivityTags;
 import com.mobile.otrcapitalllc.Helpers.CrashlyticsHelper;
+import com.mobile.otrcapitalllc.Helpers.PreferenceManager;
 import com.mobile.otrcapitalllc.Helpers.RestClient;
 import com.mobile.otrcapitalllc.R;
 
@@ -55,8 +55,6 @@ public class LoginScreen extends Activity {
     TextView loginResultTV;
     @Bind(R.id.testBtn)
     Button mButton;
-    private String date = "";
-    private boolean isFirstRun;
 
     @OnClick(R.id.testBtn)
     public void testLogin(View view) {
@@ -139,8 +137,8 @@ public class LoginScreen extends Activity {
         ProgressIndicatorVisiblity(View.VISIBLE);
         verifyUserGroup.setVisibility(View.INVISIBLE);
 
-        if (!isNetworkAvailable())  //if network is not available then show Dialogue to quite app
-        {
+        if (!isNetworkAvailable()) {
+            //if network is not available then show Dialogue to quite app
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
             alertDialogBuilder.setMessage("NETWORK NOT AVAILABLE").setCancelable(false).setPositiveButton("Quit", new
                 DialogInterface.OnClickListener() {
@@ -151,37 +149,27 @@ public class LoginScreen extends Activity {
 
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
-        } else    //if network is available then continue
-        {
-            SharedPreferences prefs = getSharedPreferences(ActivityTags.SHARED_PREFS_TAG, 0);
-
-            if (!prefs.getBoolean(ActivityTags.PREFS_NOT_FIRST_RUN, false)) {
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.putBoolean(ActivityTags.PREFS_NOT_FIRST_RUN, true);
-                editor.commit();
+        } else {
+            //if network is available then continue
+            if (PreferenceManager.with(this).getFirstRun()) {
+                PreferenceManager.with(this).setFirstRun();
 
                 ProgressIndicatorVisiblity(View.INVISIBLE);
 
                 loginResultTV.setText("New user detected, please login");
-                date = "1975/01/01";
-                isFirstRun = true;
             } else {
-                date = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
-                isFirstRun = false;
                 //check if there if there is a valid login token present in sharedPreferenes
-                if (!prefs.getBoolean(ActivityTags.PREFS_TOKEN_VALID, false))   //if there is no token present then ask the
-                // user to login with email and password
-                {
+                boolean isTokenValid = PreferenceManager.with(this).getTokenValid();
+                if (!isTokenValid)  {
+                    //if there is no token present then ask the
+                    // user to login with email and password
                     ProgressIndicatorVisiblity(View.INVISIBLE);
                     loginResultTV.setText("Please login");
-                } else    //if there is a valid token present, then use the stored email and password to login
-                {
+                } else {
+                    //if there is a valid token present, then use the stored email and password to login
                     ProgressIndicatorVisiblity(View.VISIBLE);
-                    // Intent intent = new Intent(LoginScreen.this, MainDashboard.class);
-                    // finish();
-                    //startActivity(intent);
-                    verifyAgent(prefs.getString(ActivityTags.PREFS_USER_EMAIL, ""), prefs.getString(ActivityTags
-                        .PREFS_USER_PASSWORD, ""), prefs.getString(ActivityTags.PREFS_USER_CREDENTIALS, ""));
+                    verifyAgent(PreferenceManager.with(this).getUserEmail(), PreferenceManager.with(this).getUserPassword(),
+                        PreferenceManager.with(this).getUserCredentials());
                 }
             }
         }
@@ -200,12 +188,10 @@ public class LoginScreen extends Activity {
         ProgressIndicatorVisiblity(View.VISIBLE);
         CrashlyticsHelper.setUserEmail(user_email);
 
-        RestClient.getInstance(user_credentials).getApiService().GetClientInfo(user_email, user_password, new
-            Callback<AgentViewModel>() {
+        RestClient mRestClient = new RestClient(user_credentials);
+        mRestClient.getApiService().GetClientInfo(user_email, user_password, new Callback<AgentViewModel>() {
             @Override
             public void success(AgentViewModel agentViewModel, Response response) {
-                SharedPreferences prefs = getSharedPreferences(ActivityTags.SHARED_PREFS_TAG, 0);
-                SharedPreferences.Editor editor = prefs.edit();
 
                 //check if the provided login info was valid
 
@@ -215,15 +201,10 @@ public class LoginScreen extends Activity {
                     CrashlyticsHelper.setUser(agentViewModel);
                     verifyUserGroup.setVisibility(View.INVISIBLE);
 
-                    editor.putBoolean(ActivityTags.PREFS_TOKEN_VALID, true);
-                    editor.putString(ActivityTags.PREFS_USER_EMAIL, user_email);
-                    editor.putString(ActivityTags.PREFS_USER_PASSWORD, user_password);
-                    editor.putString(ActivityTags.PREFS_USER_CREDENTIALS, user_credentials);
-                    editor.commit();
+                    PreferenceManager.with(LoginScreen.this).saveUserData(user_email, user_password,
+                        user_credentials, true);
 
                     Intent intent = new Intent(LoginScreen.this, MainDashboard.class);
-                    intent.putExtra(ActivityTags.TAG_DATE, date);
-                    intent.putExtra(ActivityTags.TAG_FIRST_RUN, isFirstRun);
                     finish();
                     startActivity(intent);
 
@@ -234,8 +215,7 @@ public class LoginScreen extends Activity {
                     loginResultTV.setText("Incorrect username/password");
                     loginResultTV.setTextColor(getResources().getColor(R.color.red));
                     ProgressIndicatorVisiblity(View.INVISIBLE);
-                    editor.putBoolean(ActivityTags.PREFS_TOKEN_VALID, false);
-                    editor.commit();
+                    PreferenceManager.with(LoginScreen.this).saveTokenValid(false);
                 }
             }
 

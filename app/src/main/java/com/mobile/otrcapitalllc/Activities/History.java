@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.mobile.otrcapitalllc.Helpers.ActivityTags;
 import com.mobile.otrcapitalllc.Helpers.HistoryFilesAdapter;
+import com.mobile.otrcapitalllc.Helpers.PreferenceManager;
 import com.mobile.otrcapitalllc.Models.HistoryInvoiceModel;
 import com.mobile.otrcapitalllc.R;
 
@@ -103,9 +104,7 @@ public class History extends ListActivity {
     }
 
     public void ResendFile(final String fileName) {
-        SharedPreferences prefs = this.getSharedPreferences(ActivityTags.SHARED_PREFS_TAG, 0);
-
-        String jsonInvoice = prefs.getString(fileName, null);
+        String jsonInvoice = PreferenceManager.with(this).getStringWithKey(fileName);
         if (jsonInvoice == null) {
             Toast.makeText(this, "Error with resend file", Toast.LENGTH_LONG).show();
             return;
@@ -128,7 +127,7 @@ public class History extends ListActivity {
             return;
         }
 
-        LoadDetails.UploadDocument(fileName, this, activity, verifyUserGroup, model.getApiInvoiceFromModel(), documentTypeList, model.getFactorType(), prefs);
+        LoadDetails.UploadDocument(fileName, this, activity, verifyUserGroup, model.getApiInvoiceFromModel(), documentTypeList, model.getFactorType());
 
     }
 
