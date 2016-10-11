@@ -76,7 +76,7 @@ public class HistoryFilesAdapter extends ArrayAdapter<String> {
             viewHolder.timestampTV.setText("unknown");
             viewHolder.rateTV.setText("Rate: NA");
             viewHolder.loadNoTV.setText("Load# NA");
-            Log.e(ActivityTags.TAG_LOG, "IndexOutOfBounds-> HistoryFilesAdapter, File: " + fileNames.get(position));
+            LogHelper.logError("IndexOutOfBounds-> HistoryFilesAdapter, File: " + fileNames.get(position));
         }
 
         return convertView;
@@ -86,7 +86,7 @@ public class HistoryFilesAdapter extends ArrayAdapter<String> {
         try {
             fileNames.remove(position);
         } catch (IndexOutOfBoundsException e) {
-            Log.e(ActivityTags.TAG_LOG, "Index out of bounds exception -> HistoryFilesAdapter\n" + e.toString());
+            LogHelper.logError("Index out of bounds exception -> HistoryFilesAdapter\n" + e.toString());
         }
         notifyDataSetChanged();
     }

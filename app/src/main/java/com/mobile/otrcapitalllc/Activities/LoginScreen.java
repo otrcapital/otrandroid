@@ -24,6 +24,7 @@ import android.widget.TextView;
 import com.mobile.otrcapitalllc.BuildConfig;
 import com.mobile.otrcapitalllc.Helpers.ActivityTags;
 import com.mobile.otrcapitalllc.Helpers.CrashlyticsHelper;
+import com.mobile.otrcapitalllc.Helpers.LogHelper;
 import com.mobile.otrcapitalllc.Helpers.PreferenceManager;
 import com.mobile.otrcapitalllc.Helpers.RestClient;
 import com.mobile.otrcapitalllc.R;
@@ -225,7 +226,7 @@ public class LoginScreen extends Activity {
                 loginResultTV.setText("Server unavailable, please try again later");
                 loginResultTV.setTextColor(getResources().getColor(R.color.red));
                 ProgressIndicatorVisiblity(View.INVISIBLE);
-                Log.e(ActivityTags.TAG_LOG, error.toString());
+                LogHelper.logError(error.toString());
             }
         });
     }
