@@ -143,11 +143,9 @@ public class BrokerDetails extends Activity {
     }
 
     void factorAdvanceLoad(String activityType) {
-        Bundle extras = new Bundle();
-        extras.putString(ActivityTags.TAG_ACTIVITY_TYPE, activityType);
-        extras.putString(ActivityTags.TAG_BROKER_NAME, brokerName);
         Intent intent = new Intent(BrokerDetails.this, FactorAdvanceLoad.class);
-        intent.putExtra("data_extra", extras);
+        intent.putExtra(ActivityTags.TAG_ACTIVITY_TYPE, activityType);
+        intent.putExtra(ActivityTags.TAG_BROKER_NAME, brokerName);
         startActivity(intent);
     }
 

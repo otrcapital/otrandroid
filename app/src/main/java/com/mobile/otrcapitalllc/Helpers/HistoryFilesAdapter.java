@@ -19,48 +19,67 @@ import com.mobile.otrcapitalllc.R;
  * Created by jawad on 8/3/2015.
  */
 public class HistoryFilesAdapter extends ArrayAdapter<String> {
-    private final Context context;
+    private final Context mContext;
     private final ArrayList<String> fileNames;
 
     public HistoryFilesAdapter(Context context, ArrayList<String> fileNames) {
         super(context, R.layout.history_item_view, fileNames);
-        this.context = context;
+        this.mContext = context;
         this.fileNames = fileNames;
+    }
+
+    static class ViewHolder {
+        TextView documentNameTV;
+        TextView statusTV;
+        TextView timestampTV;
+        TextView rateTV;
+        TextView loadNoTV;
+        RelativeLayout fileInfoGroup;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View historyFilesView = inflater.inflate(R.layout.history_item_view, parent, false);
-        TextView documentNameTV = (TextView) historyFilesView.findViewById(R.id.documentNameTV);
-        TextView statusTV = (TextView) historyFilesView.findViewById(R.id.statusTV);
-        TextView timestampTV = (TextView) historyFilesView.findViewById(R.id.timeStampTV);
-        TextView rateTV = (TextView) historyFilesView.findViewById(R.id.rateTV);
-        TextView loadNoTV = (TextView) historyFilesView.findViewById(R.id.loadNoTV);
-        RelativeLayout fileInfoGroup = (RelativeLayout) historyFilesView.findViewById(R.id.fileInfoGroup);
-        documentNameTV.setText(fileNames.get(position));
+        ViewHolder viewHolder;
 
-        String jsonInvoice = PreferenceManager.with(context).getStringWithKey(fileNames.get(position));
+        if (convertView == null) {
+            LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(R.layout.history_item_view, parent, false);
+            viewHolder = new ViewHolder();
+            viewHolder.documentNameTV = (TextView) convertView.findViewById(R.id.documentNameTV);
+            viewHolder.statusTV = (TextView) convertView.findViewById(R.id.statusTV);
+            viewHolder.timestampTV = (TextView) convertView.findViewById(R.id.timeStampTV);
+            viewHolder.rateTV = (TextView) convertView.findViewById(R.id.rateTV);
+            viewHolder.loadNoTV = (TextView) convertView.findViewById(R.id.loadNoTV);
+            viewHolder.fileInfoGroup = (RelativeLayout) convertView.findViewById(R.id.fileInfoGroup);
+            convertView.setTag(viewHolder);
+        } else {
+            viewHolder = (ViewHolder) convertView.getTag();
+        }
+
+        viewHolder.documentNameTV.setText(fileNames.get(position));
+
+        String jsonInvoice = PreferenceManager.with(mContext).getStringWithKey(fileNames.get(position));
         if (jsonInvoice == null) {
-            return null;
+            return convertView;
         }
         final HistoryInvoiceModel model = new Gson().fromJson(jsonInvoice, HistoryInvoiceModel.class);
 
         try {
-            documentNameTV.setTag(fileNames.get(position));
-            fileInfoGroup.setTag(fileNames.get(position));
-            statusTV.setText(model.getStatus());
-            timestampTV.setText(model.getTimestamp());
-            rateTV.setText("Rate: " + String.format("%.02f", model.getInvoiceAmount()));
-            loadNoTV.setText("Load#: " + model.getPoNumber());
+            viewHolder.documentNameTV.setTag(fileNames.get(position));
+            viewHolder.fileInfoGroup.setTag(fileNames.get(position));
+            viewHolder.statusTV.setText(model.getStatus());
+            viewHolder.timestampTV.setText(model.getTimestamp());
+            viewHolder.rateTV.setText("Rate: " + String.format("%.02f", model.getInvoiceAmount()));
+            viewHolder.loadNoTV.setText("Load#: " + model.getPoNumber());
         } catch (IndexOutOfBoundsException e) {
-            statusTV.setText("unknown");
-            timestampTV.setText("unknown");
-            rateTV.setText("Rate: NA");
-            loadNoTV.setText("Load# NA");
+            viewHolder.statusTV.setText("unknown");
+            viewHolder.timestampTV.setText("unknown");
+            viewHolder.rateTV.setText("Rate: NA");
+            viewHolder.loadNoTV.setText("Load# NA");
             Log.e(ActivityTags.TAG_LOG, "IndexOutOfBounds-> HistoryFilesAdapter, File: " + fileNames.get(position));
         }
-        return historyFilesView;
+
+        return convertView;
     }
 
     public void RemoveFileFromList(int position) {

@@ -86,10 +86,8 @@ public class MainDashboard extends Activity {
     }
 
     void factorAdvanceLoad(String activityType) {
-        Bundle extras = new Bundle();
-        extras.putString(ActivityTags.TAG_ACTIVITY_TYPE, activityType);
         Intent intent = new Intent(MainDashboard.this, FactorAdvanceLoad.class);
-        intent.putExtra("data_extra", extras);
+        intent.putExtra(ActivityTags.TAG_ACTIVITY_TYPE, activityType);
         startActivity(intent);
     }
 

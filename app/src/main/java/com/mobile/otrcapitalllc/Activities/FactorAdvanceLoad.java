@@ -1,10 +1,12 @@
 package com.mobile.otrcapitalllc.Activities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.AssetManager;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,6 +14,7 @@ import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -24,14 +27,11 @@ import android.widget.TextView;
 
 import com.mobile.otrcapitalllc.CustomViews.CustomSwitch;
 import com.mobile.otrcapitalllc.Helpers.ActivityTags;
-import com.mobile.otrcapitalllc.Models.Broker;
 import com.mobile.otrcapitalllc.Helpers.BrokerDatabase;
-import com.mobile.otrcapitalllc.Models.CustomError;
 import com.mobile.otrcapitalllc.Helpers.FilterWithSpaceAdapter;
+import com.mobile.otrcapitalllc.Models.Broker;
+import com.mobile.otrcapitalllc.Models.CustomError;
 import com.mobile.otrcapitalllc.R;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -56,7 +56,7 @@ public class FactorAdvanceLoad extends Activity {
     TextView totalDeductionsInfo;
     @Bind(R.id.textClearImgBtn)
     ImageButton textClearImgBtn;
-    @Bind({R.id.custom_switch1, R.id.custom_switch2, R.id.custom_switch3, R.id.custom_switch4})
+    @Bind({ R.id.custom_switch1, R.id.custom_switch2, R.id.custom_switch3, R.id.custom_switch4 })
     List<CustomSwitch> switchViews;
 
     List<Broker> brokers;
@@ -101,28 +101,23 @@ public class FactorAdvanceLoad extends Activity {
         textClearImgBtn.setVisibility(View.INVISIBLE);
     }
 
-    @OnClick({R.id.custom_switch1, R.id.custom_switch2, R.id.custom_switch3, R.id.custom_switch4})
+    @OnClick({ R.id.custom_switch1, R.id.custom_switch2, R.id.custom_switch3, R.id.custom_switch4 })
     public void switchClick(CustomSwitch aSwitch) {
         ButterKnife.apply(switchViews, UNCHECKED, aSwitch.getId());
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Bundle extras = getIntent().getExtras();
-        Bundle bundle = extras.getBundle("data_extra");
-        try {
-            activityType = bundle.getString(ActivityTags.TAG_ACTIVITY_TYPE);
-        } catch (NullPointerException e) {
-            activityType = "";
-        }
-        this.setTitle(activityType);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_factor_advance_load);
         ButterKnife.bind(this);
-        String brokerName = bundle.getString(ActivityTags.TAG_BROKER_NAME);
 
-        if (brokerName != null && !brokerName.isEmpty()) {
-            brokerNameET.setText(bundle.getString(ActivityTags.TAG_BROKER_NAME));
+        activityType = getIntent().getStringExtra(ActivityTags.TAG_ACTIVITY_TYPE);
+        this.setTitle(activityType);
+
+        String brokerName = getIntent().getStringExtra(ActivityTags.TAG_BROKER_NAME);
+        if (!TextUtils.isEmpty(brokerName)) {
+            brokerNameET.setText(brokerName);
         }
 
         if (activityType.equals(ActivityTags.TAG_FACTOR_ADVANCE)) {
@@ -138,7 +133,6 @@ public class FactorAdvanceLoad extends Activity {
 
         setListeners();
 
-        AssetManager assetManager = getAssets();
         List<String> brokerNames = new ArrayList();
         BrokerDatabase db = new BrokerDatabase(FactorAdvanceLoad.this);
         brokers = db.GetBrokerList();
@@ -147,8 +141,8 @@ public class FactorAdvanceLoad extends Activity {
             brokerNames.add(b.get_brokerName());
         }
 
-        FilterWithSpaceAdapter<String> adapter = new FilterWithSpaceAdapter<String>(this,
-                android.R.layout.simple_dropdown_item_1line, brokerNames);
+        FilterWithSpaceAdapter<String> adapter = new FilterWithSpaceAdapter<String>(this, android.R.layout
+            .simple_dropdown_item_1line, brokerNames);
         brokerNameET.setAdapter(adapter);
 
         String[] types;
@@ -163,64 +157,70 @@ public class FactorAdvanceLoad extends Activity {
     }
 
     private CustomError checkFields() {
-        String errorMessage = "A required field is empty: ";
         boolean isError = false;
+        StringBuilder sb = new StringBuilder();
+        sb.append("A required field is empty: ");
+
         String brokerName = brokerNameET.getText().toString();
-        if (brokerName.isEmpty()) {
+        if (TextUtils.isEmpty(brokerName)) {
             isError = true;
-            errorMessage += "\n\tBroker Name";
+            sb.append("\n\tBroker Name");
         } else if (brokerDetails(brokerName) == null) {
             isError = true;
-            errorMessage += "\n\tInvalid Broker Name";
+            sb.append("\n\tInvalid Broker Name");
         }
 
-        if (loadNumberET.getText().toString().isEmpty()) {
+        if (TextUtils.isEmpty(loadNumberET.getText().toString())) {
             isError = true;
-            errorMessage += "\n\tLoad Number";
+            sb.append("\n\tLoad Number");
         }
 
-        if (totalPayET.getText().toString().isEmpty()) {
+        if (TextUtils.isEmpty(totalPayET.getText().toString())) {
             isError = true;
-            if (activityType.equals(ActivityTags.TAG_FACTOR_ADVANCE))
-                errorMessage += "\n\tTotal Load Amount";
-            else
-                errorMessage += "\n\tTotal Pay";
-        }
-
-        if (totalDeductionET.getText().toString().isEmpty()) {
-            totalDeductionET.setText("0.0");
             if (activityType.equals(ActivityTags.TAG_FACTOR_ADVANCE)) {
-                isError = true;
-                errorMessage += "\n\tAdvance Request Amount";
+                sb.append("\n\tTotal Load Amount");
+            } else {
+                sb.append("\n\tTotal Pay");
             }
         }
 
-        if (Float.parseFloat(totalPayET.getText().toString())
-                - Float.parseFloat(totalDeductionET.getText().toString()) <= 0.0) {
+        if (TextUtils.isEmpty(totalDeductionET.getText().toString())) {
+            if (activityType.equals(ActivityTags.TAG_FACTOR_ADVANCE)) {
+                isError = true;
+                sb.append("\n\tAdvance Request Amount");
+            } else {
+                totalDeductionET.setText("0.0");
+            }
+        }
+
+        if (!isError && Float.parseFloat(totalPayET.getText().toString()) - Float.parseFloat(totalDeductionET.getText()
+            .toString()) <= 0.0) {
             isError = true;
             if (activityType.equals(ActivityTags.TAG_FACTOR_ADVANCE)) {
-                errorMessage += "\n\tAdvance Request cannot be larger than Total Load";
+                sb.append("\n\tAdvance Request cannot be larger than Total Load");
             } else {
-                errorMessage += "\n\tTotal Deduction cannot be larger than Total Pay";
+                sb.append("\n\tTotal Deduction cannot be larger than Total Pay");
             }
         }
 
         boolean isChecked = false;
         for (CustomSwitch cs : switchViews) {
-            if (cs.isChecked()) isChecked = true;
+            if (cs.isChecked())
+                isChecked = true;
         }
         if (!isChecked) {
             isError = true;
-            errorMessage += "\n\tNeeds to select an option";
+            sb.append("\n\tNeeds to select an option");
         }
 
-        return new CustomError(isError, errorMessage);
+        return new CustomError(isError, sb.toString());
     }
 
     private boolean isNeedPhone() {
         String pickedSwitch = "";
         for (CustomSwitch cs : switchViews) {
-            if (cs.isChecked()) pickedSwitch = cs.getText();
+            if (cs.isChecked())
+                pickedSwitch = cs.getText();
         }
         return activityType.equals(ActivityTags.TAG_FACTOR_ADVANCE) && pickedSwitch.equals("Text Comchek");
     }
@@ -238,8 +238,7 @@ public class FactorAdvanceLoad extends Activity {
         brokerNameET.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
-                        (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                     InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(brokerNameET.getWindowToken(), 0);
                     loadNumberET.requestFocus();
@@ -270,7 +269,6 @@ public class FactorAdvanceLoad extends Activity {
             }
         });
 
-
         loadNumberET.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -280,7 +278,6 @@ public class FactorAdvanceLoad extends Activity {
             }
         });
 
-
         totalPayET.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -289,7 +286,6 @@ public class FactorAdvanceLoad extends Activity {
                 return false;
             }
         });
-
 
         totalDeductionET.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -314,8 +310,8 @@ public class FactorAdvanceLoad extends Activity {
 
     private void openNextScreen() {
         String brokerName = brokerNameET.getText().toString();
-        float invoiceAmount = Float.parseFloat(totalPayET.getText().toString())
-                - Float.parseFloat(totalDeductionET.getText().toString());
+        float invoiceAmount = Float.parseFloat(totalPayET.getText().toString()) - Float.parseFloat(totalDeductionET.getText()
+            .toString());
         Bundle extras = new Bundle();
         extras.putString(ActivityTags.TAG_BROKER_NAME, brokerName);
         extras.putString(ActivityTags.TAG_LOAD_NUMBER, loadNumberET.getText().toString());
@@ -334,14 +330,12 @@ public class FactorAdvanceLoad extends Activity {
 
     private void showAlertDialog(String message) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder
-                .setMessage(message)
-                .setCancelable(false)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
+        alertDialogBuilder.setMessage(message).setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener
+            () {
+            public void onClick(DialogInterface dialog, int id) {
 
-                    }
-                });
+            }
+        });
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
@@ -351,7 +345,7 @@ public class FactorAdvanceLoad extends Activity {
         final EditText editText = new EditText(this);
         editText.setInputType(InputType.TYPE_CLASS_NUMBER);
         editText.setLines(1);
-        editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(14)});
+        editText.setFilters(new InputFilter[]{ new InputFilter.LengthFilter(14) });
         editText.addTextChangedListener(new PhoneNumberFormattingTextWatcher() {
             private boolean backspacingFlag = false;
             private boolean editedFlag = false;
@@ -413,7 +407,8 @@ public class FactorAdvanceLoad extends Activity {
     @Nullable
     private String getPaymentOption() {
         for (CustomSwitch cs : switchViews) {
-            if (cs.isChecked()) return cs.getText();
+            if (cs.isChecked())
+                return cs.getText();
         }
         return null;
     }
@@ -424,7 +419,8 @@ public class FactorAdvanceLoad extends Activity {
             if (view.getId() == id) {
                 view.setChecked(!view.isChecked());
             } else {
-                if (view.isChecked()) view.setChecked(false);
+                if (view.isChecked())
+                    view.setChecked(false);
             }
 
         }
