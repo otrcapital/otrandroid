@@ -184,7 +184,6 @@ public class LoginScreen extends Activity {
     private void verifyAgent(final String user_email, final String user_password, final String user_credentials) {
         ProgressIndicatorVisiblity(View.VISIBLE);
         CrashlyticsHelper.setUserEmail(user_email);
-        EventTracker.trackUserLoginAtempt(user_email);
 
         RestClient mRestClient = new RestClient(user_credentials);
         mRestClient.getApiService().GetClientInfo(user_email, user_password, new Callback<AgentViewModel>() {
@@ -213,10 +212,10 @@ public class LoginScreen extends Activity {
             @Override
             public void failure(RetrofitError error) {
                 EventTracker.trackUserLogin(user_email, false);
-                CrashlyticsHelper.logException(error);
                 if (error.getResponse().getStatus() == 401) {
                     loginResultTV.setText("Incorrect username/password");
                 } else {
+                    CrashlyticsHelper.logException(error);
                     loginResultTV.setText("Server unavailable, please try again later");
                 }
                 loginResultTV.setTextColor(getResources().getColor(R.color.red));
