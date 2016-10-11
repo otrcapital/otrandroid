@@ -39,6 +39,7 @@ import com.itextpdf.text.Image;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.mobile.otrcapitalllc.Helpers.ActivityTags;
 import com.mobile.otrcapitalllc.Helpers.CrashlyticsHelper;
+import com.mobile.otrcapitalllc.Helpers.LogHelper;
 import com.mobile.otrcapitalllc.Helpers.PreferenceManager;
 import com.mobile.otrcapitalllc.Helpers.RealPathUtil;
 import com.mobile.otrcapitalllc.Helpers.RestClient;
@@ -140,7 +141,8 @@ public class LoadDetails extends Activity {
                     toastText = "Network error, please try again later";
                 }
 
-                Log.e(ActivityTags.TAG_LOG, error.toString());
+                LogHelper.logError(error.toString());
+
                 Toast.makeText(ContextActivity, toastText, Toast.LENGTH_LONG).show();
                 VerifyUserGroup.setVisibility(View.INVISIBLE);
                 String timeStamp = new SimpleDateFormat("dd/MM/yyy HH:mm:ss").format(new Date());
@@ -318,7 +320,8 @@ public class LoadDetails extends Activity {
     }
 
     private void createPDFfile() {
-        Log.d(ActivityTags.TAG_LOG, "Creating PDF file");
+        LogHelper.logDebug("Creating PDF file");
+
         String timeStamp = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
         String fileName[] = brokerNameTV.getText().toString().split("/");
         fileName[0] += "_" + timeStamp + ".pdf";
@@ -354,8 +357,7 @@ public class LoadDetails extends Activity {
 
         File images = new File(ActivityTags.TEMP_STORAGE_DIR);
         deleteRecursive(images);
-        Log.d(ActivityTags.TAG_LOG, "PDF file success");
-
+        LogHelper.logDebug("PDF file success");
     }
 
     private void deleteRecursive(File fileOrDirectory) {

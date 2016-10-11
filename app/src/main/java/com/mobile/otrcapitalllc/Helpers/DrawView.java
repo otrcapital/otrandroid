@@ -176,7 +176,7 @@ public class DrawView extends View {
                     }
                     catch (IndexOutOfBoundsException e)
                     {
-                        Log.d(ActivityTags.TAG_LOG,"DrawView index out of bounds, Ballid = " + balID);
+                        LogHelper.logError("DrawView index out of bounds, Ballid = " + balID);
                     }
 
                 }

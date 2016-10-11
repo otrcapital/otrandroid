@@ -145,7 +145,7 @@ public class BrokerDatabase extends SQLiteOpenHelper
             if (c != null) {
                 c.close();
             }
-            Log.d(ActivityTags.TAG_LOG,e1.toString());
+            LogHelper.logError(e1.toString());
             return false;
         }
         finally {
@@ -158,7 +158,8 @@ public class BrokerDatabase extends SQLiteOpenHelper
     //method for retrieval of brokers
     public List<Broker> GetBrokerList()
     {
-        Log.d(ActivityTags.TAG_LOG,"Get broker list");
+        LogHelper.logDebug("Get broker list");
+
         // Select All Query
         String query = "SELECT  * FROM " + TABLE_BROKER_DB;
         List<Broker> brokerList = new ArrayList<Broker>();

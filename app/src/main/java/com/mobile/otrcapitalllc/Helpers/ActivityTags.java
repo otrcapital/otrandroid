@@ -12,7 +12,6 @@ public final class ActivityTags
         GALLERY
     }
 
-    public static final String TAG_LOG = "OTR";
     public static final String TAG_FACTOR_LOAD = "Factor a Load";
     public static final String TAG_FACTOR_ADVANCE = "Fuel Advance";
     public static final String TAG_ACTIVITY_TYPE = "activity_type";

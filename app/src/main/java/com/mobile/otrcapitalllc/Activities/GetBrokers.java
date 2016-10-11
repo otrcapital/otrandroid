@@ -19,6 +19,7 @@ import android.util.Log;
 import com.mobile.otrcapitalllc.Helpers.ActivityTags;
 import com.mobile.otrcapitalllc.Helpers.BrokerDatabase;
 import com.mobile.otrcapitalllc.Helpers.CrashlyticsHelper;
+import com.mobile.otrcapitalllc.Helpers.LogHelper;
 import com.mobile.otrcapitalllc.Helpers.PreferenceManager;
 import com.mobile.otrcapitalllc.Helpers.RestClient;
 import com.mobile.otrcapitalllc.Models.Broker;
@@ -42,7 +43,7 @@ public class GetBrokers extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
-            Log.d(ActivityTags.TAG_LOG, "GetCustomers Service started");
+            LogHelper.logDebug("GetCustomers Service started");
 
             String date;
             if (PreferenceManager.with(getApplicationContext()).getDbUpdateTimestamp() == 0) {
@@ -64,7 +65,7 @@ public class GetBrokers extends IntentService {
             restClient.getApiService().GetCustomers(date, new Callback<List<CustomerViewModel>>() {
                 @Override
                 public void success(List<CustomerViewModel> customerViewModels, Response response) {
-                    Log.d(ActivityTags.TAG_LOG, "Broker list fetched from the server");
+                    LogHelper.logDebug("Broker list fetched from the server");
 
                     PreferenceManager.with(getApplicationContext()).saveDbUpdateTimestamp(System.currentTimeMillis());
                     List<Broker> brokers = new ArrayList<Broker>();
@@ -81,7 +82,7 @@ public class GetBrokers extends IntentService {
                 @Override
                 public void failure(RetrofitError error) {
                     CrashlyticsHelper.logException(error);
-                    Log.d(ActivityTags.TAG_LOG, error.toString());
+                    LogHelper.logError(error.toString());
                     result = Activity.RESULT_CANCELED;
                     publishResults(result);
                 }
@@ -118,12 +119,14 @@ public class GetBrokers extends IntentService {
                     percentOld = percentNew;
                     publishProgress(percentNew);
                 }
-                Log.d(ActivityTags.TAG_LOG, "%ge: " + percentNew + " pKey: " + b.get_pKey() + "\t MC number: " + b.get_mcnumber
+
+                LogHelper.logDebug("Age: " + percentNew + " pKey: " + b.get_pKey() + "\t MC number: " + b.get_mcnumber
                     () + "\tbroker name: " + b.get_brokerName());
             }
 
             dbWrite.close();
-            Log.d(ActivityTags.TAG_LOG, "Records updated to local database");
+            LogHelper.logDebug("Records updated to local database");
+
             return null;
         }
 

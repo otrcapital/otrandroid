@@ -18,7 +18,6 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -26,6 +25,7 @@ import android.widget.LinearLayout;
 
 import com.mobile.otrcapitalllc.Helpers.ActivityTags;
 import com.mobile.otrcapitalllc.Helpers.DrawView;
+import com.mobile.otrcapitalllc.Helpers.LogHelper;
 import com.mobile.otrcapitalllc.R;
 
 import org.opencv.android.BaseLoaderCallback;
@@ -61,8 +61,7 @@ public class CropImage extends Activity {
         public void onManagerConnected(int status) {
             switch (status) {
                 case LoaderCallbackInterface.SUCCESS: {
-                    Log.i(ActivityTags.TAG_LOG, "OpenCV loaded successfully");
-
+                    LogHelper.logDebug("OpenCV loaded successfully");
                 }
                 break;
                 default: {
@@ -156,7 +155,9 @@ public class CropImage extends Activity {
         int height = origBitmap.getHeight();
         Matrix matrix = new Matrix();
         matrix.preRotate(rotation);
-        Log.d(ActivityTags.TAG_LOG + "Image", "Image width: " + width + " Height: " + height);
+
+        LogHelper.logDebug("Image width: " + width + " Height: " + height);
+
         Bitmap adjustedBitmap = Bitmap.createBitmap(origBitmap, 0, 0, width, height, matrix, true);
         origBitmap = adjustedBitmap;
     }
@@ -265,7 +266,7 @@ public class CropImage extends Activity {
         @Override
         protected Bitmap doInBackground(Bitmap... origImage) {
             Bitmap newBitmap = warp(origImage[0], points[0], points[1], points[3], points[2]);
-            Log.d(ActivityTags.TAG_LOG, "Do in background done");
+            LogHelper.logDebug("Do in background done");
             return newBitmap;
         }
 
@@ -274,12 +275,13 @@ public class CropImage extends Activity {
             super.onPreExecute();
             progressIndicatorGroup.setVisibility(View.VISIBLE);
             points = ScreenPoint2ImagePixels(EdgeCorners.getPoints());
-            Log.d(ActivityTags.TAG_LOG, "Pre execute done");
+            LogHelper.logDebug("Pre execute done");
         }
 
         @Override
         protected void onPostExecute(Bitmap warpedImage) {
-            Log.d(ActivityTags.TAG_LOG, "post execute started");
+            LogHelper.logDebug("Post execute started");
+
             super.onPostExecute(warpedImage);
             warpedBitmap = warpedImage;
             progressIndicatorGroup.setVisibility(View.INVISIBLE);
@@ -289,7 +291,8 @@ public class CropImage extends Activity {
             undoBtn.setAlpha(1.0f);
             executeBtn.setImageResource(R.drawable.icon_done_double);
             cropDone = "done";
-            Log.d(ActivityTags.TAG_LOG, "post execute done");
+
+            LogHelper.logDebug("Post execute done");
         }
 
         @Override

@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.mobile.otrcapitalllc.Helpers.ActivityTags;
 import com.mobile.otrcapitalllc.Helpers.CrashlyticsHelper;
+import com.mobile.otrcapitalllc.Helpers.LogHelper;
 import com.mobile.otrcapitalllc.Helpers.PreferenceManager;
 import com.mobile.otrcapitalllc.Helpers.RestClient;
 import com.mobile.otrcapitalllc.Models.CustomerViewModel;
@@ -110,7 +111,8 @@ public class BrokerDetails extends Activity {
                 locationTV.setText(cvm.City + ", " + cvm.State);
                 phoneNumberTV.setText(cvm.Phone);
                 progressIndicatorVisiblity(View.INVISIBLE);
-                Log.d(ActivityTags.TAG_LOG, "Broker details fetched from server");
+
+                LogHelper.logDebug("Broker details fetched from server");
 
                 String checkResult = cvm.CreditCheckResult;
                 if (cvm.CreditCheckResult == null || "".equals(cvm.CreditCheckResult)) {
@@ -136,7 +138,8 @@ public class BrokerDetails extends Activity {
                 networkErrorTV.setText("Unable to connect to the server at the moment");
                 factorLoadButton.setText("Retry");
                 factorLoadButton.setVisibility(View.VISIBLE);
-                Log.e(ActivityTags.TAG_LOG, error.toString());
+
+                LogHelper.logError(error.toString());
             }
         });
 

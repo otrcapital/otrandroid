@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mobile.otrcapitalllc.Helpers.ActivityTags;
+import com.mobile.otrcapitalllc.Helpers.LogHelper;
 import com.mobile.otrcapitalllc.Helpers.PreferenceManager;
 import com.mobile.otrcapitalllc.R;
 
@@ -75,7 +76,7 @@ public class MainDashboard extends Activity {
         setContentView(R.layout.activity_main_dashboard);
         ButterKnife.bind(this);
 
-        Log.d(ActivityTags.TAG_LOG, "Getting customer list from server");
+        LogHelper.logDebug("Getting customer list from server");
 
         if (PreferenceManager.with(this).getDbUpdateTimestamp() == 0) {
             Toast.makeText(this, "Setting up database, check notification bar for progress", Toast.LENGTH_LONG).show();
