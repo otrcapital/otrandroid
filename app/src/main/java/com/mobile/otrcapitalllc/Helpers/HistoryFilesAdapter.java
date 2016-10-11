@@ -3,7 +3,6 @@ package com.mobile.otrcapitalllc.Helpers;
 import java.util.ArrayList;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,27 +55,25 @@ public class HistoryFilesAdapter extends ArrayAdapter<String> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        viewHolder.documentNameTV.setText(fileNames.get(position));
+        viewHolder.documentNameTV.setTag(fileNames.get(position));
+        viewHolder.fileInfoGroup.setTag(fileNames.get(position));
 
         String jsonInvoice = PreferenceManager.with(mContext).getStringWithKey(fileNames.get(position));
         if (jsonInvoice == null) {
-            return convertView;
-        }
-        final HistoryInvoiceModel model = new Gson().fromJson(jsonInvoice, HistoryInvoiceModel.class);
-
-        try {
-            viewHolder.documentNameTV.setTag(fileNames.get(position));
-            viewHolder.fileInfoGroup.setTag(fileNames.get(position));
-            viewHolder.statusTV.setText(model.getStatus());
-            viewHolder.timestampTV.setText(model.getTimestamp());
-            viewHolder.rateTV.setText("Rate: " + String.format("%.02f", model.getInvoiceAmount()));
-            viewHolder.loadNoTV.setText("Load#: " + model.getPoNumber());
-        } catch (IndexOutOfBoundsException e) {
             viewHolder.statusTV.setText("unknown");
             viewHolder.timestampTV.setText("unknown");
             viewHolder.rateTV.setText("Rate: NA");
             viewHolder.loadNoTV.setText("Load# NA");
-            LogHelper.logError("IndexOutOfBounds-> HistoryFilesAdapter, File: " + fileNames.get(position));
+        } else {
+            try {
+                final HistoryInvoiceModel model = new Gson().fromJson(jsonInvoice, HistoryInvoiceModel.class);
+                viewHolder.statusTV.setText(model.getStatus());
+                viewHolder.timestampTV.setText(model.getTimestamp());
+                viewHolder.rateTV.setText("Rate: " + String.format("%.02f", model.getInvoiceAmount()));
+                viewHolder.loadNoTV.setText("Load#: " + model.getPoNumber());
+            } catch (IndexOutOfBoundsException e) {
+                LogHelper.logError("IndexOutOfBounds-> HistoryFilesAdapter, File: " + fileNames.get(position));
+            }
         }
 
         return convertView;

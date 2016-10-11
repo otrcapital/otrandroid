@@ -54,7 +54,6 @@
             android:layout_alignParentBottom="false"
             android:layout_alignParentEnd="false"
             android:gravity="right"
-            android:text="Time Stamp"
             android:textAlignment="gravity"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
