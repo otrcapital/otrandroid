@@ -14,9 +14,7 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.support.v7.app.NotificationCompat;
-import android.util.Log;
 
-import com.mobile.otrcapitalllc.Helpers.ActivityTags;
 import com.mobile.otrcapitalllc.Helpers.BrokerDatabase;
 import com.mobile.otrcapitalllc.Helpers.CrashlyticsHelper;
 import com.mobile.otrcapitalllc.Helpers.LogHelper;
@@ -46,10 +44,11 @@ public class GetBrokers extends IntentService {
             LogHelper.logDebug("GetCustomers Service started");
 
             String date;
-            if (PreferenceManager.with(getApplicationContext()).getDbUpdateTimestamp() == 0) {
+            long lastUpdateMillis = PreferenceManager.with(getApplicationContext()).getDbUpdateTimestamp();
+            if (lastUpdateMillis == 0) {
                 date = "1975/01/01";
             } else {
-                date = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
+                date = new SimpleDateFormat("yyyy/MM/dd").format(new Date(lastUpdateMillis));
             }
 
             final String userCredentials = PreferenceManager.with(getApplicationContext()).getUserCredentials();
@@ -68,7 +67,7 @@ public class GetBrokers extends IntentService {
                     LogHelper.logDebug("Broker list fetched from the server");
 
                     PreferenceManager.with(getApplicationContext()).saveDbUpdateTimestamp(System.currentTimeMillis());
-                    List<Broker> brokers = new ArrayList<Broker>();
+                    List<Broker> brokers = new ArrayList<>();
 
                     for (CustomerViewModel cvm : customerViewModels) {
                         brokers.add(new Broker(cvm.McNumber, cvm.Name, cvm.PKey));
@@ -120,8 +119,8 @@ public class GetBrokers extends IntentService {
                     publishProgress(percentNew);
                 }
 
-                LogHelper.logDebug("Age: " + percentNew + " pKey: " + b.get_pKey() + "\t MC number: " + b.get_mcnumber
-                    () + "\tbroker name: " + b.get_brokerName());
+                LogHelper.logDebug("Age: " + percentNew + " pKey: " + b.get_pKey() + "\t MC number: " + b.get_mcnumber() +
+                    "\tbroker name: " + b.get_brokerName());
             }
 
             dbWrite.close();

@@ -1,8 +1,5 @@
 package com.mobile.otrcapitalllc.Activities;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -13,7 +10,6 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,8 +18,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mobile.otrcapitalllc.BuildConfig;
-import com.mobile.otrcapitalllc.Helpers.ActivityTags;
 import com.mobile.otrcapitalllc.Helpers.CrashlyticsHelper;
+import com.mobile.otrcapitalllc.Helpers.EventTracker;
 import com.mobile.otrcapitalllc.Helpers.LogHelper;
 import com.mobile.otrcapitalllc.Helpers.PreferenceManager;
 import com.mobile.otrcapitalllc.Helpers.RestClient;
@@ -161,7 +157,7 @@ public class LoginScreen extends Activity {
             } else {
                 //check if there if there is a valid login token present in sharedPreferenes
                 boolean isTokenValid = PreferenceManager.with(this).getTokenValid();
-                if (!isTokenValid)  {
+                if (!isTokenValid) {
                     //if there is no token present then ask the
                     // user to login with email and password
                     ProgressIndicatorVisiblity(View.INVISIBLE);
@@ -188,42 +184,41 @@ public class LoginScreen extends Activity {
     private void verifyAgent(final String user_email, final String user_password, final String user_credentials) {
         ProgressIndicatorVisiblity(View.VISIBLE);
         CrashlyticsHelper.setUserEmail(user_email);
+        EventTracker.trackUserLoginAtempt(user_email);
 
         RestClient mRestClient = new RestClient(user_credentials);
         mRestClient.getApiService().GetClientInfo(user_email, user_password, new Callback<AgentViewModel>() {
             @Override
             public void success(AgentViewModel agentViewModel, Response response) {
+                EventTracker.trackUserLogin(user_email, true);
+                ProgressIndicatorVisiblity(View.INVISIBLE);
 
-                //check if the provided login info was valid
-
-                //if the callback is valid, then save the user email and password, set the token to valid and launch the main
-                // dashboard
+                // IsValidUser - is user has an access to service
                 if (agentViewModel.IsValidUser) {
                     CrashlyticsHelper.setUser(agentViewModel);
-                    verifyUserGroup.setVisibility(View.INVISIBLE);
 
-                    PreferenceManager.with(LoginScreen.this).saveUserData(user_email, user_password,
-                        user_credentials, true);
+                    PreferenceManager.with(LoginScreen.this).saveUserData(user_email, user_password, user_credentials, true);
 
                     Intent intent = new Intent(LoginScreen.this, MainDashboard.class);
                     finish();
                     startActivity(intent);
-
-                }
-
-                //if the user info is not valid, then set the token to invalid, and ask the user to login again
-                else {
-                    loginResultTV.setText("Incorrect username/password");
+                } else {
+                    loginResultTV.setText("You don't have an access to this service");
                     loginResultTV.setTextColor(getResources().getColor(R.color.red));
-                    ProgressIndicatorVisiblity(View.INVISIBLE);
+
                     PreferenceManager.with(LoginScreen.this).saveTokenValid(false);
                 }
             }
 
             @Override
             public void failure(RetrofitError error) {
+                EventTracker.trackUserLogin(user_email, false);
                 CrashlyticsHelper.logException(error);
-                loginResultTV.setText("Server unavailable, please try again later");
+                if (error.getResponse().getStatus() == 401) {
+                    loginResultTV.setText("Incorrect username/password");
+                } else {
+                    loginResultTV.setText("Server unavailable, please try again later");
+                }
                 loginResultTV.setTextColor(getResources().getColor(R.color.red));
                 ProgressIndicatorVisiblity(View.INVISIBLE);
                 LogHelper.logError(error.toString());
