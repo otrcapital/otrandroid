@@ -212,7 +212,7 @@ public class LoginScreen extends Activity {
             @Override
             public void failure(RetrofitError error) {
                 EventTracker.trackUserLogin(user_email, false);
-                if (error.getResponse().getStatus() == 401) {
+                if (error != null && error.getResponse() != null && error.getResponse().getStatus() == 401) {
                     loginResultTV.setText("Incorrect username/password");
                 } else {
                     CrashlyticsHelper.logException(error);
