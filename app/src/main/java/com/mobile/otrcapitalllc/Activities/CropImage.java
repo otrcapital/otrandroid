@@ -26,6 +26,7 @@ import android.widget.LinearLayout;
 import com.mobile.otrcapitalllc.Helpers.ActivityTags;
 import com.mobile.otrcapitalllc.Helpers.DrawView;
 import com.mobile.otrcapitalllc.Helpers.LogHelper;
+import com.mobile.otrcapitalllc.Helpers.ScalingUtilities;
 import com.mobile.otrcapitalllc.R;
 
 import org.opencv.android.BaseLoaderCallback;
@@ -165,13 +166,15 @@ public class CropImage extends Activity {
     private Bitmap warp(Bitmap image, Point topLeft, Point topRight, Point bottomLeft, Point bottomRight) {
         int resultWidth = (int) (topRight.x - topLeft.x);
         int bottomWidth = (int) (bottomRight.x - bottomLeft.x);
-        if (bottomWidth > resultWidth)
+        if (bottomWidth > resultWidth) {
             resultWidth = bottomWidth;
+        }
 
         int resultHeight = (int) (bottomLeft.y - topLeft.y);
         int bottomHeight = (int) (bottomRight.y - topRight.y);
-        if (bottomHeight > resultHeight)
+        if (bottomHeight > resultHeight) {
             resultHeight = bottomHeight;
+        }
 
         resultHeight = (int) Math.round(resultWidth * 1.41);
 
@@ -242,8 +245,9 @@ public class CropImage extends Activity {
         String[] path = imagePath.split("/");
         String fname = path[path.length - 1];
         File file = new File(ActivityTags.TEMP_STORAGE_DIR, fname);
-        if (file.exists())
+        if (file.exists()) {
             file.delete();
+        }
         try {
             FileOutputStream out = new FileOutputStream(file);
             if (warpedBitmap == null) {
@@ -265,9 +269,24 @@ public class CropImage extends Activity {
 
         @Override
         protected Bitmap doInBackground(Bitmap... origImage) {
-            Bitmap newBitmap = warp(origImage[0], points[0], points[1], points[3], points[2]);
-            LogHelper.logDebug("Do in background done");
-            return newBitmap;
+            try {
+                LogHelper.logDebug(
+                        String.format("Trying to warp bitmap (width: %s, height: %s)", origImage[0].getWidth(), origImage[0].getHeight()));
+                Bitmap newBitmap = warp(origImage[0], points[0], points[1], points[3], points[2]);
+                LogHelper.logDebug("Do in background done");
+                return newBitmap;
+            } catch (OutOfMemoryError oom) {
+                LogHelper.logDebug("Crop image OutOfMemoryError in background task");
+                LogHelper.logDebug("Trying to scale...");
+                Bitmap scaledBitmap = ScalingUtilities.createScaledBitmap(origImage[0],
+                        (int) (origImage[0].getWidth() / 1.5),
+                        (int) (origImage[0].getHeight() / 1.5),
+                        ScalingUtilities.ScalingLogic.FIT);
+                LogHelper.logDebug(String.format("new width: %s, height: %s", scaledBitmap.getWidth(), scaledBitmap.getHeight()));
+                Bitmap newBitmap = warp(scaledBitmap, points[0], points[1], points[3], points[2]);
+                LogHelper.logDebug("Do in background done");
+                return newBitmap;
+            }
         }
 
         @Override
