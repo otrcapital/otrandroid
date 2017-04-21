@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="WebSiteHost">customer.otrcapital.com</string>
+
+    <string name="WebSiteAPI">http://customer.otrcapital.com/api</string>
+
+</resources>

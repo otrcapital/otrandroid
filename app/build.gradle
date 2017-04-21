@@ -28,6 +28,8 @@ android {
         }
     }
     productFlavors {
+        demo {}
+        prod {}
     }
 }
 

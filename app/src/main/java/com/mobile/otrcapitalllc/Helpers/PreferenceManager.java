@@ -11,7 +11,7 @@ public class PreferenceManager {
     private static final String PREFS_USER_PASSWORD = "user_password";
     private static final String PREFS_USER_CREDENTIALS = "user_credentials";
     private static final String PREFS_NOT_FIRST_RUN = "first_run";
-    private static final String PREFS_DB_TIMESTAMP = "db_timestamp";
+    private static final String PREFS_DB_TIMESTAMP = "db_broker_update_date";
 
     private SharedPreferences mSharedPreferences;
 

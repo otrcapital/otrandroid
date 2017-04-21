@@ -1,6 +1,10 @@
 package com.mobile.otrcapitalllc.Helpers;
 
+import android.content.Context;
+import android.support.v4.content.ContextCompat;
+
 import com.mobile.otrcapitalllc.BuildConfig;
+import com.mobile.otrcapitalllc.R;
 import com.squareup.okhttp.OkHttpClient;
 
 import java.util.concurrent.TimeUnit;
@@ -14,19 +18,18 @@ public class RestClient {
 
     private RESTAPIs mRESTAPIs;
     private String mUserCredentials;
-    private String mHostName;
+    private Context mContext;
 
-    public RestClient(String userCredentials) {
-        String endpointUrl = ActivityTags.API_URL_PROD;
-        mHostName = ActivityTags.HOST_NAME_PROD;
+    public RestClient(Context context, String userCredentials) {
         mUserCredentials = userCredentials;
-
+        mContext = context;
+        String apiUrl = context.getString(R.string.WebSiteAPI);
         OkHttpClient okHttpClient = new OkHttpClient();
         okHttpClient.setReadTimeout(60, TimeUnit.SECONDS);
         okHttpClient.setConnectTimeout(60, TimeUnit.SECONDS);
 
         RestAdapter restAdapter = new RestAdapter.Builder()
-                .setEndpoint(endpointUrl)
+                .setEndpoint(apiUrl)
                 .setLog(new AndroidLog("RetrofitLog"))
                 .setClient(new OkClient(okHttpClient))
                 .setRequestInterceptor(requestInterceptor)
@@ -44,7 +47,7 @@ public class RestClient {
         @Override
         public void intercept(RequestFacade request) {
             request.addHeader("User-Agent", "Fiddler");
-            request.addHeader("Host", mHostName);
+            request.addHeader("Host", mContext.getString(R.string.WebSiteHost));
             if (mUserCredentials != null) request.addHeader("Authorization", "Basic " + mUserCredentials);
         }
     };

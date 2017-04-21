@@ -185,7 +185,7 @@ public class LoginScreen extends Activity {
         ProgressIndicatorVisiblity(View.VISIBLE);
         CrashlyticsHelper.setUserEmail(user_email);
 
-        RestClient mRestClient = new RestClient(user_credentials);
+        RestClient mRestClient = new RestClient(this, user_credentials);
         mRestClient.getApiService().GetClientInfo(user_email, user_password, new Callback<AgentViewModel>() {
             @Override
             public void success(AgentViewModel agentViewModel, Response response) {

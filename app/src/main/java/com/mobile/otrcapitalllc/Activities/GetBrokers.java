@@ -60,7 +60,7 @@ public class GetBrokers extends IntentService {
             mBuilder.setProgress(100, 0, true);
             mNotifyManager.notify(id, mBuilder.build());
 
-            RestClient restClient = new RestClient(userCredentials);
+            RestClient restClient = new RestClient(this, userCredentials);
             restClient.getApiService().GetCustomers(date, new Callback<List<CustomerViewModel>>() {
                 @Override
                 public void success(List<CustomerViewModel> customerViewModels, Response response) {
@@ -70,7 +70,7 @@ public class GetBrokers extends IntentService {
                     List<Broker> brokers = new ArrayList<>();
 
                     for (CustomerViewModel cvm : customerViewModels) {
-                        brokers.add(new Broker(cvm.McNumber, cvm.Name, cvm.PKey));
+                        brokers.add(new Broker(cvm.McNumber, cvm.Name, cvm.PKey, cvm.Factorable));
                     }
 
                     //Save downloaded records to local database in a background AsyncTask
@@ -111,6 +111,7 @@ public class GetBrokers extends IntentService {
                 values.put(BrokerDatabase.KEY_MC_NUMBER, b.get_mcnumber());
                 values.put(BrokerDatabase.KEY_BROKER_NAME, b.get_brokerName());
                 values.put(BrokerDatabase.KEY_PKEY, b.get_pKey());
+                values.put(BrokerDatabase.KEY_FACTORABLE, b.isFactorable());
                 brokerDB.PutBrokerName(dbWrite, values);
                 valuesSaved++;
                 percentNew = (valuesSaved * 100) / totalCount;
@@ -118,9 +119,6 @@ public class GetBrokers extends IntentService {
                     percentOld = percentNew;
                     publishProgress(percentNew);
                 }
-
-                LogHelper.logDebug("Age: " + percentNew + " pKey: " + b.get_pKey() + "\t MC number: " + b.get_mcnumber() +
-                    "\tbroker name: " + b.get_brokerName());
             }
 
             dbWrite.close();

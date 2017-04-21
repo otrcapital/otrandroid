@@ -17,65 +17,60 @@ import java.util.Set;
 /**
  * Created by jawad on 9/21/2015.
  */
-public class BrokerDatabase extends SQLiteOpenHelper
-{
+public class BrokerDatabase extends SQLiteOpenHelper {
     public static final String KEY_MC_NUMBER = "mcNumber";
     public static final String KEY_BROKER_NAME = "brokerName";
+    public static final String KEY_FACTORABLE = "factorable";
     public static final String KEY_PKEY = "pKey";
     public static final int READONLY = 1;
     public static final int WRITEONLY = 2;
     // All Static variables
     // Database Version
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     // Database Name
     private static final String DATABASE_NAME = "BrokerDB";
     // table names
     private static final String TABLE_BROKER_DB = "table_broker_db";
     private static final String KEY_ID = "_id";
 
-    public BrokerDatabase(Context context)
-    {
+    public BrokerDatabase(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
-    public void onCreate(SQLiteDatabase db)
-    {
-        String CREATE_BROKERNAME_DB = "CREATE TABLE " + TABLE_BROKER_DB +  "(" +
+    public void onCreate(SQLiteDatabase db) {
+        String CREATE_BROKERNAME_DB = "CREATE TABLE " + TABLE_BROKER_DB + "(" +
                 KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 KEY_MC_NUMBER + " INTEGER, " +
-                KEY_BROKER_NAME + " TEXT," +
-                KEY_PKEY + " TEXT" +
+                KEY_BROKER_NAME + " TEXT, " +
+                KEY_PKEY + " TEXT, " +
+                KEY_FACTORABLE + " BOOLEAN" +
                 ");";
 
         db.execSQL(CREATE_BROKERNAME_DB);
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
-    {
-        // Drop older table if existed
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_BROKER_DB);
-
-        // Create tables again
-        onCreate(db);
-
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        if (oldVersion < 2) {
+            try {
+                db.execSQL("ALTER TABLE " + TABLE_BROKER_DB + " ADD COLUMN " + KEY_FACTORABLE + " BOOLEAN;");
+            } catch (Exception ignored) {}
+        }
     }
 
-    public List<Broker> GetNewBrokersList(List<Broker> brokers)
-    {
-        //first check for duplicate values and empty MCnumbers
-        List<Broker> newBrokerList = new ArrayList<Broker>();
+    public List<Broker> GetNewBrokersList(List<Broker> brokers) {
+
+        List<Broker> newBrokerList = new ArrayList<>();
 
         if (brokers.size() > 100)
             newBrokerList = brokers;
-        else
-        {
+        else {
             SQLiteDatabase dbRead = this.getReadableDatabase();
-            for (Broker b : brokers)
-            {
-                if (!IsMCNumberExist(b.get_mcnumber(), dbRead)){
-                    newBrokerList.add(b);}
+            for (Broker b : brokers) {
+                if (!IsMCNumberExist(b.get_mcnumber(), dbRead)) {
+                    newBrokerList.add(b);
+                }
             }
             dbRead.close();
         }
@@ -83,10 +78,8 @@ public class BrokerDatabase extends SQLiteOpenHelper
         return newBrokerList;
     }
 
-    public SQLiteDatabase OpenDB(int type)
-    {
-        switch (type)
-        {
+    public SQLiteDatabase OpenDB(int type) {
+        switch (type) {
             case READONLY:
                 return this.getReadableDatabase();
             case WRITEONLY:
@@ -98,24 +91,21 @@ public class BrokerDatabase extends SQLiteOpenHelper
 
     }
 
-    public void PutBrokerName(SQLiteDatabase db,ContentValues values)
-    {
+    public void PutBrokerName(SQLiteDatabase db, ContentValues values) {
         // Inserting Row
         db.insert(TABLE_BROKER_DB, null, values);
 
     }
 
-    private List<Broker> RemoveUselessValues(List<Broker> OrigList)
-    {
+    private List<Broker> RemoveUselessValues(List<Broker> OrigList) {
         List<Broker> refinedList = new ArrayList<Broker>();
         Set<Broker> set1 = new HashSet();
 
-        for (Broker b : OrigList)
-        {
-            if (!set1.contains(b))
-            {
-                if (b.get_mcnumber() !=null && !b.get_mcnumber().isEmpty()){
-                    refinedList.add(b);}
+        for (Broker b : OrigList) {
+            if (!set1.contains(b)) {
+                if (b.get_mcnumber() != null && !b.get_mcnumber().isEmpty()) {
+                    refinedList.add(b);
+                }
                 set1.add(b);
             }
         }
@@ -123,15 +113,14 @@ public class BrokerDatabase extends SQLiteOpenHelper
 
     }
 
-    private boolean IsMCNumberExist(String MCNumber,SQLiteDatabase db)
-    {
+    private boolean IsMCNumberExist(String MCNumber, SQLiteDatabase db) {
         int count = -1;
         Cursor c = null;
 
         try {
             String query = "SELECT COUNT(*) FROM "
                     + TABLE_BROKER_DB + " WHERE " + KEY_MC_NUMBER + " = ?";
-            c = db.rawQuery(query, new String[] {MCNumber});
+            c = db.rawQuery(query, new String[]{MCNumber});
             if (c.moveToFirst()) {
                 count = c.getInt(0);
             }
@@ -139,16 +128,13 @@ public class BrokerDatabase extends SQLiteOpenHelper
                 c.close();
             }
             return count > 0;
-        }
-        catch (IllegalArgumentException e1)
-        {
+        } catch (IllegalArgumentException e1) {
             if (c != null) {
                 c.close();
             }
             LogHelper.logError(e1.toString());
             return false;
-        }
-        finally {
+        } finally {
             if (c != null) {
                 c.close();
             }
@@ -156,42 +142,49 @@ public class BrokerDatabase extends SQLiteOpenHelper
     }
 
     //method for retrieval of brokers
-    public List<Broker> GetBrokerList()
-    {
+    private List<Broker> GetBrokers(String query) {
         LogHelper.logDebug("Get broker list");
 
         // Select All Query
-        String query = "SELECT  * FROM " + TABLE_BROKER_DB;
+        if(query == null) {
+            query = "SELECT  * FROM " + TABLE_BROKER_DB;
+        }
         List<Broker> brokerList = new ArrayList<Broker>();
         SQLiteDatabase db = this.getReadableDatabase();
-        try
-        {
+        try {
             Cursor cursor = db.rawQuery(query, null);
 
-            try
-            {
+            try {
                 // looping through all rows and adding to list
-                if (cursor.moveToFirst())
-                {
-                    do
-                    {
-                        Broker broker = new Broker(cursor.getString(1), cursor.getString(2),cursor.getString(3));
+                if (cursor.moveToFirst()) {
+                    do {
+                        Broker broker = new Broker(cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getInt(4) > 0);
                         brokerList.add(broker);
                     } while (cursor.moveToNext());
                 }
+            } finally {
+                try {
+                    cursor.close();
+                } catch (Exception ignore) {
+                }
             }
-            finally
-            {
-                try { cursor.close(); } catch (Exception ignore) {}
+        } finally {
+            try {
+                db.close();
+            } catch (Exception ignore) {
             }
-        }
-        finally
-        {
-            try { db.close(); } catch (Exception ignore) {}
         }
 
         return brokerList;
 
+    }
+
+
+    public List<Broker> GetFactorableBrokerList() { return GetBrokers("SELECT  * FROM " + TABLE_BROKER_DB + " WHERE " + KEY_FACTORABLE + " = 1"); }
+
+
+    public List<Broker> GetBrokerList() {
+        return GetBrokers(null);
     }
 
 }

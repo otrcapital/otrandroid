@@ -56,7 +56,7 @@ public class FactorAdvanceLoad extends Activity {
     TextView totalDeductionsInfo;
     @Bind(R.id.textClearImgBtn)
     ImageButton textClearImgBtn;
-    @Bind({ R.id.custom_switch1, R.id.custom_switch2, R.id.custom_switch3, R.id.custom_switch4 })
+    @Bind({R.id.custom_switch1, R.id.custom_switch2, R.id.custom_switch3, R.id.custom_switch4})
     List<CustomSwitch> switchViews;
 
     List<Broker> brokers;
@@ -101,7 +101,7 @@ public class FactorAdvanceLoad extends Activity {
         textClearImgBtn.setVisibility(View.INVISIBLE);
     }
 
-    @OnClick({ R.id.custom_switch1, R.id.custom_switch2, R.id.custom_switch3, R.id.custom_switch4 })
+    @OnClick({R.id.custom_switch1, R.id.custom_switch2, R.id.custom_switch3, R.id.custom_switch4})
     public void switchClick(CustomSwitch aSwitch) {
         ButterKnife.apply(switchViews, UNCHECKED, aSwitch.getId());
     }
@@ -135,22 +135,24 @@ public class FactorAdvanceLoad extends Activity {
 
         List<String> brokerNames = new ArrayList();
         BrokerDatabase db = new BrokerDatabase(FactorAdvanceLoad.this);
-        brokers = db.GetBrokerList();
+        String[] types;
+
+        if (activityType.equals(ActivityTags.TAG_FACTOR_ADVANCE)) {
+            types = getResources().getStringArray(R.array.advance_load);
+            brokers = db.GetBrokerList();
+        } else {
+            types = getResources().getStringArray(R.array.factor_load);
+            brokers = db.GetFactorableBrokerList();
+        }
 
         for (Broker b : brokers) {
             brokerNames.add(b.get_brokerName());
         }
 
-        FilterWithSpaceAdapter<String> adapter = new FilterWithSpaceAdapter<String>(this, android.R.layout
-            .simple_dropdown_item_1line, brokerNames);
+        FilterWithSpaceAdapter<String> adapter = new FilterWithSpaceAdapter<>(this, android.R.layout
+                .simple_dropdown_item_1line, brokerNames);
         brokerNameET.setAdapter(adapter);
 
-        String[] types;
-        if (activityType.equals(ActivityTags.TAG_FACTOR_ADVANCE)) {
-            types = getResources().getStringArray(R.array.advance_load);
-        } else {
-            types = getResources().getStringArray(R.array.factor_load);
-        }
         for (int i = 0; i < switchViews.size(); i++) {
             switchViews.get(i).setText(types[i]);
         }
@@ -194,7 +196,7 @@ public class FactorAdvanceLoad extends Activity {
         }
 
         if (!isError && Float.parseFloat(totalPayET.getText().toString()) - Float.parseFloat(totalDeductionET.getText()
-            .toString()) <= 0.0) {
+                .toString()) <= 0.0) {
             isError = true;
             if (activityType.equals(ActivityTags.TAG_FACTOR_ADVANCE)) {
                 sb.append("\n\tAdvance Request cannot be larger than Total Load");
@@ -311,7 +313,7 @@ public class FactorAdvanceLoad extends Activity {
     private void openNextScreen() {
         String brokerName = brokerNameET.getText().toString();
         float invoiceAmount = Float.parseFloat(totalPayET.getText().toString()) - Float.parseFloat(totalDeductionET.getText()
-            .toString());
+                .toString());
         Bundle extras = new Bundle();
         extras.putString(ActivityTags.TAG_BROKER_NAME, brokerName);
         extras.putString(ActivityTags.TAG_LOAD_NUMBER, loadNumberET.getText().toString());
@@ -331,7 +333,7 @@ public class FactorAdvanceLoad extends Activity {
     private void showAlertDialog(String message) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setMessage(message).setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener
-            () {
+                () {
             public void onClick(DialogInterface dialog, int id) {
 
             }
@@ -345,7 +347,7 @@ public class FactorAdvanceLoad extends Activity {
         final EditText editText = new EditText(this);
         editText.setInputType(InputType.TYPE_CLASS_NUMBER);
         editText.setLines(1);
-        editText.setFilters(new InputFilter[]{ new InputFilter.LengthFilter(14) });
+        editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(14)});
         editText.addTextChangedListener(new PhoneNumberFormattingTextWatcher() {
             private boolean backspacingFlag = false;
             private boolean editedFlag = false;
@@ -422,7 +424,6 @@ public class FactorAdvanceLoad extends Activity {
                 if (view.isChecked())
                     view.setChecked(false);
             }
-
         }
     };
 }

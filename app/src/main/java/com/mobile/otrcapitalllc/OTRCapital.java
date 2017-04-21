@@ -19,6 +19,8 @@ public class OTRCapital extends Application {
             .build();
         //@formatter:on
 
-        Fabric.with(fabric);
+        if (!BuildConfig.DEBUG) {
+            Fabric.with(fabric);
+        }
     }
 }

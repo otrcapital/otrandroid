@@ -108,7 +108,7 @@ public class LoadDetails extends Activity {
         historyInvoiceModel.setFactorType(factorType);
 
         final String userCredentials = PreferenceManager.with(ContextActivity).getUserCredentials();
-        RestClient restClient = new RestClient(userCredentials);
+        RestClient restClient = new RestClient(ContextActivity, userCredentials);
         restClient.getApiService().Upload(invoiceData, DocumentType, typedFile, factorType, "android", new Callback<String>() {
 
             @Override

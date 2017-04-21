@@ -100,7 +100,7 @@ public class BrokerDetails extends Activity {
         final String userPassword = PreferenceManager.with(this).getUserPassword();
         final String userCredentials = PreferenceManager.with(this).getUserCredentials();
 
-        RestClient restClient = new RestClient(userCredentials);
+        RestClient restClient = new RestClient(this, userCredentials);
         restClient.getApiService().BrokerCheck(userEmail, userPassword, this.pKey, new Callback<CustomerViewModel>() {
             @Override
             public void success(CustomerViewModel cvm, Response response) {
