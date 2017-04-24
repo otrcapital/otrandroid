@@ -1,6 +1,8 @@
 package com.mobile.otrcapitalllc.Activities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -55,12 +57,40 @@ public class MainDashboard extends Activity {
 
     @OnClick(R.id.signOutImgBtn)
     public void signOutImgBtn(View view) {
-        PreferenceManager.with(this).saveTokenValid(false);
 
+        PreferenceManager.with(MainDashboard.this).saveTokenValid(false);
+ 
         Intent intent = new Intent(MainDashboard.this, LoginScreen.class);
         finish();
         startActivity(intent);
 
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        builder.setMessage(getString(R.string.alert_logout));
+//
+//        String positiveText = getString(R.string.btn_confirm);
+//        builder.setPositiveButton(positiveText,
+//                new DialogInterface.OnClickListener() {
+//
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        PreferenceManager.with(MainDashboard.this).saveTokenValid(false);
+//
+//                        Intent intent = new Intent(MainDashboard.this, LoginScreen.class);
+//                        finish();
+//                        startActivity(intent);
+//                    }
+//                });
+//
+//        String negativeText = getString(android.R.string.cancel);
+//        builder.setNegativeButton(negativeText,
+//                new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                    }
+//                });
+//
+//        AlertDialog dialog = builder.create();
+//        dialog.show();
     }
 
     @OnClick(R.id.contactUsImgBtn)

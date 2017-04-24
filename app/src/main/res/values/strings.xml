@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">OTR CAPITAL LLC</string>
 
+    <string name="btn_confirm">Confirm</string>
+
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_login_screen">Login</string>
@@ -15,4 +17,6 @@
     <string name="title_activity_refine_capture">Refine Capture</string>
     <string name="title_activity_image_perspective_correction">ImagePerspectiveCorrection</string>
     <string name="title_activity_crop_image">CropImage</string>
+
+    <string name="alert_logout">Are you sure you want to logout?</string>
 </resources>
