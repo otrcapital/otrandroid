@@ -59,7 +59,7 @@ public class MainDashboard extends Activity {
     public void signOutImgBtn(View view) {
 
         PreferenceManager.with(MainDashboard.this).saveTokenValid(false);
- 
+
         Intent intent = new Intent(MainDashboard.this, LoginScreen.class);
         finish();
         startActivity(intent);

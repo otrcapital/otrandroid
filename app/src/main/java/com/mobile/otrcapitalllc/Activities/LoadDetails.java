@@ -94,7 +94,7 @@ public class LoadDetails extends Activity {
     private ArrayList<String> GalleryList = new ArrayList<String>();
 
     public static void UploadDocument(final String FileName, final Context ContextActivity, final Activity activity, final View
-        VerifyUserGroup, final ApiInvoiceDataJson invoiceData, final ArrayList<String> DocumentType, final String factorType) {
+            VerifyUserGroup, final ApiInvoiceDataJson invoiceData, final ArrayList<String> DocumentType, final String factorType) {
 
         TypedFile typedFile = new TypedFile("application/pdf", new File(ActivityTags.EXT_STORAGE_DIR + FileName));
         VerifyUserGroup.setVisibility(View.VISIBLE);
@@ -164,11 +164,11 @@ public class LoadDetails extends Activity {
         if (GetDocumentTypes().isEmpty()) {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
             alertDialogBuilder.setMessage("Please select atleast one Document Type").setCancelable(false).setPositiveButton
-                ("OK", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
+                    ("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
 
-                }
-            });
+                        }
+                    });
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
         } else {
@@ -448,7 +448,7 @@ public class LoadDetails extends Activity {
     private void FillPhotoList() {
         // initialize the list!
         GalleryList.clear();
-        String[] projection = { MediaStore.Images.ImageColumns.DISPLAY_NAME };
+        String[] projection = {MediaStore.Images.ImageColumns.DISPLAY_NAME};
         // intialize the Uri and the Cursor, and the current expected size.
         Cursor c = null;
         Uri u = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
@@ -472,8 +472,8 @@ public class LoadDetails extends Activity {
         // based on the result we either set the preview or show a quick toast splash.
         // Some versions of Android save to the MediaStore as well.  Not sure why!  We don't know what
         // name Android will give either, so we get to search for this manually and remove it.
-        String[] projection = { MediaStore.Images.ImageColumns.SIZE, MediaStore.Images.ImageColumns.DISPLAY_NAME, MediaStore
-            .Images.ImageColumns.DATA, BaseColumns._ID, };
+        String[] projection = {MediaStore.Images.ImageColumns.SIZE, MediaStore.Images.ImageColumns.DISPLAY_NAME, MediaStore
+                .Images.ImageColumns.DATA, BaseColumns._ID,};
         //
         // intialize the Uri and the Cursor, and the current expected size.
         Cursor c = null;

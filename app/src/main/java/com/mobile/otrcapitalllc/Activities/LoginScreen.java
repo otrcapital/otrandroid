@@ -138,11 +138,11 @@ public class LoginScreen extends Activity {
             //if network is not available then show Dialogue to quite app
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
             alertDialogBuilder.setMessage("NETWORK NOT AVAILABLE").setCancelable(false).setPositiveButton("Quit", new
-                DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    finish();
-                }
-            });
+                    DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            finish();
+                        }
+                    });
 
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
@@ -166,7 +166,7 @@ public class LoginScreen extends Activity {
                     //if there is a valid token present, then use the stored email and password to login
                     ProgressIndicatorVisiblity(View.VISIBLE);
                     verifyAgent(PreferenceManager.with(this).getUserEmail(), PreferenceManager.with(this).getUserPassword(),
-                        PreferenceManager.with(this).getUserCredentials());
+                            PreferenceManager.with(this).getUserCredentials());
                 }
             }
         }
