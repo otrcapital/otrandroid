@@ -42,7 +42,7 @@ public class BrokerDatabase extends SQLiteOpenHelper {
         String CREATE_BROKERNAME_DB = "CREATE TABLE " + TABLE_BROKER_DB + "(" +
                 KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 KEY_MC_NUMBER + " INTEGER, " +
-                KEY_BROKER_NAME + " TEXT, " +
+                KEY_BROKER_NAME + " TEXT unique, " +
                 KEY_PKEY + " TEXT, " +
                 KEY_FACTORABLE + " BOOLEAN" +
                 ");";
@@ -52,11 +52,9 @@ public class BrokerDatabase extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if (oldVersion < 2) {
-            try {
-                db.execSQL("ALTER TABLE " + TABLE_BROKER_DB + " ADD COLUMN " + KEY_FACTORABLE + " BOOLEAN;");
-            } catch (Exception ignored) {}
-        }
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_BROKER_DB);
+
+        onCreate(db);
     }
 
     public List<Broker> GetNewBrokersList(List<Broker> brokers) {
