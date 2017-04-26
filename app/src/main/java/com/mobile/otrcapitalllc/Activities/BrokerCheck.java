@@ -22,6 +22,7 @@ import android.widget.ImageButton;
 
 import com.mobile.otrcapitalllc.Helpers.ActivityTags;
 import com.mobile.otrcapitalllc.Helpers.BrokerDatabase;
+import com.mobile.otrcapitalllc.Helpers.Extras;
 import com.mobile.otrcapitalllc.Models.Broker;
 import com.mobile.otrcapitalllc.R;
 
@@ -30,6 +31,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class BrokerCheck extends Activity {
+
     @Bind(R.id.brokerNameET)
     AutoCompleteTextView brokerNameET;
     @Bind(R.id.mcNumberET)
@@ -47,9 +49,8 @@ public class BrokerCheck extends Activity {
         } else {
             if (brokerNameET.getText().toString().isEmpty() && mcNumberET.getText().toString().isEmpty()) {
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-                alertDialogBuilder.setTitle("UNABLE TO PROCEED").setMessage("Both Broker name and MC number cannot be left " +
-                    "blank." + "\nPlease enter either a valid Broker Name or MC number to continue.").setCancelable(false)
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                alertDialogBuilder.setTitle(getString(R.string.alert_title_broker_name_black)).setMessage(getString(R.string.alert_message_broker_name_black)).setCancelable(false)
+                    .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
 
                     }
@@ -74,12 +75,9 @@ public class BrokerCheck extends Activity {
                     launchBrokerDetails();
                 } else {
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-                    alertDialogBuilder.setTitle("BROKER NOT FOUND").setMessage("The Broker does not exist in the database," +
-                        "\nPlease enter either a valid Broker Name or MC number to continue.").setCancelable(false)
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-
-                        }
+                    alertDialogBuilder.setTitle(getString(R.string.alert_title_broker_not_found)).setMessage(getString(R.string.alert_message_broker_not_found)).setCancelable(false)
+                        .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {}
                     });
 
                     AlertDialog alertDialog = alertDialogBuilder.create();
@@ -101,7 +99,7 @@ public class BrokerCheck extends Activity {
         extras.putString(ActivityTags.TAG_MC_NUMBER, brokerToCheck.get_mcnumber());
         extras.putString(ActivityTags.TAG_PKEY, brokerToCheck.get_pKey());
         Intent intent = new Intent(BrokerCheck.this, BrokerDetails.class);
-        intent.putExtra("data_extra", extras);
+        intent.putExtra(Extras.EXTRA_DATA, extras);
         startActivity(intent);
     }
 

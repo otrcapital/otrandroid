@@ -144,7 +144,7 @@ public class BrokerDatabase extends SQLiteOpenHelper {
         LogHelper.logDebug("Get broker list");
 
         // Select All Query
-        if(query == null) {
+        if (query == null) {
             query = "SELECT  * FROM " + TABLE_BROKER_DB;
         }
         List<Broker> brokerList = new ArrayList<Broker>();
@@ -178,7 +178,9 @@ public class BrokerDatabase extends SQLiteOpenHelper {
     }
 
 
-    public List<Broker> GetFactorableBrokerList() { return GetBrokers("SELECT  * FROM " + TABLE_BROKER_DB + " WHERE " + KEY_FACTORABLE + " = 1"); }
+    public List<Broker> GetFactorableBrokerList() {
+        return GetBrokers("SELECT  * FROM " + TABLE_BROKER_DB + " WHERE " + KEY_FACTORABLE + " = 1");
+    }
 
 
     public List<Broker> GetBrokerList() {

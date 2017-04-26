@@ -27,6 +27,7 @@ public class DrawView extends View {
     private ArrayList<ColorBall> colorballs = new ArrayList<ColorBall>();
     // array that holds the balls
     private int balID = 0;
+
     public DrawView(Context context) {
         super(context);
         paint = new Paint();
@@ -57,28 +58,26 @@ public class DrawView extends View {
 
     // the method that draws the balls
     @Override
-    protected void onDraw(Canvas canvas)
-    {
-        if (colorballs.size()==0)
-        {
+    protected void onDraw(Canvas canvas) {
+        if (colorballs.size() == 0) {
             int height = getMeasuredHeight();
             int width = getMeasuredWidth();
 
             //top left corner
             colorballs.add(new ColorBall(getContext(), R.drawable.edge_handle_top_left,
-                    new Point(width /4, height /4),ColorBall.OFFSET_TOP_LEFT));
+                    new Point(width / 4, height / 4), ColorBall.OFFSET_TOP_LEFT));
 
             //top right corner
-            colorballs.add(new ColorBall(getContext(),R.drawable.edge_handle_top_right,
-                    new Point(width- width/4, height /4),ColorBall.OFFSET_TOP_RIGHT));
+            colorballs.add(new ColorBall(getContext(), R.drawable.edge_handle_top_right,
+                    new Point(width - width / 4, height / 4), ColorBall.OFFSET_TOP_RIGHT));
 
             //bottom right corner
-            colorballs.add(new ColorBall(getContext(),R.drawable.edge_handle_bottom_right,
-                    new Point (width- width/4,height- height/4),ColorBall.OFFSET_BOTTOM_RIGHT));
+            colorballs.add(new ColorBall(getContext(), R.drawable.edge_handle_bottom_right,
+                    new Point(width - width / 4, height - height / 4), ColorBall.OFFSET_BOTTOM_RIGHT));
 
             //bottom left corner
-            colorballs.add(new ColorBall(getContext(),R.drawable.edge_handle_bottom_left,
-                    new Point(width /4,height- height/4),ColorBall.OFFSET_BOTTOM_LEFT));
+            colorballs.add(new ColorBall(getContext(), R.drawable.edge_handle_bottom_left,
+                    new Point(width / 4, height - height / 4), ColorBall.OFFSET_BOTTOM_LEFT));
 
         }
 
@@ -93,27 +92,25 @@ public class DrawView extends View {
         paint.setStrokeWidth(0);
 
         Path path = new Path();
-        path.moveTo(colorballs.get(0).getX()+colorballs.get(0).getPathOffsetX(),
-                colorballs.get(0).getY()+ colorballs.get(0).getPathOffsetY());
-        for (int i = 0;i<colorballs.size();i++)
-        {
-            int j =i;
-            if (i>=colorballs.size())
-                j=0;
+        path.moveTo(colorballs.get(0).getX() + colorballs.get(0).getPathOffsetX(),
+                colorballs.get(0).getY() + colorballs.get(0).getPathOffsetY());
+        for (int i = 0; i < colorballs.size(); i++) {
+            int j = i;
+            if (i >= colorballs.size())
+                j = 0;
 
-            path.lineTo(colorballs.get(j).getX()+colorballs.get(j).getPathOffsetX(),
-                    colorballs.get(j).getY()+colorballs.get(j).getPathOffsetY());
+            path.lineTo(colorballs.get(j).getX() + colorballs.get(j).getPathOffsetX(),
+                    colorballs.get(j).getY() + colorballs.get(j).getPathOffsetY());
         }
         canvas.drawPath(path, paint);
 
         BitmapDrawable bitmap = new BitmapDrawable();
         paint.setColor(Color.BLUE);
         // draw the balls on the canvas
-        for (int i =0; i < colorballs.size(); i ++)
-        {
+        for (int i = 0; i < colorballs.size(); i++) {
             ColorBall ball = colorballs.get(i);
-            canvas.drawBitmap(ball.getBitmap(), ball.getX()+colorballs.get(i).getHandleOffsetX(),
-                    ball.getY()+colorballs.get(i).getHandleOffsetY(), paint);
+            canvas.drawBitmap(ball.getBitmap(), ball.getX() + colorballs.get(i).getHandleOffsetX(),
+                    ball.getY() + colorballs.get(i).getHandleOffsetY(), paint);
         }
     }
 
@@ -131,8 +128,7 @@ public class DrawView extends View {
             {
                 //resize rectangle
                 balID = -1;
-                for (int i = colorballs.size()-1; i>=0; i--)
-                {
+                for (int i = colorballs.size() - 1; i >= 0; i--) {
                     ColorBall ball = colorballs.get(i);
                     // check if inside the bounds of the ball (circle)
                     // get the center for the ball
@@ -145,13 +141,11 @@ public class DrawView extends View {
                             .sqrt((double) (((centerX - X) * (centerX - X)) + (centerY - Y)
                                     * (centerY - Y)));
 
-                    if (radCircle < 1.5*(double)ball.getWidthOfBall())
-                    {
+                    if (radCircle < 1.5 * (double) ball.getWidthOfBall()) {
 
                         balID = ball.getID();
-                        if (balID >=4)
-                        {
-                            balID = balID%4;
+                        if (balID >= 4) {
+                            balID = balID % 4;
                         }
                         invalidate();
                         break;
@@ -163,19 +157,15 @@ public class DrawView extends View {
 
             case MotionEvent.ACTION_MOVE: // touch drag with the ball
 
-                if (balID > -1)
-                {
+                if (balID > -1) {
 
-                    try
-                    {
+                    try {
                         // move the balls the same as the finger
                         colorballs.get(balID).setX(X);
                         colorballs.get(balID).setY(Y);
                         invalidate();
 
-                    }
-                    catch (IndexOutOfBoundsException e)
-                    {
+                    } catch (IndexOutOfBoundsException e) {
                         LogHelper.logError("DrawView index out of bounds, Ballid = " + balID);
                     }
 
@@ -196,11 +186,10 @@ public class DrawView extends View {
     }
 
 
-    public static class ColorBall
-    {
+    public static class ColorBall {
 
-        public static final int OFFSET_TOP_LEFT=0,OFFSET_TOP_RIGHT=1,
-                OFFSET_BOTTOM_RIGHT=2,OFFSET_BOTTOM_LEFT=3;
+        public static final int OFFSET_TOP_LEFT = 0, OFFSET_TOP_RIGHT = 1,
+                OFFSET_BOTTOM_RIGHT = 2, OFFSET_BOTTOM_LEFT = 3;
         static int count = 0;
         Bitmap bitmap;
         Context mContext;
@@ -209,38 +198,34 @@ public class DrawView extends View {
         Point pathOffset;
         int id;
 
-        public ColorBall(Context context, int resourceId, Point point, int offsetType)
-        {
-            if (count >=4)
-            {
+        public ColorBall(Context context, int resourceId, Point point, int offsetType) {
+            if (count >= 4) {
                 count = count % 4;
             }
             this.id = count++;
-            bitmap = BitmapFactory.decodeResource(context.getResources(),resourceId);
+            bitmap = BitmapFactory.decodeResource(context.getResources(), resourceId);
             mContext = context;
             this.point = point;
             setOffset(offsetType);
         }
 
-        private void setOffset(int offsetType)
-        {
-            switch (offsetType)
-            {
+        private void setOffset(int offsetType) {
+            switch (offsetType) {
                 case OFFSET_TOP_LEFT:
-                    this.handleOffset = new Point(-bitmap.getWidth(),-bitmap.getHeight());
-                    this.pathOffset = new Point (0,0);
+                    this.handleOffset = new Point(-bitmap.getWidth(), -bitmap.getHeight());
+                    this.pathOffset = new Point(0, 0);
                     break;
                 case OFFSET_TOP_RIGHT:
-                    this.handleOffset = new Point(0,-bitmap.getHeight());
-                    this.pathOffset = new Point (bitmap.getWidth(),0);
+                    this.handleOffset = new Point(0, -bitmap.getHeight());
+                    this.pathOffset = new Point(bitmap.getWidth(), 0);
                     break;
                 case OFFSET_BOTTOM_LEFT:
-                    this.handleOffset = new Point(-bitmap.getWidth(),0);
-                    this.pathOffset = new Point (0,bitmap.getHeight());
+                    this.handleOffset = new Point(-bitmap.getWidth(), 0);
+                    this.pathOffset = new Point(0, bitmap.getHeight());
                     break;
                 case OFFSET_BOTTOM_RIGHT:
                     this.handleOffset = new Point(0, 0);
-                    this.pathOffset = new Point (bitmap.getWidth(),bitmap.getHeight());
+                    this.pathOffset = new Point(bitmap.getWidth(), bitmap.getHeight());
                     break;
 
             }
@@ -249,28 +234,31 @@ public class DrawView extends View {
         public int getWidthOfBall() {
             return bitmap.getWidth();
         }
+
         public int getHeightOfBall() {
             return bitmap.getHeight();
         }
+
         public Bitmap getBitmap() {
             return bitmap;
         }
-        public int getHandleOffsetX()
-        {
+
+        public int getHandleOffsetX() {
             return handleOffset.x;
         }
-        public int getHandleOffsetY()
-        {
+
+        public int getHandleOffsetY() {
             return handleOffset.y;
         }
-        public int getPathOffsetX()
-        {
-            return handleOffset.x+pathOffset.x;
+
+        public int getPathOffsetX() {
+            return handleOffset.x + pathOffset.x;
         }
-        public int getPathOffsetY()
-        {
-            return handleOffset.y+pathOffset.y;
+
+        public int getPathOffsetY() {
+            return handleOffset.y + pathOffset.y;
         }
+
         public int getX() {
             return point.x;
         }
@@ -291,9 +279,8 @@ public class DrawView extends View {
             return id;
         }
 
-        public Point getPointForWarp()
-        {
-            return new Point(point.x+getPathOffsetX(),point.y+getPathOffsetY());
+        public Point getPointForWarp() {
+            return new Point(point.x + getPathOffsetX(), point.y + getPathOffsetY());
         }
 
     }

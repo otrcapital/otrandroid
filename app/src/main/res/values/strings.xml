@@ -3,6 +3,9 @@
 
     <string name="btn_confirm">Confirm</string>
 
+    <!-- Common -->
+    <string name="ok">OK</string>
+
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_login_screen">Login</string>
@@ -17,6 +20,15 @@
     <string name="title_activity_refine_capture">Refine Capture</string>
     <string name="title_activity_image_perspective_correction">ImagePerspectiveCorrection</string>
     <string name="title_activity_crop_image">CropImage</string>
+
+
+    <!-- Broker check -->
+
+    <string name="alert_title_broker_name_black">UNABLE TO PROCEED</string>
+    <string name="alert_message_broker_name_black">Both Broker name and MC number cannot be left blank.\nPlease enter either a valid Broker Name or MC number to continue.</string>
+    <string name="alert_title_broker_not_found">BROKER NOT FOUND</string>
+    <string name="alert_message_broker_not_found">The Broker does not exist in the database.\nPlease enter either a valid Broker Name or MC number to continue.</string>
+
 
     <string name="alert_logout">Are you sure you want to logout?</string>
 </resources>

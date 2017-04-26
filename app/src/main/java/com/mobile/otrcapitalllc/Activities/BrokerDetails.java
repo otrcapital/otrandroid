@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.mobile.otrcapitalllc.Helpers.ActivityTags;
 import com.mobile.otrcapitalllc.Helpers.CrashlyticsHelper;
+import com.mobile.otrcapitalllc.Helpers.Extras;
 import com.mobile.otrcapitalllc.Helpers.LogHelper;
 import com.mobile.otrcapitalllc.Helpers.PreferenceManager;
 import com.mobile.otrcapitalllc.Helpers.RestClient;
@@ -86,7 +87,7 @@ public class BrokerDetails extends Activity {
         networkErrorTV.setVisibility(View.INVISIBLE);
 
         Bundle extras = getIntent().getExtras();
-        Bundle bundle = extras.getBundle("data_extra");
+        Bundle bundle = extras.getBundle(Extras.EXTRA_DATA);
         brokerName = bundle.getString(ActivityTags.TAG_BROKER_NAME);
         pKey = bundle.getString(ActivityTags.TAG_PKEY);
 
