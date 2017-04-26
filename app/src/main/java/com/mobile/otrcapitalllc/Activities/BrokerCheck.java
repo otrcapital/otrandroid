@@ -49,7 +49,7 @@ public class BrokerCheck extends Activity {
         } else {
             if (brokerNameET.getText().toString().isEmpty() && mcNumberET.getText().toString().isEmpty()) {
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-                alertDialogBuilder.setTitle(getString(R.string.alert_title_broker_name_black)).setMessage(getString(R.string.alert_message_broker_name_black)).setCancelable(false)
+                alertDialogBuilder.setTitle(getString(R.string.alert_title_broker_name_blank)).setMessage(getString(R.string.alert_message_broker_name_blank)).setCancelable(false)
                     .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
 

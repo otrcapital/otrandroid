@@ -1,14 +1,9 @@
 package com.mobile.otrcapitalllc.Activities;
 
-import java.util.List;
-
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -31,6 +26,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 public class BrokerDetails extends Activity {
+
     @Bind(R.id.brokerNameTV)
     TextView brokerNameTV;
     @Bind(R.id.mcTV)
@@ -55,17 +51,16 @@ public class BrokerDetails extends Activity {
     TextView networkErrorTV;
 
     private String brokerName, pKey;
-    private RestClient mRestClient;
 
     @OnClick(R.id.factorLoadButton)
     public void factorLoad(View view) {
-        if (factorLoadButton.getText().toString().equals("Retry")) {
+        if (factorLoadButton.getText().toString().equals(getString(R.string.retry))) {
             networkErrorTV.setVisibility(View.INVISIBLE);
             progressIndicatorVisiblity(View.VISIBLE);
             brokerDetails();
-        } else if (factorLoadButton.getText().toString().equals("Call Office")) {
+        } else if (factorLoadButton.getText().toString().equals(getString(R.string.call_office))) {
             Intent intent = new Intent(Intent.ACTION_CALL);
-            intent.setData(Uri.parse("tel:770 8820 124"));
+            intent.setData(Uri.parse(getString(R.string.office_tel_number)));
             startActivity(intent);
         } else {
             factorAdvanceLoad(ActivityTags.TAG_FACTOR_LOAD);
@@ -88,6 +83,9 @@ public class BrokerDetails extends Activity {
 
         Bundle extras = getIntent().getExtras();
         Bundle bundle = extras.getBundle(Extras.EXTRA_DATA);
+
+        if (bundle == null) return;
+
         brokerName = bundle.getString(ActivityTags.TAG_BROKER_NAME);
         pKey = bundle.getString(ActivityTags.TAG_PKEY);
 
@@ -108,7 +106,7 @@ public class BrokerDetails extends Activity {
                 brokerNameTV.setText(cvm.Name);
                 mcTV.setText(cvm.McNumber);
                 dotNumberTV.setText(cvm.DotNumber);
-                factorLoadButton.setText("Factor a Load");
+                factorLoadButton.setText(getString(R.string.title_activity_factor_a_load));
                 locationTV.setText(cvm.City + ", " + cvm.State);
                 phoneNumberTV.setText(cvm.Phone);
                 progressIndicatorVisiblity(View.INVISIBLE);
@@ -117,16 +115,16 @@ public class BrokerDetails extends Activity {
 
                 String checkResult = cvm.CreditCheckResult;
                 if (cvm.CreditCheckResult == null || "".equals(cvm.CreditCheckResult)) {
-                    checkResult = "Call Office";
+                    checkResult = getString(R.string.call_office);
                 }
 
                 factorableTV.setText(checkResult);
 
-                if ("Call Office".equals(checkResult)) {
+                if (getString(R.string.call_office).equals(checkResult)) {
                     factorableTV.setTextColor(getResources().getColor(R.color.red));
-                    factorLoadButton.setText("Call Office");
+                    factorLoadButton.setText(getString(R.string.call_office));
                     advanceLoadButton.setVisibility(View.INVISIBLE);
-                } else if ("Approved".equals(checkResult)) {
+                } else if (getString(R.string.approved).equals(checkResult)) {
                     factorableTV.setTextColor(getResources().getColor(R.color.green));
                 }
             }
@@ -136,8 +134,8 @@ public class BrokerDetails extends Activity {
                 CrashlyticsHelper.logException(error);
                 verifyUserGroup.setVisibility(View.INVISIBLE);
                 networkErrorTV.setVisibility(View.VISIBLE);
-                networkErrorTV.setText("Unable to connect to the server at the moment");
-                factorLoadButton.setText("Retry");
+                networkErrorTV.setText(getString(R.string.alert_message_no_connection));
+                factorLoadButton.setText(getString(R.string.retry));
                 factorLoadButton.setVisibility(View.VISIBLE);
 
                 LogHelper.logError(error.toString());
@@ -166,9 +164,4 @@ public class BrokerDetails extends Activity {
             advanceLoadButton.setVisibility(View.INVISIBLE);
         }
     }
-
-    public class ArrayOfCustomerViewModel {
-        public List<CustomerViewModel> CVM;
-    }
-
 }
