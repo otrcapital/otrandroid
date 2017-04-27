@@ -144,6 +144,7 @@ public class FactorAdvanceLoad extends Activity {
             types = getResources().getStringArray(R.array.factor_load);
             brokers = db.GetFactorableBrokerList();
         }
+        brokers = db.GetBrokerList();
 
         for (Broker b : brokers) {
             brokerNames.add(b.get_brokerName());

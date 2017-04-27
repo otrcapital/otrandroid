@@ -62,6 +62,7 @@ public class GetBrokers extends IntentService {
 
             RestClient restClient = new RestClient(this, userCredentials);
             restClient.getApiService().GetCustomers(date, new Callback<List<CustomerViewModel>>() {
+
                 @Override
                 public void success(List<CustomerViewModel> customerViewModels, Response response) {
                     LogHelper.logDebug("Broker list fetched from the server");
