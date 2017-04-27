@@ -45,6 +45,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class CropImage extends Activity {
+
     @Bind(R.id.editImageView)
     ImageView editImageView;
     @Bind(R.id.executeBtn)

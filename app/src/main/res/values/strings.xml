@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">OTR CAPITAL LLC</string>
     <string name="office_tel_number">tel:770 8820 124</string>
-
+    <string name="office_email_address">info@otrcapital.com</string>
+    <string name="url_facebook">https://www.facebook.com/pages/OTR-Capital/473947932696034</string>
 
     <!-- Common -->
     <string name="ok">OK</string>
@@ -40,6 +41,11 @@
     <!-- Broker details -->
     <string name="call_office">Call Office</string>
     <string name="approved">Approved</string>
+
+
+    <!-- Contact Us -->
+    <string name="contact_us_email_subject">Information</string>
+    <string name="send_email">Send Email</string>
 
 
 

@@ -22,7 +22,7 @@ public class SignUp extends Activity {
     @OnClick(R.id.callBtn)
     public void callBtn(View view) {
         Intent intent = new Intent(Intent.ACTION_CALL);
-        intent.setData(Uri.parse("tel:770 8820 124"));
+        intent.setData(Uri.parse(getString(R.string.office_tel_number)));
         startActivity(intent);
     }
 
@@ -30,10 +30,10 @@ public class SignUp extends Activity {
     public void emailBtn(View view) {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_EMAIL, "info@otrcapital.com");
-        intent.putExtra(Intent.EXTRA_SUBJECT, "Information");
+        intent.putExtra(Intent.EXTRA_EMAIL, getString(R.string.office_email_address));
+        intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.contact_us_email_subject));
 
-        startActivity(Intent.createChooser(intent, "Send Email"));
+        startActivity(Intent.createChooser(intent, getString(R.string.send_email)));
     }
 
     @OnClick(R.id.fbImgBtn)
