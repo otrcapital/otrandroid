@@ -86,7 +86,7 @@ public class LoginScreen extends Activity {
     @OnClick(R.id.fbImgBtn)
     public void fbImgBtn(View view) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse("https://www.facebook.com/pages/OTR-Capital/473947932696034"));
+        intent.setData(Uri.parse(getString(R.string.url_facebook)));
         startActivity(intent);
     }
 

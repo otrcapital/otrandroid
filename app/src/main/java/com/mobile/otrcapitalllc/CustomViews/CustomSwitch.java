@@ -17,8 +17,10 @@ import butterknife.ButterKnife;
 
 public class CustomSwitch extends LinearLayout {
 
-    @Bind(R.id.switch_custom) Switch mSwitch;
-    @Bind(R.id.textView_switch) TextView mTextView;
+    @Bind(R.id.switch_custom)
+    Switch mSwitch;
+    @Bind(R.id.textView_switch)
+    TextView mTextView;
 
     private Context mContext;
 

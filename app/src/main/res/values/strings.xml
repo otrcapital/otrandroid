@@ -3,10 +3,20 @@
     <string name="office_tel_number">tel:770 8820 124</string>
     <string name="office_email_address">info@otrcapital.com</string>
     <string name="url_facebook">https://www.facebook.com/pages/OTR-Capital/473947932696034</string>
+    <string name="url_plus">https://plus.google.com/112871732199319272036/about?hl=en</string>
+    <string name="url_twitter">https://twitter.com/otrcapitalllc</string>
+    <string name="url_instagram">https://instagram.com/otrcapital/</string>
+    <string name="url_linkedin">https://www.linkedin.com/company/otr-capital</string>
+
 
     <!-- Common -->
     <string name="ok">OK</string>
     <string name="retry">Retry</string>
+    <string name="delete">Delete</string>
+    <string name="open">Open</string>
+    <string name="email">Email</string>
+    <string name="resend">Resend</string>
+
     <string name="btn_confirm">Confirm</string>
     <string name="alert_message_no_connection">Unable to connect to the server at the moment</string>
 
@@ -47,6 +57,11 @@
     <string name="contact_us_email_subject">Information</string>
     <string name="send_email">Send Email</string>
 
+
+    <string name="no_app_found_to_view_pdf">No app found for view pdf</string>
+    <string name="choose_email_provider">Choose an email provider:</string>
+    <string name="document_has_been_sent_already">Document has been sent already</string>
+    <string name="error_with_resend_file">Error with resend file</string>
 
 
     <string name="alert_logout">Are you sure you want to logout?</string>

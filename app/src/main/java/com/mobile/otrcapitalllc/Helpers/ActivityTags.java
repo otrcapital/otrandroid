@@ -5,8 +5,7 @@ import android.os.Environment;
 /**
  * Created by Jawad_2 on 7/20/2015.
  */
-public final class ActivityTags
-{
+public final class ActivityTags {
     public enum TAKE_PHOTO_TYPE {
         CAMERA,
         GALLERY

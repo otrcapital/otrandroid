@@ -48,7 +48,8 @@ public class RestClient {
         public void intercept(RequestFacade request) {
             request.addHeader("User-Agent", "Fiddler");
             request.addHeader("Host", mContext.getString(R.string.WebSiteHost));
-            if (mUserCredentials != null) request.addHeader("Authorization", "Basic " + mUserCredentials);
+            if (mUserCredentials != null)
+                request.addHeader("Authorization", "Basic " + mUserCredentials);
         }
     };
 

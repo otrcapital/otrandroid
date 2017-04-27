@@ -81,7 +81,7 @@ public class History extends ListActivity {
             intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(intent);
         } catch (ActivityNotFoundException ex) {
-            Toast.makeText(this, "No app found for view pdf", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.no_app_found_to_view_pdf), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -90,7 +90,7 @@ public class History extends ListActivity {
         emailIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         emailIntent.setType("*/*");
         emailIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(ActivityTags.EXT_STORAGE_DIR + fileName)));
-        startActivity(Intent.createChooser(emailIntent, "Choose an email provider:"));
+        startActivity(Intent.createChooser(emailIntent, getString(R.string.choose_email_provider)));
     }
 
     public void DeleteFile(int position) {
@@ -106,7 +106,7 @@ public class History extends ListActivity {
     public void ResendFile(final String fileName) {
         String jsonInvoice = PreferenceManager.with(this).getStringWithKey(fileName);
         if (jsonInvoice == null) {
-            Toast.makeText(this, "Error with resend file", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.error_with_resend_file), Toast.LENGTH_LONG).show();
             return;
         }
         final HistoryInvoiceModel model = new Gson().fromJson(jsonInvoice, HistoryInvoiceModel.class);
@@ -123,7 +123,7 @@ public class History extends ListActivity {
         }
 
         if (model.getStatus().equals("success")) {
-            Toast.makeText(this, "Document has been sent already", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.document_has_been_sent_already), Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -135,10 +135,10 @@ public class History extends ListActivity {
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-        menu.add(0, 0, 0, "Delete");//groupId, itemId, order, title
-        menu.add(0, 1, 1, "Open");
-        menu.add(0, 2, 2, "Email");
-        menu.add(0, 3, 3, "Resend");
+        menu.add(0, 0, 0, getString(R.string.delete));//groupId, itemId, order, title
+        menu.add(0, 1, 1, getString(R.string.open));
+        menu.add(0, 2, 2, getString(R.string.email));
+        menu.add(0, 3, 3, getString(R.string.resend));
     }
 
     @Override
@@ -146,13 +146,13 @@ public class History extends ListActivity {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         String listItemName = fileList.get(info.position);
 
-        if (item.getTitle().equals("Delete")) {
+        if (item.getTitle().equals(getString(R.string.delete))) {
             DeleteFile(info.position);
-        } else if (item.getTitle().equals("Open")) {
+        } else if (item.getTitle().equals(getString(R.string.open))) {
             OpenFile(fileList.get(info.position));
-        } else if (item.getTitle().equals("Email")) {
+        } else if (item.getTitle().equals(getString(R.string.email))) {
             EmailFile(fileList.get(info.position));
-        } else if (item.getTitle().equals("Resend")) {
+        } else if (item.getTitle().equals(getString(R.string.resend))) {
             ResendFile(fileList.get(info.position));
         } else {
             return false;
