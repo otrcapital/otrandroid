@@ -16,7 +16,7 @@ android {
         applicationId "com.mobile.otrcapitalllc"
         minSdkVersion 17
         targetSdkVersion 22
-        versionCode 11
+        versionCode 15
         versionName "1.6"
         multiDexEnabled true
         signingConfig signingConfigs.config
@@ -45,4 +45,3 @@ dependencies {
         transitive = true;
     }
 }
-

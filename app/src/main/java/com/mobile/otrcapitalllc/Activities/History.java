@@ -24,7 +24,9 @@ import com.mobile.otrcapitalllc.Models.HistoryInvoiceModel;
 import com.mobile.otrcapitalllc.R;
 
 import java.io.File;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -46,6 +48,7 @@ public class History extends ListActivity {
         ButterKnife.bind(this);
 
         fileList = getFileList();
+
         adapter = new HistoryFilesAdapter(this, fileList);
         setListAdapter(adapter);
         registerForContextMenu(getListView());
@@ -59,10 +62,9 @@ public class History extends ListActivity {
         ArrayList<String> files = new ArrayList<>();
 
         for (File f : myDir.listFiles()) {
-            if (f.isFile() && f != null) {
-                files.add(f.getName().toString());
+            if (f.isFile() && PreferenceManager.with(this).getStringWithKey(f.getName()) != null) {
+                files.add(f.getName());
             }
-
         }
 
         return files;

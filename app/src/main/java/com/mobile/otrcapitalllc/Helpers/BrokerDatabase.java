@@ -31,6 +31,7 @@ public class BrokerDatabase extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "BrokerDB";
     // table names
     private static final String TABLE_BROKER_DB = "table_broker_db";
+    private static final String TABLE_BROKER_DB_TEMP = "table_broker_db_temp";
     private static final String KEY_ID = "_id";
 
     public BrokerDatabase(Context context) {
@@ -52,9 +53,28 @@ public class BrokerDatabase extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_BROKER_DB);
+
+        db.beginTransaction();
+        try{
+            db.execSQL("ALTER TABLE " + TABLE_BROKER_DB + " RENAME TO " + TABLE_BROKER_DB_TEMP);
+            db.setTransactionSuccessful();
+        } finally{
+            db.endTransaction();
+        }
 
         onCreate(db);
+
+        try {
+            if(oldVersion < 2) {
+                db.execSQL("INSERT INTO " + TABLE_BROKER_DB + "(_id, mcNumber, brokerName, pKey) SELECT "
+                        + KEY_ID + ", " +
+                        KEY_MC_NUMBER + ", " +
+                        KEY_BROKER_NAME + ", " +
+                        KEY_PKEY + " FROM " + TABLE_BROKER_DB_TEMP);
+            }
+        }catch (Exception ex) {}
+
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_BROKER_DB_TEMP);
     }
 
     public List<Broker> GetNewBrokersList(List<Broker> brokers) {
@@ -91,8 +111,7 @@ public class BrokerDatabase extends SQLiteOpenHelper {
 
     public void PutBrokerName(SQLiteDatabase db, ContentValues values) {
         // Inserting Row
-        db.insert(TABLE_BROKER_DB, null, values);
-
+        db.insertWithOnConflict(TABLE_BROKER_DB, null, values, SQLiteDatabase.CONFLICT_REPLACE);
     }
 
     private List<Broker> RemoveUselessValues(List<Broker> OrigList) {
