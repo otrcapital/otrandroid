@@ -139,10 +139,8 @@ public class FactorAdvanceLoad extends Activity {
 
         if (activityType.equals(ActivityTags.TAG_FACTOR_ADVANCE)) {
             types = getResources().getStringArray(R.array.advance_load);
-            brokers = db.GetBrokerList();
         } else {
             types = getResources().getStringArray(R.array.factor_load);
-            brokers = db.GetFactorableBrokerList();
         }
         brokers = db.GetBrokerList();
 

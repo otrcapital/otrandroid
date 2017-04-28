@@ -71,7 +71,7 @@ public class GetBrokers extends IntentService {
                     List<Broker> brokers = new ArrayList<>();
 
                     for (CustomerViewModel cvm : customerViewModels) {
-                        brokers.add(new Broker(cvm.McNumber, cvm.Name, cvm.PKey, cvm.Factorable));
+                        brokers.add(new Broker(cvm.McNumber, cvm.Name, cvm.PKey));
                     }
 
                     //Save downloaded records to local database in a background AsyncTask
@@ -112,7 +112,6 @@ public class GetBrokers extends IntentService {
                 values.put(BrokerDatabase.KEY_MC_NUMBER, b.get_mcnumber());
                 values.put(BrokerDatabase.KEY_BROKER_NAME, b.get_brokerName());
                 values.put(BrokerDatabase.KEY_PKEY, b.get_pKey());
-                values.put(BrokerDatabase.KEY_FACTORABLE, b.isFactorable());
                 brokerDB.PutBrokerName(dbWrite, values);
                 valuesSaved++;
                 percentNew = (valuesSaved * 100) / totalCount;

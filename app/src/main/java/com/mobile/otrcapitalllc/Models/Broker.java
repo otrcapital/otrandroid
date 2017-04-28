@@ -4,16 +4,14 @@ public class Broker {
     private String _mcnumber;
     private String _brokerName;
     private String _pKey;
-    private boolean factorable;
 
     private Broker() {
     }
 
-    public Broker(String MCNumber, String BrokerName, String PKey, boolean _factorable) {
+    public Broker(String MCNumber, String BrokerName, String PKey) {
         this._mcnumber = MCNumber;
         this._brokerName = BrokerName;
         this._pKey = PKey;
-        this.factorable = _factorable;
     }
 
     public String get_mcnumber() {
@@ -38,10 +36,6 @@ public class Broker {
 
     public void set_pKey(String _pKey) {
         this._pKey = _pKey;
-    }
-
-    public boolean isFactorable() {
-        return this.factorable;
     }
 
 }
