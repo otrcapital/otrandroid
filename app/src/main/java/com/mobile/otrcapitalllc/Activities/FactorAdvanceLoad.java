@@ -1,7 +1,11 @@
 package com.mobile.otrcapitalllc.Activities;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -14,8 +18,10 @@ import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -38,6 +44,25 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class FactorAdvanceLoad extends Activity {
+
+    class CurrencyFormatInputFilter implements InputFilter {
+
+        Pattern mPattern;
+
+        public CurrencyFormatInputFilter(int digitsBeforeZero,int digitsAfterZero) {
+            mPattern=Pattern.compile("[0-9]{0," + (digitsBeforeZero-1) + "}+((\\.[0-9]{0," + (digitsAfterZero-1) + "})?)||(\\.)?");
+        }
+
+        @Override
+        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+
+            Matcher matcher=mPattern.matcher(dest);
+            if(!matcher.matches())
+                return "";
+            return null;
+        }
+    }
+
     @Bind(R.id.brokerNameET)
     AutoCompleteTextView brokerNameET;
     @Bind(R.id.loadNumberET)
@@ -227,6 +252,48 @@ public class FactorAdvanceLoad extends Activity {
     }
 
     private void setListeners() {
+        totalPayET.setFilters(new InputFilter[] {new CurrencyFormatInputFilter(8,2)});
+        totalDeductionET.setFilters(new InputFilter[] {new CurrencyFormatInputFilter(8,2)});
+
+        totalPayET.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (editable.toString().equals(".")) {
+                    totalPayET.removeTextChangedListener(this);
+
+                    totalPayET.setText("0.");
+                    totalPayET.setSelection(totalPayET.getText().length());
+                    totalPayET.addTextChangedListener(this);
+                }
+            }
+        });
+
+        totalDeductionET.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (editable.toString().equals(".")) {
+                    totalDeductionET.removeTextChangedListener(this);
+
+                    totalDeductionET.setText("0.");
+                    totalDeductionET.setSelection(totalDeductionET.getText().length());
+                    totalDeductionET.addTextChangedListener(this);
+                }
+            }
+        });
+
+
         brokerNameET.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -310,20 +377,26 @@ public class FactorAdvanceLoad extends Activity {
     }
 
     private void openNextScreen() {
+        String strFloatTotalPay = String.format("%.2f", Float.parseFloat(totalPayET.getText().toString()));
+        String strTotalDeductionET = String.format("%.2f", Float.parseFloat(totalDeductionET.getText().toString()));
+
+        float flTotalPayET = Float.parseFloat(strFloatTotalPay);
+        float flrTotalDeductionET = Float.parseFloat(strTotalDeductionET);
         String brokerName = brokerNameET.getText().toString();
-        float invoiceAmount = Float.parseFloat(totalPayET.getText().toString()) - Float.parseFloat(totalDeductionET.getText()
-                .toString());
+        float invoiceAmount = flTotalPayET - flrTotalDeductionET;
+
+        
         Bundle extras = new Bundle();
         extras.putString(ActivityTags.TAG_BROKER_NAME, brokerName);
         extras.putString(ActivityTags.TAG_LOAD_NUMBER, loadNumberET.getText().toString());
         extras.putString(ActivityTags.TAG_PKEY, brokerDetails(brokerName).get_pKey());
         extras.putString(ActivityTags.TAG_MC_NUMBER, brokerDetails(brokerName).get_mcnumber());
-        extras.putFloat(ActivityTags.TAG_INVOICE_AMOUNT, invoiceAmount);
         extras.putString(ActivityTags.TAG_ACTIVITY_TYPE, activityType);
         extras.putString(ActivityTags.TAG_PHOTO_TYPE, photoType.name());
         extras.putString(ActivityTags.TAG_PAYMENT_OPTION, getPaymentOption());
         extras.putString(ActivityTags.TAG_CELL_NUMBER, cellNumber);
-        extras.putFloat(ActivityTags.TAG_ADV_REQ_AMOUNT, Float.parseFloat(totalDeductionET.getText().toString()));
+        extras.putFloat(ActivityTags.TAG_INVOICE_AMOUNT, invoiceAmount);
+        extras.putFloat(ActivityTags.TAG_ADV_REQ_AMOUNT, flrTotalDeductionET);
         Intent intent = new Intent(FactorAdvanceLoad.this, LoadDetails.class);
         intent.putExtra("data_extra", extras);
         startActivity(intent);
