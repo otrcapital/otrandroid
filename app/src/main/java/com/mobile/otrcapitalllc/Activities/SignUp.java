@@ -15,7 +15,7 @@ public class SignUp extends Activity {
     @OnClick(R.id.signUpButton)
     public void signUpButton(View view) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse("http://otrcapital.com/apply-now/"));
+        intent.setData(Uri.parse(getString(R.string.url_sign_up)));
         startActivity(intent);
     }
 
