@@ -93,6 +93,10 @@ public class FactorAdvanceLoad extends Activity {
     @OnClick(R.id.scanButton)
     public void scanButton(View view) {
         photoType = ActivityTags.TAKE_PHOTO_TYPE.CAMERA;
+
+        changeDecimalPartIfNeeded(totalPayET);
+        changeDecimalPartIfNeeded(totalDeductionET);
+
         CustomError error = checkFields();
         if (error.isError()) {
             showAlertDialog(error.getDescription());
@@ -215,7 +219,7 @@ public class FactorAdvanceLoad extends Activity {
                 isError = true;
                 sb.append("\n\tAdvance Request Amount");
             } else {
-                totalDeductionET.setText("0.0");
+                totalDeductionET.setText("0.00");
             }
         }
 
@@ -252,8 +256,38 @@ public class FactorAdvanceLoad extends Activity {
     }
 
     private void setListeners() {
-        totalPayET.setFilters(new InputFilter[] {new CurrencyFormatInputFilter(8,2)});
-        totalDeductionET.setFilters(new InputFilter[] {new CurrencyFormatInputFilter(8,2)});
+        totalPayET.setFilters(new InputFilter[] {new CurrencyFormatInputFilter(12,2)});
+        totalDeductionET.setFilters(new InputFilter[] {new CurrencyFormatInputFilter(12,2)});
+
+        View.OnFocusChangeListener listener = new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if (b) return;
+
+                EditText editText = (EditText) view;
+                changeDecimalPartIfNeeded(editText);
+            }
+        };
+        totalPayET.setOnFocusChangeListener(listener);
+        totalDeductionET.setOnFocusChangeListener(listener);
+
+
+        View.OnKeyListener keyListener = new View.OnKeyListener() {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    EditText editText = (EditText) v;
+                    String string = editText.getText().toString();
+                    changeDecimalPartIfNeeded(editText);
+
+                    return true;
+                }
+                return false;
+            }
+        };
+        totalPayET.setOnKeyListener(keyListener);
+        totalDeductionET.setOnKeyListener(keyListener);
+
 
         totalPayET.addTextChangedListener(new TextWatcher() {
             @Override
@@ -385,7 +419,7 @@ public class FactorAdvanceLoad extends Activity {
         String brokerName = brokerNameET.getText().toString();
         float invoiceAmount = flTotalPayET - flrTotalDeductionET;
 
-        
+
         Bundle extras = new Bundle();
         extras.putString(ActivityTags.TAG_BROKER_NAME, brokerName);
         extras.putString(ActivityTags.TAG_LOAD_NUMBER, loadNumberET.getText().toString());
@@ -498,4 +532,24 @@ public class FactorAdvanceLoad extends Activity {
             }
         }
     };
+
+
+    //region Decimal field functions
+
+    private void changeDecimalPartIfNeeded(EditText editText) {
+        String string = editText.getText().toString();
+
+        if (string.contains(".")) {
+            String decimal = string.substring(string.lastIndexOf(".") + 1);
+            if (decimal.length() == 0) {
+                editText.setText(string + "00");
+            }else if (decimal.length() == 1) {
+                editText.setText(string + "0");
+            }
+        }else if (!(string.equals("0") || string.isEmpty())){
+            editText.setText(string + ".00");
+        }
+    }
+
+    //endregion
 }
