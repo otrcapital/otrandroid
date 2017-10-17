@@ -1,40 +1,22 @@
 package com.mobile.otrcapitalllc.Activities;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.ContentResolver;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.provider.BaseColumns;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.itextpdf.text.BadElementException;
-import com.itextpdf.text.Image;
 import com.mobile.otrcapitalllc.Helpers.ActivityTags;
 import com.mobile.otrcapitalllc.Helpers.LogHelper;
 import com.mobile.otrcapitalllc.Helpers.PreferenceManager;
-import com.mobile.otrcapitalllc.Helpers.RealPathUtil;
 import com.mobile.otrcapitalllc.R;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -91,34 +73,6 @@ public class MainDashboard extends Activity {
         Intent intent = new Intent(MainDashboard.this, LoginScreen.class);
         finish();
         startActivity(intent);
-
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        builder.setMessage(getString(R.string.alert_logout));
-//
-//        String positiveText = getString(R.string.btn_confirm);
-//        builder.setPositiveButton(positiveText,
-//                new DialogInterface.OnClickListener() {
-//
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        PreferenceManager.with(MainDashboard.this).saveTokenValid(false);
-//
-//                        Intent intent = new Intent(MainDashboard.this, LoginScreen.class);
-//                        finish();
-//                        startActivity(intent);
-//                    }
-//                });
-//
-//        String negativeText = getString(android.R.string.cancel);
-//        builder.setNegativeButton(negativeText,
-//                new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                    }
-//                });
-//
-//        AlertDialog dialog = builder.create();
-//        dialog.show();
     }
 
     @OnClick(R.id.contactUsImgBtn)
