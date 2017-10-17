@@ -8,6 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin">
+
     <ImageView
         android:id="@+id/otrLogo"
         android:layout_width="wrap_content"
@@ -15,7 +16,8 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="36dp"
-        android:src="@drawable/otr_logo"/>
+        android:src="@drawable/otr_logo" />
+
     <LinearLayout
         android:id="@+id/loginGroup"
         android:layout_width="wrap_content"
@@ -36,6 +38,7 @@
             android:gravity="center"
             android:text="New user, please login"
             android:textSize="18sp" />
+
         <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="wrap_content"
@@ -54,20 +57,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="15"
-                android:hint="enter email"
+                android:hint="@string/hint_enter_email"
                 android:inputType="textEmailAddress"
                 android:textColor="@android:color/black"
                 android:textColorHint="@android:color/darker_gray" />
+
             <EditText
                 android:id="@+id/loginPasswordET"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="15"
-                android:hint="enter password"
+                android:hint="@string/hint_enter_password"
                 android:inputType="textPassword"
                 android:textColor="@android:color/black"
                 android:textColorHint="@android:color/darker_gray" />
         </LinearLayout>
+
         <Button
             android:id="@+id/loginButton"
             style="@style/ButtonLogin_btn"
@@ -89,6 +94,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="15dp"
         android:orientation="horizontal">
+
         <ImageButton
             android:id="@+id/fbImgBtn"
             android:layout_width="wrap_content"
@@ -99,6 +105,7 @@
             android:background="#00ffffff"
             android:focusableInTouchMode="true"
             android:src="@drawable/icon_facebook" />
+
         <ImageButton
             android:id="@+id/googleplusImgBtn"
             android:layout_width="wrap_content"
@@ -108,6 +115,7 @@
             android:alpha="0.7"
             android:background="#00ffffff"
             android:src="@drawable/icon_google_plus" />
+
         <ImageButton
             android:id="@+id/instagramImgBtn"
             android:layout_width="wrap_content"
@@ -117,6 +125,7 @@
             android:alpha="0.7"
             android:background="#00ffffff"
             android:src="@drawable/icon_instagram" />
+
         <ImageButton
             android:id="@+id/linkedinImgBtn"
             android:layout_width="wrap_content"
@@ -126,6 +135,7 @@
             android:alpha="0.7"
             android:background="#00ffffff"
             android:src="@drawable/icon_linkedin" />
+
         <ImageButton
             android:id="@+id/twitterImgBtn"
             android:layout_width="wrap_content"
@@ -136,6 +146,7 @@
             android:background="#00ffffff"
             android:src="@drawable/icon_twitter_bird" />
     </LinearLayout>
+
     <ImageButton
         android:id="@+id/signUpImgBtn"
         android:layout_width="wrap_content"
@@ -146,6 +157,7 @@
         android:layout_marginLeft="15dp"
         android:background="#00ffffff"
         android:src="@drawable/sign_up_light" />
+
     <ImageButton
         android:id="@+id/contactUsImgBtn"
         android:layout_width="wrap_content"
@@ -176,7 +188,7 @@
             android:indeterminateOnly="true"
             android:paddingLeft="15dp"
             android:progressTint="@color/blue_dark"
-            android:progressTintMode="src_in"/>
+            android:progressTintMode="src_in" />
 
         <TextView
             android:id="@+id/verifyUserTV"
@@ -187,7 +199,7 @@
             android:paddingRight="15dp"
             android:text="Verifying User"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/blue_dark"/>
+            android:textColor="@color/blue_dark" />
     </LinearLayout>
 
     <Button

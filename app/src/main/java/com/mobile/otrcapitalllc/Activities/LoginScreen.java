@@ -130,6 +130,7 @@ public class LoginScreen extends Activity {
 
         loginEmailET.getBackground().setColorFilter(getResources().getColor(R.color.blue_light), PorterDuff.Mode.SRC_ATOP);
         loginPasswordET.getBackground().setColorFilter(getResources().getColor(R.color.blue_light), PorterDuff.Mode.SRC_ATOP);
+        loginPasswordET.setTypeface(loginEmailET.getTypeface());
 
         ProgressIndicatorVisiblity(View.VISIBLE);
         verifyUserGroup.setVisibility(View.INVISIBLE);
