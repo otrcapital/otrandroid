@@ -83,7 +83,7 @@ public class CropImage extends Activity {
         } else if (cropDone.equals("done")) {
             saveOutput();
             Intent returnIntent = new Intent();
-            setResult(RESULT_CANCELED, returnIntent);
+            setResult(RESULT_OK, returnIntent);
             finish();
         }
 
