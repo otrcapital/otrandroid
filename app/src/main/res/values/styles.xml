@@ -30,4 +30,8 @@
         <item name="android:paddingRight">4dp</item>
         <item name="android:textStyle">italic</item>
     </style>
+
+    <style name="Color1SwitchStyle">
+        <item name="colorControlActivated">#3e9dd9</item>
+    </style>
 </resources>
