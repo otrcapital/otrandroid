@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
@@ -16,9 +17,14 @@ import android.widget.Toast;
 import com.mobile.otrcapitalllc.Helpers.ActivityTags;
 import com.mobile.otrcapitalllc.Helpers.LogHelper;
 import com.mobile.otrcapitalllc.Helpers.PreferenceManager;
+import com.mobile.otrcapitalllc.Helpers.RealPathUtil;
 import com.mobile.otrcapitalllc.R;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -33,6 +39,7 @@ public class MainDashboard extends Activity {
     private static final int REQUEST_CROP_PICTURE = 12;
     private static final int EDIT_IMAGE = 13;
     private static final int SHARE_IMAGE = 14;
+    private static final int PICK_PICTURE = 15;
 
     private ArrayList<File> imageFiles = new ArrayList<File>();
 
@@ -108,14 +115,18 @@ public class MainDashboard extends Activity {
 
     @OnClick(R.id.scanImgBtn)
     public void scanBtnClick(View view) {
-        CharSequence colors[] = new CharSequence[] {"red", "green", "blue", "black"};
+        CharSequence colors[] = new CharSequence[] {getString(R.string.scan_option_camera), getString(R.string.scan_option_gallery)};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Pick a color");
+        builder.setTitle(getString(R.string.scan_title));
         builder.setItems(colors, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // the user clicked on colors[which]
+                if (which == 0) {
+                    scanFromCamera();
+                }else {
+                    scanFromGallery();
+                }
             }
         });
         builder.show();
@@ -126,6 +137,15 @@ public class MainDashboard extends Activity {
         createImageFile();
         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(imageFiles.get(imageFiles.size() - 1)));
         startActivityForResult(intent, TAKE_PICTURE);
+    }
+
+    private void scanFromGallery() {
+        createImageFile();
+
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_PICTURE);
     }
 
     private void createImageFile() {
@@ -173,6 +193,28 @@ public class MainDashboard extends Activity {
             Intent intent = new Intent(this, CropImage.class);
             intent.putExtra("image_path", imageFiles.get(imageFiles.size() - 1).getAbsolutePath());
             startActivityForResult(intent, REQUEST_CROP_PICTURE);
+        } else if ((requestCode == PICK_PICTURE) && (resultCode == RESULT_OK)) {
+            String realPath;
+            if (Build.VERSION.SDK_INT < 11) {
+                realPath = RealPathUtil.getRealPathFromURI_BelowAPI11(this, data.getData());
+            } else if (Build.VERSION.SDK_INT < 19) {
+                realPath = RealPathUtil.getRealPathFromURI_API11to18(this, data.getData());
+            } else {
+                try {
+                    realPath = RealPathUtil.getRealPathFromURI_API19(this, data.getData());
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    realPath = RealPathUtil.getRealPathFromURI_API11to18(this, data.getData());
+                }
+            }
+
+            copyImageFile(realPath);
+
+            getContentResolver().notifyChange(data.getData(), null);
+
+            Intent intent = new Intent(this, CropImage.class);
+            intent.putExtra("image_path", imageFiles.get(imageFiles.size() - 1).getAbsolutePath());
+            startActivityForResult(intent, REQUEST_CROP_PICTURE);
         } else if (requestCode == REQUEST_CROP_PICTURE) {
             if (resultCode == RESULT_OK) {
 
@@ -214,6 +256,26 @@ public class MainDashboard extends Activity {
 
         fileOrDirectory.delete();
 
+    }
+
+    private void copyImageFile(String path) {
+        try {
+            FileChannel source;
+            FileChannel destination;
+            source = new FileInputStream(new File(path)).getChannel();
+            destination = new FileOutputStream(imageFiles.get(imageFiles.size() - 1)).getChannel();
+            if (destination != null && source != null) {
+                destination.transferFrom(source, 0, source.size());
+            }
+            if (source != null) {
+                source.close();
+            }
+            if (destination != null) {
+                destination.close();
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
     void factorAdvanceLoad(String activityType) {

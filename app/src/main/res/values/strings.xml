@@ -22,6 +22,9 @@
     <string name="btn_confirm">Confirm</string>
     <string name="alert_message_no_connection">Unable to connect to the server at the moment</string>
 
+    <string name="scan_title">Scan documents:</string>
+    <string name="scan_option_camera">From Camera</string>
+    <string name="scan_option_gallery">From Photo Gallery</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
