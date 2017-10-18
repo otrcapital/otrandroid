@@ -130,6 +130,7 @@ public class LoginScreen extends Activity {
 
         loginEmailET.getBackground().setColorFilter(getResources().getColor(R.color.blue_light), PorterDuff.Mode.SRC_ATOP);
         loginPasswordET.getBackground().setColorFilter(getResources().getColor(R.color.blue_light), PorterDuff.Mode.SRC_ATOP);
+        loginPasswordET.setTypeface(loginEmailET.getTypeface());
 
         ProgressIndicatorVisiblity(View.VISIBLE);
         verifyUserGroup.setVisibility(View.INVISIBLE);
@@ -190,17 +191,17 @@ public class LoginScreen extends Activity {
             @Override
             public void success(AgentViewModel agentViewModel, Response response) {
                 EventTracker.trackUserLogin(user_email, true);
-                ProgressIndicatorVisiblity(View.INVISIBLE);
 
                 // IsValidUser - is user has an access to service
                 if (agentViewModel.IsValidUser) {
                     CrashlyticsHelper.setUser(agentViewModel);
 
                     PreferenceManager.with(LoginScreen.this).saveUserData(user_email, user_password, user_credentials, true);
-
                     Intent intent = new Intent(LoginScreen.this, MainDashboard.class);
-                    finish();
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
                     startActivity(intent);
+                    finish();
                 } else {
                     loginResultTV.setText("You don't have an access to this service");
                     loginResultTV.setTextColor(getResources().getColor(R.color.red));

@@ -219,7 +219,7 @@ public class FactorAdvanceLoad extends Activity {
                 isError = true;
                 sb.append("\n\tAdvance Request Amount");
             } else {
-                totalDeductionET.setText("0.00");
+                //totalDeductionET.setText("0.00");
             }
         }
 
@@ -546,8 +546,6 @@ public class FactorAdvanceLoad extends Activity {
             }else if (decimal.length() == 1) {
                 editText.setText(string + "0");
             }
-        }else if (!(string.equals("0") || string.isEmpty())){
-            editText.setText(string + ".00");
         }
     }
 
