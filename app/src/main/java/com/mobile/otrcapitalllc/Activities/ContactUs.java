@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.mobile.otrcapitalllc.R;
@@ -88,5 +89,16 @@ public class ContactUs extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_us);
         ButterKnife.bind(this);
+
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
+    public boolean onMenuItemSelected(int featureId, MenuItem item) {
+        if(item.getItemId()==android.R.id.home) {
+            setResult(RESULT_CANCELED);
+            finish();
+        }
+        return super.onMenuItemSelected(featureId, item);
     }
 }
