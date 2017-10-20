@@ -41,10 +41,11 @@
     <string name="title_activity_refine_capture">Refine Capture</string>
     <string name="title_activity_image_perspective_correction">ImagePerspectiveCorrection</string>
     <string name="title_activity_crop_image">CropImage</string>
-
+    <string name="title_activity_open_fuel_advances">Open Fuel Advances</string>
 
     <!-- Factor a Load -->
     <string name="factor_new_load">Factor a new load</string>
+    <string name="open_fuel_advances">Open Fuel Advances</string>
 
     <!-- Login -->
     <string name="hint_enter_email">Enter e-mail</string>

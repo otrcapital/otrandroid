@@ -59,6 +59,13 @@
             android:theme="@style/OTRTheme">
         </activity>
         <activity
+            android:name="com.mobile.otrcapitalllc.Activities.OpenFuelAdvancesActivity"
+            android:label="@string/title_activity_open_fuel_advances"
+            android:parentActivityName="com.mobile.otrcapitalllc.Activities.MainDashboard"
+            android:screenOrientation="portrait"
+            android:theme="@style/OTRTheme">
+        </activity>
+        <activity
             android:name="com.mobile.otrcapitalllc.Activities.FactorAdvanceLoad"
             android:label="@string/title_activity_factor_advance_load"
             android:parentActivityName="com.mobile.otrcapitalllc.Activities.MainDashboard"

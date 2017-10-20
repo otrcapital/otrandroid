@@ -102,7 +102,7 @@ public class History extends ListActivity {
         adapter.notifyDataSetChanged();
     }
 
-    public void ResendFile(final String fileName) {
+    public void ResendFile(final String fileName, final String brokerName) {
         String jsonInvoice = PreferenceManager.with(this).getStringWithKey(fileName);
         if (jsonInvoice == null) {
             Toast.makeText(this, getString(R.string.error_with_resend_file), Toast.LENGTH_LONG).show();
@@ -126,7 +126,7 @@ public class History extends ListActivity {
             return;
         }
 
-        LoadDetails.UploadDocument(fileName, this, activity, verifyUserGroup, model.getApiInvoiceFromModel(), documentTypeList, model.getFactorType());
+        LoadDetails.UploadDocument(brokerName, fileName, this, activity, verifyUserGroup, model.getApiInvoiceFromModel(), documentTypeList, model.getFactorType());
 
     }
 
@@ -144,6 +144,13 @@ public class History extends ListActivity {
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         String listItemName = fileList.get(info.position);
+        String brokerName = "unknown";
+        String jsonInvoice = PreferenceManager.with(this).getStringWithKey(listItemName);
+        HistoryInvoiceModel model = new Gson().fromJson(jsonInvoice, HistoryInvoiceModel.class);
+
+        if (model != null) {
+            brokerName = model.getBrokerName();
+        }
 
         if (item.getTitle().equals(getString(R.string.delete))) {
             DeleteFile(info.position);
@@ -152,7 +159,7 @@ public class History extends ListActivity {
         } else if (item.getTitle().equals(getString(R.string.email))) {
             EmailFile(fileList.get(info.position));
         } else if (item.getTitle().equals(getString(R.string.resend))) {
-            ResendFile(fileList.get(info.position));
+            ResendFile(brokerName, fileList.get(info.position));
         } else {
             return false;
         }

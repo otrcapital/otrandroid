@@ -34,7 +34,7 @@
             android:layout_below="@+id/loadNoTV"
             android:gravity="left"
             android:text="Load №:"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <TextView
             android:id="@+id/tvInvAmountTitle"
@@ -44,7 +44,7 @@
             android:gravity="left"
             android:layout_below="@+id/tvLoadNumberTitle"
             android:text="Inv. Amount:"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <TextView
             android:id="@+id/tvFuelAmountTitle"
@@ -53,16 +53,17 @@
             android:layout_below="@+id/tvInvAmountTitle"
             android:gravity="left"
             android:text="Fuel Amount:"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <TextView
             android:id="@+id/tvDateTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvFuelAmountTitle"
+            android:layout_marginBottom="@dimen/padding_double"
             android:gravity="left"
             android:text="Date of Advance:"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
 
         <!-- Values -->
@@ -74,7 +75,7 @@
             android:layout_alignTop="@+id/tvLoadNumberTitle"
             android:layout_toRightOf="@+id/tvLoadNumberTitle"
             android:text="12131"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <TextView
             android:id="@+id/tvInvAmount"
@@ -84,7 +85,7 @@
             android:layout_alignTop="@+id/tvInvAmountTitle"
             android:layout_toRightOf="@+id/tvInvAmountTitle"
             android:text="11$"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <TextView
             android:id="@+id/tvFuelAmount"
@@ -94,7 +95,7 @@
             android:layout_alignTop="@+id/tvFuelAmountTitle"
             android:layout_toRightOf="@+id/tvFuelAmountTitle"
             android:text="2$"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <TextView
             android:id="@+id/tvDate"
@@ -104,7 +105,7 @@
             android:layout_alignTop="@+id/tvDateTitle"
             android:layout_toRightOf="@+id/tvDateTitle"
             tools:text="20/10/2017"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceSmall" />
     </RelativeLayout>
 
 </RelativeLayout>

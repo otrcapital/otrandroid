@@ -2,6 +2,7 @@ package com.mobile.otrcapitalllc.Models;
 
 public class HistoryInvoiceModel {
 
+    private String brokerName;
     private String customerMCNumber;
     private String poNumber;
     private float invoiceAmount;
@@ -153,5 +154,13 @@ public class HistoryInvoiceModel {
 
     public void setFactorType(String factorType) {
         this.factorType = factorType;
+    }
+
+    public void setBrokerName(String name) {
+        this.brokerName = name;
+    }
+
+    public String getBrokerName() {
+        return brokerName;
     }
 }

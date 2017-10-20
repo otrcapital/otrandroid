@@ -14,20 +14,22 @@
         android:src="@drawable/otr_logo_small" />
 
     <ListView
-        android:id="@android:id/list"
+        android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/imageView"
-        android:layout_above="@+id/factorLoadButton"
+        android:layout_above="@+id/btnLoadFactor"
         android:layout_marginBottom="15dp"
+        android:divider="#80ffffff"
+        android:dividerHeight="1px"
         android:layout_marginTop="15dp" />
 
     <Button
-        android:id="@+id/factorLoadButton"
+        android:id="@+id/btnLoadFactor"
         style="@style/ButtonBlue_btn"
         android:layout_width="200dp"
         android:layout_height="@dimen/height_confirm_button"
-        android:layout_marginBottom="@dimen/padding_double"
+        android:layout_marginBottom="@dimen/padding_triple"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:text="@string/factor_new_load"

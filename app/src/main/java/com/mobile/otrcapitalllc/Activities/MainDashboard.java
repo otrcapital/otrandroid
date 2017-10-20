@@ -53,7 +53,7 @@ public class MainDashboard extends Activity {
 
     @OnClick(R.id.factorLoadImgBtn)
     public void factorLoadImgBtn(View view) {
-        factorAdvanceLoad(ActivityTags.TAG_FACTOR_LOAD);
+        OpenFuelAdvancesActivity.start(this);
     }
 
     @OnClick(R.id.advanceLoadImgBtn)

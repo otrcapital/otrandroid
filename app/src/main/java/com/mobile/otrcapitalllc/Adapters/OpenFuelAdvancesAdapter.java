@@ -7,22 +7,18 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.mobile.otrcapitalllc.Helpers.PreferenceManager;
 import com.mobile.otrcapitalllc.Models.HistoryInvoiceModel;
 import com.mobile.otrcapitalllc.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
-public class OpenFuelAdvancesAdapter extends ArrayAdapter<String> {
+public class OpenFuelAdvancesAdapter extends ArrayAdapter<HistoryInvoiceModel> {
     private final Context mContext;
-    private final List<HistoryInvoiceModel> list;
 
-    public OpenFuelAdvancesAdapter(Context context, ArrayList<String> fileNames) {
-        super(context, R.layout.open_fuel_advance_view, fileNames);
+    public OpenFuelAdvancesAdapter(Context context, List<HistoryInvoiceModel> list) {
+        super(context, R.layout.open_fuel_advance_view, list);
         this.mContext = context;
-        this.list = PreferenceManager.with(mContext).getAdvanceLoadList();
     }
 
     static class ViewHolder {
@@ -51,17 +47,9 @@ public class OpenFuelAdvancesAdapter extends ArrayAdapter<String> {
             viewHolder = (OpenFuelAdvancesAdapter.ViewHolder) convertView.getTag();
         }
 
-
-        if (position < list.size()) {
-            viewHolder.tvBrokerName.setText("unknown");
-            viewHolder.tvLoadNumber.setText("unknown");
-            viewHolder.tvInvAmount.setText("NA");
-            viewHolder.tvFuelAmount.setText("NA");
-            viewHolder.tvDate.setText("NA");
-        } else {
-            HistoryInvoiceModel model = list.get(position);
-
-            viewHolder.tvBrokerName.setText(model.getCustomerPKey());
+        HistoryInvoiceModel model = getItem(position);
+        if(model != null) {
+            viewHolder.tvBrokerName.setText(model.getBrokerName());
             viewHolder.tvLoadNumber.setText(model.getCustomerMCNumber());
             viewHolder.tvInvAmount.setText(String.format("%.02f", model.getInvoiceAmount()));
             viewHolder.tvFuelAmount.setText(String.format("%.02f", model.getAdvanceRequestAmount()));
@@ -69,10 +57,5 @@ public class OpenFuelAdvancesAdapter extends ArrayAdapter<String> {
         }
 
         return convertView;
-    }
-
-    @Override
-    public int getCount() {
-        return list.size();
     }
 }

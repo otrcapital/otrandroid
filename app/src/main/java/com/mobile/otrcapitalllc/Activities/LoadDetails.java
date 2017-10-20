@@ -93,7 +93,7 @@ public class LoadDetails extends Activity {
     private float invoiceAmount, advReqAmount;
     private ArrayList<String> GalleryList = new ArrayList<String>();
 
-    public static void UploadDocument(final String FileName, final Context ContextActivity, final Activity activity, final View
+    public static void UploadDocument(final String brokerName, final String FileName, final Context ContextActivity, final Activity activity, final View
             VerifyUserGroup, final ApiInvoiceDataJson invoiceData, final ArrayList<String> DocumentType, final String factorType) {
 
         TypedFile typedFile = new TypedFile("application/pdf", new File(ActivityTags.EXT_STORAGE_DIR + FileName));
@@ -106,64 +106,83 @@ public class LoadDetails extends Activity {
         final HistoryInvoiceModel historyInvoiceModel = new HistoryInvoiceModel(invoiceData);
         historyInvoiceModel.setDocumentTypesString(documentTypesString);
         historyInvoiceModel.setFactorType(factorType);
+        historyInvoiceModel.setBrokerName(brokerName);
 
         final String userCredentials = PreferenceManager.with(ContextActivity).getUserCredentials();
-        RestClient restClient = new RestClient(ContextActivity, userCredentials);
-        restClient.getApiService().Upload(invoiceData, DocumentType, typedFile, factorType, "android", new Callback<String>() {
 
-            @Override
-            public void success(String s, Response response) {
-                Toast.makeText(ContextActivity, "Document upload success", Toast.LENGTH_LONG).show();
-                VerifyUserGroup.setVisibility(View.INVISIBLE);
-                String timeStamp = new SimpleDateFormat("dd/MM/yyy HH:mm:ss").format(new Date());
-                historyInvoiceModel.setTimestamp(timeStamp);
-                historyInvoiceModel.setStatus("success");
+        Toast.makeText(ContextActivity, "Document upload success", Toast.LENGTH_LONG).show();
+        VerifyUserGroup.setVisibility(View.INVISIBLE);
+        String timeStamp = new SimpleDateFormat("dd/MM/yyy HH:mm:ss").format(new Date());
+        historyInvoiceModel.setTimestamp(timeStamp);
+        historyInvoiceModel.setStatus("success");
 
-                String modelInfp = new Gson().toJson(historyInvoiceModel);
-                PreferenceManager.with(ContextActivity).saveStringWithKey(FileName, modelInfp);
-                if (factorType.equals("ADV")) {
-                    PreferenceManager.with(ContextActivity).saveOpenAdvanceLoad(modelInfp);
-                }
+        String modelInfp = new Gson().toJson(historyInvoiceModel);
+        PreferenceManager.with(ContextActivity).saveStringWithKey(FileName, modelInfp);
+        if (factorType.equals("ADV")) {
+            PreferenceManager.with(ContextActivity).saveOpenAdvanceLoad(modelInfp);
+        }
 
-                Intent intent = new Intent(ContextActivity, History.class);
-                activity.finish();
-                ContextActivity.startActivity(intent);
-            }
+        Intent intent = new Intent(ContextActivity, History.class);
+        activity.finish();
+        ContextActivity.startActivity(intent);
 
-            @Override
-            public void failure(RetrofitError error) {
-                CrashlyticsHelper.logException(error);
-                String toastText = "";
-                try {
-                    if (error.getResponse().getStatus() == 400) {
-                        toastText = error.getResponse().getReason();
-                    }
-                    if (error.isNetworkError()) {
-                        toastText = "Network error, server not responding";
-                    }
-                } catch (NullPointerException e) {
-                    toastText = "Network error, please try again later";
-                }
-
-                LogHelper.logError(error.toString());
-
-                Toast.makeText(ContextActivity, toastText, Toast.LENGTH_LONG).show();
-                VerifyUserGroup.setVisibility(View.INVISIBLE);
-                String timeStamp = new SimpleDateFormat("dd/MM/yyy HH:mm:ss").format(new Date());
-                historyInvoiceModel.setTimestamp(timeStamp);
-                historyInvoiceModel.setStatus("failure");
-
-                String modelInfp = new Gson().toJson(historyInvoiceModel);
-                PreferenceManager.with(ContextActivity).saveStringWithKey(FileName, modelInfp);
-                if (factorType.equals("ADV")) {
-                    PreferenceManager.with(ContextActivity).saveOpenAdvanceLoad(modelInfp);
-                }
-
-                Intent intent = new Intent(ContextActivity, History.class);
-                activity.finish();
-                ContextActivity.startActivity(intent);
-            }
-        });
+//        return;
+//        RestClient restClient = new RestClient(ContextActivity, userCredentials);
+//        restClient.getApiService().Upload(invoiceData, DocumentType, typedFile, factorType, "android", new Callback<String>() {
+//
+//            @Override
+//            public void success(String s, Response response) {
+//                Toast.makeText(ContextActivity, "Document upload success", Toast.LENGTH_LONG).show();
+//                VerifyUserGroup.setVisibility(View.INVISIBLE);
+//                String timeStamp = new SimpleDateFormat("dd/MM/yyy HH:mm:ss").format(new Date());
+//                historyInvoiceModel.setTimestamp(timeStamp);
+//                historyInvoiceModel.setStatus("success");
+//
+//                String modelInfp = new Gson().toJson(historyInvoiceModel);
+//                PreferenceManager.with(ContextActivity).saveStringWithKey(FileName, modelInfp);
+//                if (factorType.equals("ADV")) {
+//                    PreferenceManager.with(ContextActivity).saveOpenAdvanceLoad(modelInfp);
+//                }
+//
+//                Intent intent = new Intent(ContextActivity, History.class);
+//                activity.finish();
+//                ContextActivity.startActivity(intent);
+//            }
+//
+//            @Override
+//            public void failure(RetrofitError error) {
+//                CrashlyticsHelper.logException(error);
+//                String toastText = "";
+//                try {
+//                    if (error.getResponse().getStatus() == 400) {
+//                        toastText = error.getResponse().getReason();
+//                    }
+//                    if (error.isNetworkError()) {
+//                        toastText = "Network error, server not responding";
+//                    }
+//                } catch (NullPointerException e) {
+//                    toastText = "Network error, please try again later";
+//                }
+//
+//                LogHelper.logError(error.toString());
+//
+//                Toast.makeText(ContextActivity, toastText, Toast.LENGTH_LONG).show();
+//                VerifyUserGroup.setVisibility(View.INVISIBLE);
+//                String timeStamp = new SimpleDateFormat("dd/MM/yyy HH:mm:ss").format(new Date());
+//                historyInvoiceModel.setTimestamp(timeStamp);
+//                historyInvoiceModel.setStatus("failure");
+//
+//                String modelInfp = new Gson().toJson(historyInvoiceModel);
+//                PreferenceManager.with(ContextActivity).saveStringWithKey(FileName, modelInfp);
+//                if (factorType.equals("ADV")) {
+//                    PreferenceManager.with(ContextActivity).saveOpenAdvanceLoad(modelInfp);
+//                }
+//
+//                Intent intent = new Intent(ContextActivity, History.class);
+//                activity.finish();
+//                ContextActivity.startActivity(intent);
+//            }
+//        });
 
     }
 
@@ -204,7 +223,7 @@ public class LoadDetails extends Activity {
             else
                 factorType = "FAC";
 
-            UploadDocument(pdfFile.getName(), this, activity, verifyUserGroup, invoiceData, GetDocumentTypes(), factorType);
+            UploadDocument(brokerNameTV.getText().toString(), pdfFile.getName(), this, activity, verifyUserGroup, invoiceData, GetDocumentTypes(), factorType);
         }
 
     }
@@ -330,7 +349,7 @@ public class LoadDetails extends Activity {
     private void createPDFfile() {
         LogHelper.logDebug("Creating PDF file");
 
-        String timeStamp = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+        String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss").format(new Date());
         String fileName[] = brokerNameTV.getText().toString().split("/");
         fileName[0] += "_" + timeStamp + ".pdf";
         pdfFile = new File(ActivityTags.EXT_STORAGE_DIR, fileName[0]);
