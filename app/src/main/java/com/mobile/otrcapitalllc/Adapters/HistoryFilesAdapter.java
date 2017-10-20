@@ -1,4 +1,4 @@
-package com.mobile.otrcapitalllc.Helpers;
+package com.mobile.otrcapitalllc.Adapters;
 
 import java.util.ArrayList;
 
@@ -11,6 +11,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.mobile.otrcapitalllc.Helpers.LogHelper;
+import com.mobile.otrcapitalllc.Helpers.PreferenceManager;
 import com.mobile.otrcapitalllc.Models.HistoryInvoiceModel;
 import com.mobile.otrcapitalllc.R;
 

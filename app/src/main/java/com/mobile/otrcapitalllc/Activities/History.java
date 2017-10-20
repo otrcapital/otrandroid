@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.ListActivity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -18,15 +17,13 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.mobile.otrcapitalllc.Helpers.ActivityTags;
-import com.mobile.otrcapitalllc.Helpers.HistoryFilesAdapter;
+import com.mobile.otrcapitalllc.Adapters.HistoryFilesAdapter;
 import com.mobile.otrcapitalllc.Helpers.PreferenceManager;
 import com.mobile.otrcapitalllc.Models.HistoryInvoiceModel;
 import com.mobile.otrcapitalllc.R;
 
 import java.io.File;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

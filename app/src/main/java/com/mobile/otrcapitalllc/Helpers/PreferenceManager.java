@@ -3,6 +3,14 @@ package com.mobile.otrcapitalllc.Helpers;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.google.gson.Gson;
+import com.mobile.otrcapitalllc.Models.HistoryInvoiceModel;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 public class PreferenceManager {
 
     private static final String SHARED_PREFS_TAG = "OTR_Prefs";
@@ -12,6 +20,7 @@ public class PreferenceManager {
     private static final String PREFS_USER_CREDENTIALS = "user_credentials";
     private static final String PREFS_NOT_FIRST_RUN = "first_run";
     private static final String PREFS_DB_TIMESTAMP = "db_timestamp";
+    private static final String PREFS_OPEN_ADVANCE_LOADS = "PREFS_OPEN_ADVANCE_LOADS";
 
     private SharedPreferences mSharedPreferences;
 
@@ -48,6 +57,26 @@ public class PreferenceManager {
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         editor.putString(key, value);
         editor.apply();
+    }
+
+    public void saveOpenAdvanceLoad(String value) {
+        Set<String> advanceLoadList = mSharedPreferences.getStringSet(PREFS_OPEN_ADVANCE_LOADS, new HashSet<String>());
+        advanceLoadList.add(value);
+
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.putStringSet(PREFS_OPEN_ADVANCE_LOADS, advanceLoadList);
+        editor.apply();
+    }
+
+    public List<HistoryInvoiceModel> getAdvanceLoadList() {
+        Set<String> advanceLoadList = mSharedPreferences.getStringSet(PREFS_OPEN_ADVANCE_LOADS, new HashSet<String>());
+        ArrayList<HistoryInvoiceModel> modelList = new ArrayList<>();
+
+        for (String item : advanceLoadList) {
+            final HistoryInvoiceModel model = new Gson().fromJson(item, HistoryInvoiceModel.class);
+            modelList.add(model);
+        }
+        return modelList;
     }
 
     public String getStringWithKey(String key) {

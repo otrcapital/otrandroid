@@ -1,7 +1,5 @@
 package com.mobile.otrcapitalllc.Activities;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -21,7 +19,6 @@ import android.text.InputType;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -34,7 +31,7 @@ import android.widget.TextView;
 import com.mobile.otrcapitalllc.CustomViews.CustomSwitch;
 import com.mobile.otrcapitalllc.Helpers.ActivityTags;
 import com.mobile.otrcapitalllc.Helpers.BrokerDatabase;
-import com.mobile.otrcapitalllc.Helpers.FilterWithSpaceAdapter;
+import com.mobile.otrcapitalllc.Adapters.FilterWithSpaceAdapter;
 import com.mobile.otrcapitalllc.Models.Broker;
 import com.mobile.otrcapitalllc.Models.CustomError;
 import com.mobile.otrcapitalllc.R;

@@ -119,7 +119,11 @@ public class LoadDetails extends Activity {
                 historyInvoiceModel.setTimestamp(timeStamp);
                 historyInvoiceModel.setStatus("success");
 
-                PreferenceManager.with(ContextActivity).saveStringWithKey(FileName, new Gson().toJson(historyInvoiceModel));
+                String modelInfp = new Gson().toJson(historyInvoiceModel);
+                PreferenceManager.with(ContextActivity).saveStringWithKey(FileName, modelInfp);
+                if (factorType.equals("ADV")) {
+                    PreferenceManager.with(ContextActivity).saveOpenAdvanceLoad(modelInfp);
+                }
 
                 Intent intent = new Intent(ContextActivity, History.class);
                 activity.finish();
@@ -149,7 +153,11 @@ public class LoadDetails extends Activity {
                 historyInvoiceModel.setTimestamp(timeStamp);
                 historyInvoiceModel.setStatus("failure");
 
-                PreferenceManager.with(ContextActivity).saveStringWithKey(FileName, new Gson().toJson(historyInvoiceModel));
+                String modelInfp = new Gson().toJson(historyInvoiceModel);
+                PreferenceManager.with(ContextActivity).saveStringWithKey(FileName, modelInfp);
+                if (factorType.equals("ADV")) {
+                    PreferenceManager.with(ContextActivity).saveOpenAdvanceLoad(modelInfp);
+                }
 
                 Intent intent = new Intent(ContextActivity, History.class);
                 activity.finish();

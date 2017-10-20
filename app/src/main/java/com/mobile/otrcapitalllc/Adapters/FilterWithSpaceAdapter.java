@@ -1,4 +1,4 @@
-package com.mobile.otrcapitalllc.Helpers;
+package com.mobile.otrcapitalllc.Adapters;
 
 /*
  * Copyright (C) 2006 The Android Open Source Project
