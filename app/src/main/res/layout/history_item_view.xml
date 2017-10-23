@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/padding_double">
 
     <TextView
         android:id="@+id/documentNameTV"
@@ -78,7 +80,7 @@
         android:layout_marginTop="5dp"
         android:background="#00000000"
         android:src="@drawable/open_button"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <ImageButton
         android:id="@+id/resendImgBtn"
@@ -89,6 +91,6 @@
         android:layout_toStartOf="@+id/emailImgBtn"
         android:background="#00000000"
         android:src="@drawable/resend_button"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
 </RelativeLayout>

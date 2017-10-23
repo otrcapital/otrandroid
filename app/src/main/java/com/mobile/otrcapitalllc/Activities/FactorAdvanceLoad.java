@@ -51,8 +51,10 @@ public class FactorAdvanceLoad extends Activity {
 
         @Override
         public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+            int dotPosition = dest.toString().indexOf(".");
             Matcher matcher = mPattern.matcher(dest);
-            if (!matcher.matches())
+
+            if(!matcher.matches() && dotPosition < dstart)
                 return "";
             return null;
         }
@@ -580,6 +582,8 @@ public class FactorAdvanceLoad extends Activity {
             } else if (decimal.length() == 1) {
                 editText.setText(string + "0");
             }
+        }else if (string.length() > 0){
+            editText.setText(string + ".00");
         }
     }
 
