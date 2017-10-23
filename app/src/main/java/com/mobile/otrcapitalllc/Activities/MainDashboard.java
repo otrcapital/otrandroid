@@ -18,6 +18,7 @@ import com.mobile.otrcapitalllc.Helpers.ActivityTags;
 import com.mobile.otrcapitalllc.Helpers.LogHelper;
 import com.mobile.otrcapitalllc.Helpers.PreferenceManager;
 import com.mobile.otrcapitalllc.Helpers.RealPathUtil;
+import com.mobile.otrcapitalllc.Models.HistoryInvoiceModel;
 import com.mobile.otrcapitalllc.R;
 
 import java.io.File;
@@ -28,6 +29,7 @@ import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -53,7 +55,14 @@ public class MainDashboard extends Activity {
 
     @OnClick(R.id.factorLoadImgBtn)
     public void factorLoadImgBtn(View view) {
-        OpenFuelAdvancesActivity.start(this);
+        List<HistoryInvoiceModel> list = PreferenceManager.with(this).getAdvanceLoadList();
+        if (list.size() > 0) {
+            OpenFuelAdvancesActivity.start(this);
+        }else {
+            Intent intent = new Intent(this, FactorAdvanceLoad.class);
+            intent.putExtra(ActivityTags.TAG_ACTIVITY_TYPE, ActivityTags.TAG_FACTOR_LOAD);
+            startActivity(intent);
+        }
     }
 
     @OnClick(R.id.advanceLoadImgBtn)
@@ -76,8 +85,6 @@ public class MainDashboard extends Activity {
 
     @OnClick(R.id.signOutImgBtn)
     public void signOutImgBtn(View view) {
-        PreferenceManager.with(MainDashboard.this).saveTokenValid(false);
-
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(getString(R.string.alert_logout));
 
