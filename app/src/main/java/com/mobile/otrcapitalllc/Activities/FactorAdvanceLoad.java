@@ -43,18 +43,16 @@ import butterknife.OnClick;
 public class FactorAdvanceLoad extends Activity {
 
     class CurrencyFormatInputFilter implements InputFilter {
-
         Pattern mPattern;
 
-        public CurrencyFormatInputFilter(int digitsBeforeZero,int digitsAfterZero) {
-            mPattern=Pattern.compile("[0-9]{0," + (digitsBeforeZero-1) + "}+((\\.[0-9]{0," + (digitsAfterZero-1) + "})?)||(\\.)?");
+        public CurrencyFormatInputFilter(int digitsBeforeZero, int digitsAfterZero) {
+            mPattern = Pattern.compile("[0-9]{0," + (digitsBeforeZero - 1) + "}+((\\.[0-9]{0," + (digitsAfterZero - 1) + "})?)||(\\.)?");
         }
 
         @Override
         public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-
-            Matcher matcher=mPattern.matcher(dest);
-            if(!matcher.matches())
+            Matcher matcher = mPattern.matcher(dest);
+            if (!matcher.matches())
                 return "";
             return null;
         }
@@ -62,30 +60,116 @@ public class FactorAdvanceLoad extends Activity {
 
     @Bind(R.id.brokerNameET)
     AutoCompleteTextView brokerNameET;
+
     @Bind(R.id.loadNumberET)
     EditText loadNumberET;
+
     @Bind(R.id.totalPayET)
     EditText totalPayET;
+
     @Bind(R.id.totalDeductionET)
     EditText totalDeductionET;
+
     @Bind(R.id.totalPayInfo)
     TextView totalPayInfo;
+
     @Bind(R.id.totalPayTV)
     TextView totalPayTV;
+
     @Bind(R.id.totalDeductionTV)
     TextView totalDeductionTV;
+
     @Bind(R.id.totalDeductionsInfo)
     TextView totalDeductionsInfo;
+
     @Bind(R.id.textClearImgBtn)
     ImageButton textClearImgBtn;
+
     @Bind({R.id.custom_switch1, R.id.custom_switch2, R.id.custom_switch3, R.id.custom_switch4})
     List<CustomSwitch> switchViews;
 
     List<Broker> brokers;
-    private boolean getInput = true;
+
     private String activityType;
+
     private String cellNumber;
+
     private ActivityTags.TAKE_PHOTO_TYPE photoType;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_factor_advance_load);
+        ButterKnife.bind(this);
+
+        activityType = getIntent().getStringExtra(ActivityTags.TAG_ACTIVITY_TYPE);
+        this.setTitle(activityType);
+
+        String brokerName = getIntent().getStringExtra(ActivityTags.TAG_BROKER_NAME);
+        if (!TextUtils.isEmpty(brokerName)) {
+            brokerNameET.setText(brokerName);
+        }
+
+        Bundle extras = getIntent().getExtras();
+        Bundle bundle = extras.getBundle("data_extra");
+        if (bundle != null) {
+            brokerName = bundle.getString(ActivityTags.TAG_BROKER_NAME);
+            if (brokerName != null) brokerNameET.setText(brokerName);
+
+            String loadNumber = bundle.getString(ActivityTags.TAG_LOAD_NUMBER);
+            if (loadNumber != null) loadNumberET.setText(loadNumber);
+
+            float adReqAmont = bundle.getFloat(ActivityTags.TAG_ADV_REQ_AMOUNT);
+            if (adReqAmont > 0) {
+                String strTotalDeductionET = String.format("%.2f", adReqAmont);
+                totalDeductionET.setText(strTotalDeductionET);
+
+                float invoiceAmount = bundle.getFloat(ActivityTags.TAG_INVOICE_AMOUNT);
+                if (invoiceAmount > 0) {
+                    float totalPayAmount = invoiceAmount + adReqAmont;
+                    String strTotalPayAmount = String.format("%.2f", totalPayAmount);
+                    totalPayET.setText(strTotalPayAmount);
+                }
+            }
+        }
+
+        if (activityType.equals(ActivityTags.TAG_FACTOR_ADVANCE)) {
+            totalPayTV.setText("Total Load Amount:");
+            totalDeductionTV.setText("Advance Request Amount:");
+        }
+        Point pointSize = new Point();
+        getWindowManager().getDefaultDisplay().getSize(pointSize);
+        brokerNameET.setDropDownWidth(pointSize.x);
+
+        totalPayInfo.setVisibility(View.GONE);
+        totalDeductionsInfo.setVisibility(View.GONE);
+
+        setListeners();
+
+        List<String> brokerNames = new ArrayList();
+        BrokerDatabase db = new BrokerDatabase(FactorAdvanceLoad.this);
+        String[] types;
+
+        if (activityType.equals(ActivityTags.TAG_FACTOR_ADVANCE)) {
+            types = getResources().getStringArray(R.array.advance_load);
+        } else {
+            types = getResources().getStringArray(R.array.factor_load);
+        }
+
+        brokers = db.GetBrokerList();
+
+        for (Broker b : brokers) {
+            brokerNames.add(b.get_brokerName());
+        }
+
+        FilterWithSpaceAdapter<String> adapter = new FilterWithSpaceAdapter<>(this, android.R.layout
+                .simple_dropdown_item_1line, brokerNames);
+        brokerNameET.setAdapter(adapter);
+
+        for (int i = 0; i < switchViews.size(); i++) {
+            switchViews.get(i).setText(types[i]);
+        }
+    }
 
     @OnClick(R.id.scanButton)
     public void scanButton(View view) {
@@ -130,57 +214,6 @@ public class FactorAdvanceLoad extends Activity {
     @OnClick({R.id.custom_switch1, R.id.custom_switch2, R.id.custom_switch3, R.id.custom_switch4})
     public void switchClick(CustomSwitch aSwitch) {
         ButterKnife.apply(switchViews, UNCHECKED, aSwitch.getId());
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_factor_advance_load);
-        ButterKnife.bind(this);
-
-        activityType = getIntent().getStringExtra(ActivityTags.TAG_ACTIVITY_TYPE);
-        this.setTitle(activityType);
-
-        String brokerName = getIntent().getStringExtra(ActivityTags.TAG_BROKER_NAME);
-        if (!TextUtils.isEmpty(brokerName)) {
-            brokerNameET.setText(brokerName);
-        }
-
-        if (activityType.equals(ActivityTags.TAG_FACTOR_ADVANCE)) {
-            totalPayTV.setText("Total Load Amount:");
-            totalDeductionTV.setText("Advance Request Amount:");
-        }
-        Point pointSize = new Point();
-        getWindowManager().getDefaultDisplay().getSize(pointSize);
-        brokerNameET.setDropDownWidth(pointSize.x);
-
-        totalPayInfo.setVisibility(View.GONE);
-        totalDeductionsInfo.setVisibility(View.GONE);
-
-        setListeners();
-
-        List<String> brokerNames = new ArrayList();
-        BrokerDatabase db = new BrokerDatabase(FactorAdvanceLoad.this);
-        String[] types;
-
-        if (activityType.equals(ActivityTags.TAG_FACTOR_ADVANCE)) {
-            types = getResources().getStringArray(R.array.advance_load);
-        } else {
-            types = getResources().getStringArray(R.array.factor_load);
-        }
-        brokers = db.GetBrokerList();
-
-        for (Broker b : brokers) {
-            brokerNames.add(b.get_brokerName());
-        }
-
-        FilterWithSpaceAdapter<String> adapter = new FilterWithSpaceAdapter<>(this, android.R.layout
-                .simple_dropdown_item_1line, brokerNames);
-        brokerNameET.setAdapter(adapter);
-
-        for (int i = 0; i < switchViews.size(); i++) {
-            switchViews.get(i).setText(types[i]);
-        }
     }
 
     private CustomError checkFields() {
@@ -253,8 +286,8 @@ public class FactorAdvanceLoad extends Activity {
     }
 
     private void setListeners() {
-        totalPayET.setFilters(new InputFilter[] {new CurrencyFormatInputFilter(12,2)});
-        totalDeductionET.setFilters(new InputFilter[] {new CurrencyFormatInputFilter(12,2)});
+        totalPayET.setFilters(new InputFilter[]{new CurrencyFormatInputFilter(12, 2)});
+        totalDeductionET.setFilters(new InputFilter[]{new CurrencyFormatInputFilter(12, 2)});
 
         View.OnFocusChangeListener listener = new View.OnFocusChangeListener() {
             @Override
@@ -288,10 +321,12 @@ public class FactorAdvanceLoad extends Activity {
 
         totalPayET.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
 
             @Override
             public void afterTextChanged(Editable editable) {
@@ -307,10 +342,12 @@ public class FactorAdvanceLoad extends Activity {
 
         totalDeductionET.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
 
             @Override
             public void afterTextChanged(Editable editable) {
@@ -540,7 +577,7 @@ public class FactorAdvanceLoad extends Activity {
             String decimal = string.substring(string.lastIndexOf(".") + 1);
             if (decimal.length() == 0) {
                 editText.setText(string + "00");
-            }else if (decimal.length() == 1) {
+            } else if (decimal.length() == 1) {
                 editText.setText(string + "0");
             }
         }

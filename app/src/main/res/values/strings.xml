@@ -45,6 +45,7 @@
 
     <!-- Factor a Load -->
     <string name="factor_new_load">Factor a new load</string>
+    <string name="des_load_factor">Click to add final paperwork</string>
     <string name="open_fuel_advances">Open Fuel Advances</string>
 
     <!-- Login -->

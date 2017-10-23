@@ -50,7 +50,7 @@ public class OpenFuelAdvancesAdapter extends ArrayAdapter<HistoryInvoiceModel> {
         HistoryInvoiceModel model = getItem(position);
         if(model != null) {
             viewHolder.tvBrokerName.setText(model.getBrokerName());
-            viewHolder.tvLoadNumber.setText(model.getCustomerMCNumber());
+            viewHolder.tvLoadNumber.setText(model.getPoNumber());
             viewHolder.tvInvAmount.setText(String.format("%.02f", model.getInvoiceAmount()));
             viewHolder.tvFuelAmount.setText(String.format("%.02f", model.getAdvanceRequestAmount()));
             viewHolder.tvDate.setText(model.getTimestamp());
