@@ -69,7 +69,7 @@ public class HistoryFilesAdapter extends ArrayAdapter<String> {
         } else {
             try {
                 final HistoryInvoiceModel model = new Gson().fromJson(jsonInvoice, HistoryInvoiceModel.class);
-                viewHolder.documentNameTV.setText(model.getBrokerName());
+                viewHolder.documentNameTV.setText((model.getBrokerName() != null) ? model.getBrokerName() : "Document");
                 viewHolder.statusTV.setText(model.getStatus());
                 viewHolder.timestampTV.setText(model.getTimestamp());
                 viewHolder.rateTV.setText("Rate: " + String.format("%.02f", model.getInvoiceAmount()));

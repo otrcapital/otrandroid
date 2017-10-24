@@ -56,13 +56,17 @@ public class MainDashboard extends Activity {
     @OnClick(R.id.factorLoadImgBtn)
     public void factorLoadImgBtn(View view) {
         List<HistoryInvoiceModel> list = PreferenceManager.with(this).getAdvanceLoadList();
-        if (list.size() > 0) {
-            OpenFuelAdvancesActivity.start(this);
-        }else {
-            Intent intent = new Intent(this, FactorAdvanceLoad.class);
-            intent.putExtra(ActivityTags.TAG_ACTIVITY_TYPE, ActivityTags.TAG_FACTOR_LOAD);
-            startActivity(intent);
-        }
+//        if (list.size() > 0) {
+//            OpenFuelAdvancesActivity.start(this);
+//        }else {
+//            Intent intent = new Intent(this, FactorAdvanceLoad.class);
+//            intent.putExtra(ActivityTags.TAG_ACTIVITY_TYPE, ActivityTags.TAG_FACTOR_LOAD);
+//            startActivity(intent);
+//        }
+
+        Intent intent = new Intent(this, FactorAdvanceLoad.class);
+        intent.putExtra(ActivityTags.TAG_ACTIVITY_TYPE, ActivityTags.TAG_FACTOR_LOAD);
+        startActivity(intent);
     }
 
     @OnClick(R.id.advanceLoadImgBtn)
