@@ -77,5 +77,11 @@
     <string name="error_with_resend_file">Error with resend file</string>
 
 
+    <!--  Access Permissions Requests -->
+    <string name="permissions_not_granted">Permissions were not granted.</string>
+    <string name="permission_storage_rationale">Access storage permission is required.</string>
+    <string name="permission_camera_rationale">Access camera permission is required.</string>
+
+
     <string name="alert_logout">Are you sure you want to logout?</string>
 </resources>
