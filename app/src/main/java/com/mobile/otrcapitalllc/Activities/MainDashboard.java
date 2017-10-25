@@ -126,7 +126,7 @@ public class MainDashboard extends Activity {
 
     @OnClick(R.id.scanImgBtn)
     public void scanBtnClick(View view) {
-        CharSequence colors[] = new CharSequence[] {getString(R.string.scan_option_camera), getString(R.string.scan_option_gallery)};
+        CharSequence colors[] = new CharSequence[]{getString(R.string.scan_option_camera), getString(R.string.scan_option_gallery)};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.scan_title));
@@ -135,7 +135,7 @@ public class MainDashboard extends Activity {
             public void onClick(DialogInterface dialog, int which) {
                 if (which == 0) {
                     scanFromCamera();
-                }else {
+                } else {
                     scanFromGallery();
                 }
             }
@@ -254,7 +254,7 @@ public class MainDashboard extends Activity {
                 shareIntent.setType("image/*");
                 startActivityForResult(Intent.createChooser(shareIntent, "Share images to.."), SHARE_IMAGE);
             }
-        }else if (requestCode == SHARE_IMAGE) {
+        } else if (requestCode == SHARE_IMAGE) {
             File images = new File(ActivityTags.TEMP_STORAGE_DIR);
             deleteRecursive(images);
         }

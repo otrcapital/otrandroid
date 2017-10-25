@@ -95,7 +95,7 @@ public class ContactUs extends Activity {
 
     @Override
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
-        if(item.getItemId()==android.R.id.home) {
+        if (item.getItemId() == android.R.id.home) {
             setResult(RESULT_CANCELED);
             finish();
         }
