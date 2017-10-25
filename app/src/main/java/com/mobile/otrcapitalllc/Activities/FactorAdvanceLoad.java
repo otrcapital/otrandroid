@@ -114,12 +114,24 @@ public class FactorAdvanceLoad extends Activity {
 
         Bundle extras = getIntent().getExtras();
         Bundle bundle = extras.getBundle("data_extra");
+
+        brokerNameET.setEnabled(true);
+        loadNumberET.setEnabled(true);
+
         if (bundle != null) {
             brokerName = bundle.getString(ActivityTags.TAG_BROKER_NAME);
-            if (brokerName != null) brokerNameET.setText(brokerName);
+            if (brokerName != null) {
+                brokerNameET.setText(brokerName);
+                brokerNameET.setEnabled(false);
+                brokerNameET.clearFocus();
+            }
 
             String loadNumber = bundle.getString(ActivityTags.TAG_LOAD_NUMBER);
-            if (loadNumber != null) loadNumberET.setText(loadNumber);
+            if (loadNumber != null) {
+                loadNumberET.setText(loadNumber);
+                loadNumberET.setEnabled(false);
+                loadNumberET.clearFocus();
+            }
 
             float adReqAmont = bundle.getFloat(ActivityTags.TAG_ADV_REQ_AMOUNT);
             if (adReqAmont > 0) {
