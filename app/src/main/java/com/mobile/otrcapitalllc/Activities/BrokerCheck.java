@@ -30,7 +30,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class BrokerCheck extends Activity {
+public class BrokerCheck extends BaseActivity {
 
     @Bind(R.id.brokerNameET)
     AutoCompleteTextView brokerNameET;

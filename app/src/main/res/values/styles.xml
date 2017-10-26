@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="OTRTheme" parent="@android:style/Theme.Holo">
+    <style name="OTRTheme" parent="@style/Theme.AppCompat">
     </style>
-    <style name="OTRThemeNoActionBar" parent="@android:style/Theme.Holo.NoActionBar">
+    <style name="OTRThemeNoActionBar" parent="@style/Theme.AppCompat.NoActionBar">
     </style>
 
     <style name="light_blue_text_field">

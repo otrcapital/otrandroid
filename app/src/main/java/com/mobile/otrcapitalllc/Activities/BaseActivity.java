@@ -1,8 +1,31 @@
 package com.mobile.otrcapitalllc.Activities;
 
-/**
- * Created by mac-231 on 26.10.17.
- */
+import android.app.Activity;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 
-public class BaseActivity {
+import com.mobile.otrcapitalllc.Helpers.PermissionHelper;
+
+
+public class BaseActivity extends AppCompatActivity {
+
+    private PermissionHelper mPermissionsHelper;
+
+    protected PermissionHelper getPermissionsHelper() { return mPermissionsHelper; }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        mPermissionsHelper = new PermissionHelper();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        boolean proceeded = mPermissionsHelper.processRequestResult(requestCode, grantResults);
+        if (!proceeded) {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
 }

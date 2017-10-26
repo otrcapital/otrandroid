@@ -1,9 +1,13 @@
 package com.mobile.otrcapitalllc.Activities;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -13,12 +17,22 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class ContactUs extends Activity {
+public class ContactUs extends BaseActivity {
 
     @OnClick(R.id.callArrowBtn)
     public void callArrowBtn(View view) {
         Intent intent = new Intent(Intent.ACTION_CALL);
         intent.setData(Uri.parse(getString(R.string.office_tel_number)));
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
         startActivity(intent);
     }
 
@@ -26,6 +40,16 @@ public class ContactUs extends Activity {
     public void callTV(View view) {
         Intent intent = new Intent(Intent.ACTION_CALL);
         intent.setData(Uri.parse(getString(R.string.office_tel_number)));
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
         startActivity(intent);
     }
 
@@ -61,6 +85,8 @@ public class ContactUs extends Activity {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(Uri.parse("https://plus.google.com/112871732199319272036/about?hl=en"));
         startActivity(intent);
+
+        //TODO move links to strings
     }
 
     @OnClick(R.id.twitterImgBtn)
@@ -90,15 +116,18 @@ public class ContactUs extends Activity {
         setContentView(R.layout.activity_contact_us);
         ButterKnife.bind(this);
 
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     @Override
-    public boolean onMenuItemSelected(int featureId, MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             setResult(RESULT_CANCELED);
             finish();
         }
-        return super.onMenuItemSelected(featureId, item);
+        return super.onOptionsItemSelected(item);
     }
 }

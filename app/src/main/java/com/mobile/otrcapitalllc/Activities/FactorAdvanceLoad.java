@@ -40,7 +40,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class FactorAdvanceLoad extends Activity {
+public class FactorAdvanceLoad extends BaseActivity {
 
     class CurrencyFormatInputFilter implements InputFilter {
         Pattern mPattern;

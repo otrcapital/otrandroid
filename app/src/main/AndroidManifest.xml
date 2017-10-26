@@ -109,7 +109,7 @@
         </activity>
 
         <service
-            android:name="com.mobile.otrcapitalllc.Activities.GetBrokers"
+            android:name="com.mobile.otrcapitalllc.Services.GetBrokers"
             android:exported="false">
         </service>
 

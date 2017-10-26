@@ -66,6 +66,7 @@ public class History extends ListActivity {
             }
         }
 
+
         return files;
     }
 

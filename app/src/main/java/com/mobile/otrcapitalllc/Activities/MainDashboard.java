@@ -1,6 +1,6 @@
 package com.mobile.otrcapitalllc.Activities;
 
-import android.app.Activity;
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -16,10 +17,12 @@ import android.widget.Toast;
 
 import com.mobile.otrcapitalllc.Helpers.ActivityTags;
 import com.mobile.otrcapitalllc.Helpers.LogHelper;
+import com.mobile.otrcapitalllc.Helpers.PermissionHelper;
 import com.mobile.otrcapitalllc.Helpers.PreferenceManager;
 import com.mobile.otrcapitalllc.Helpers.RealPathUtil;
 import com.mobile.otrcapitalllc.Models.HistoryInvoiceModel;
 import com.mobile.otrcapitalllc.R;
+import com.mobile.otrcapitalllc.Services.GetBrokers;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -35,7 +38,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainDashboard extends Activity {
+public class MainDashboard extends BaseActivity {
 
     private static final int TAKE_PICTURE = 11;
     private static final int REQUEST_CROP_PICTURE = 12;
@@ -83,6 +86,36 @@ public class MainDashboard extends Activity {
 
     @OnClick(R.id.historyImgBtn)
     public void historyImgBtn(View view) {
+        if (PermissionHelper.hasPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            openHistoryIntent();
+        } else {
+            getPermissionsHelper().checkStoragePermissions(new PermissionHelper.RequestResultListener() {
+
+                @Override
+                public void onShouldShowPermissionRationale() {
+                    Snackbar.make(getWindow().getDecorView().findViewById(android.R.id.content), R.string.permission_storage_rationale, Snackbar.LENGTH_INDEFINITE)
+                            .setAction(android.R.string.ok, new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    getPermissionsHelper().requestStoragePermissions(MainDashboard.this);
+                                }
+                            }).show();
+                }
+
+                @Override
+                public void onRequestResult(boolean granted) {
+                    if (granted) {
+                        openHistoryIntent();
+                    } else {
+                        Snackbar.make(getWindow().getDecorView().findViewById(android.R.id.content), R.string.permissions_not_granted, Snackbar.LENGTH_SHORT)
+                                .show();
+                    }
+                }
+            }, this);
+        }
+    }
+
+    private void openHistoryIntent() {
         Intent intent = new Intent(MainDashboard.this, History.class);
         startActivity(intent);
     }

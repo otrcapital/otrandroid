@@ -25,7 +25,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class RefineCapture extends Activity {
+public class RefineCapture extends BaseActivity {
     @Bind(R.id.editImageView)
     ImageView editImageView;
     @Bind(R.id.undoBtn)

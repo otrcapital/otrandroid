@@ -21,7 +21,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class OpenFuelAdvancesActivity extends Activity {
+public class OpenFuelAdvancesActivity extends BaseActivity {
 
     @Bind(R.id.listView)
     ListView listView;
