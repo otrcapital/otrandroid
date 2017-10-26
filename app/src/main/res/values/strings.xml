@@ -18,6 +18,7 @@
     <string name="open">Open</string>
     <string name="email">Email</string>
     <string name="resend">Resend</string>
+    <string name="view">View</string>
 
     <string name="btn_confirm">Confirm</string>
     <string name="alert_message_no_connection">Unable to connect to the server at the moment</string>
@@ -80,7 +81,7 @@
     <!--  Access Permissions Requests -->
     <string name="permissions_not_granted">Permissions were not granted.</string>
     <string name="permission_storage_rationale">Access storage permission is required.</string>
-    <string name="permission_camera_rationale">Access camera permission is required.</string>
+    <string name="permission_phone_rationale">Access phone permission is required.</string>
 
 
     <string name="alert_logout">Are you sure you want to logout?</string>

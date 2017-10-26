@@ -159,11 +159,41 @@ public class MainDashboard extends BaseActivity {
 
     @OnClick(R.id.scanImgBtn)
     public void scanBtnClick(View view) {
-        CharSequence colors[] = new CharSequence[]{getString(R.string.scan_option_camera), getString(R.string.scan_option_gallery)};
+        if (PermissionHelper.hasPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            showScanPromt();
+        } else {
+            getPermissionsHelper().checkStoragePermissions(new PermissionHelper.RequestResultListener() {
+
+                @Override
+                public void onShouldShowPermissionRationale() {
+                    Snackbar.make(getWindow().getDecorView().findViewById(android.R.id.content), R.string.permission_storage_rationale, Snackbar.LENGTH_INDEFINITE)
+                            .setAction(android.R.string.ok, new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    getPermissionsHelper().requestStoragePermissions(MainDashboard.this);
+                                }
+                            }).show();
+                }
+
+                @Override
+                public void onRequestResult(boolean granted) {
+                    if (granted) {
+                        showScanPromt();
+                    } else {
+                        Snackbar.make(getWindow().getDecorView().findViewById(android.R.id.content), R.string.permissions_not_granted, Snackbar.LENGTH_SHORT)
+                                .show();
+                    }
+                }
+            }, this);
+        }
+    }
+
+    private void showScanPromt() {
+        CharSequence variants[] = new CharSequence[]{getString(R.string.scan_option_camera), getString(R.string.scan_option_gallery)};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.scan_title));
-        builder.setItems(colors, new DialogInterface.OnClickListener() {
+        builder.setItems(variants, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (which == 0) {

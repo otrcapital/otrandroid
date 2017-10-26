@@ -6,9 +6,11 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.view.View;
 
+import com.mobile.otrcapitalllc.Helpers.PermissionHelper;
 import com.mobile.otrcapitalllc.R;
 
 import butterknife.ButterKnife;
@@ -24,19 +26,36 @@ public class SignUp extends BaseActivity {
 
     @OnClick(R.id.callBtn)
     public void callBtn(View view) {
-        Intent intent = new Intent(Intent.ACTION_CALL);
+        final Intent intent = new Intent(Intent.ACTION_CALL);
         intent.setData(Uri.parse(getString(R.string.office_tel_number)));
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
+
+        if (PermissionHelper.hasPermission(this, Manifest.permission.CALL_PHONE)) {
+            startActivity(intent);
+        } else {
+            getPermissionsHelper().checkPhonePermissions(new PermissionHelper.RequestResultListener() {
+
+                @Override
+                public void onShouldShowPermissionRationale() {
+                    Snackbar.make(getWindow().getDecorView().findViewById(android.R.id.content), R.string.permission_phone_rationale, Snackbar.LENGTH_INDEFINITE)
+                            .setAction(android.R.string.ok, new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    getPermissionsHelper().requestPhonePermissions(SignUp.this);
+                                }
+                            }).show();
+                }
+
+                @Override
+                public void onRequestResult(boolean granted) {
+                    if (granted) {
+                        startActivity(intent);
+                    } else {
+                        Snackbar.make(getWindow().getDecorView().findViewById(android.R.id.content), R.string.permissions_not_granted, Snackbar.LENGTH_SHORT)
+                                .show();
+                    }
+                }
+            }, this);
         }
-        startActivity(intent);
     }
 
     @OnClick(R.id.emailBtn)

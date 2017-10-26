@@ -12,6 +12,7 @@ public class PermissionHelper {
 
     public static final int PERMISSION_REQUEST_ACCESS_STORAGE = 3;
     public static final int PERMISSION_REQUEST_ACCESS_CAMERA = 4;
+    public static final int PERMISSION_REQUEST_ACCESS_PHONE = 5;
 
     private RequestResultListener mListener;
 
@@ -32,6 +33,19 @@ public class PermissionHelper {
         }
     }
 
+    public void checkPhonePermissions(RequestResultListener listener, Activity activity) {
+        this.mListener = listener;
+        if (!hasPermission(activity, Manifest.permission.CALL_PHONE)) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.CALL_PHONE)) {
+                if (listener != null) {
+                    listener.onShouldShowPermissionRationale();
+                }
+            } else {
+                requestPhonePermissions(activity);
+            }
+        }
+    }
+
     public void checkCameraPermissions(RequestResultListener listener, Activity activity) {
         this.mListener = listener;
         if (!hasPermission(activity, Manifest.permission.CAMERA)) {
@@ -45,18 +59,24 @@ public class PermissionHelper {
         }
     }
 
+    public void requestPhonePermissions(Activity activity) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.CALL_PHONE}, PERMISSION_REQUEST_ACCESS_PHONE);
+        }
+    }
+
     public void requestStoragePermissions(Activity activity) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_ACCESS_STORAGE);
         }
     }
 
-    public void requestCameraPermissions(Activity activity) {
+    private void requestCameraPermissions(Activity activity) {
         ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.CAMERA}, PERMISSION_REQUEST_ACCESS_CAMERA);
     }
 
     public boolean processRequestResult(int requestCode, int[] grantResults) {
-        if (requestCode == PERMISSION_REQUEST_ACCESS_STORAGE || requestCode == PERMISSION_REQUEST_ACCESS_CAMERA) {
+        if (requestCode == PERMISSION_REQUEST_ACCESS_STORAGE || requestCode == PERMISSION_REQUEST_ACCESS_CAMERA || requestCode == PERMISSION_REQUEST_ACCESS_PHONE) {
 
             boolean permissionGranted = grantResults.length > 0 &&
                     grantResults[0] == PackageManager.PERMISSION_GRANTED;
