@@ -1,7 +1,5 @@
 package com.mobile.otrcapitalllc.Activities;
 
-import android.app.Activity;
-import android.app.ListActivity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
@@ -16,8 +14,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.mobile.otrcapitalllc.Helpers.ActivityTags;
 import com.mobile.otrcapitalllc.Adapters.HistoryFilesAdapter;
+import com.mobile.otrcapitalllc.Helpers.ActivityTags;
 import com.mobile.otrcapitalllc.Helpers.PreferenceManager;
 import com.mobile.otrcapitalllc.Models.HistoryInvoiceModel;
 import com.mobile.otrcapitalllc.R;
@@ -29,12 +27,17 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 
-public class History extends ListActivity {
-    private final Activity activity = this;
+public class History extends BaseActivity {
+
     @Bind(R.id.verifyUserGroup)
     LinearLayout verifyUserGroup;
+
     @Bind(R.id.verifyUserTV)
     TextView verifyUserTV;
+
+    @Bind(R.id.list)
+    ListView list;
+
     HistoryFilesAdapter adapter;
     private ArrayList<String> fileList;
 
@@ -47,8 +50,14 @@ public class History extends ListActivity {
         fileList = getFileList();
 
         adapter = new HistoryFilesAdapter(this, fileList);
-        setListAdapter(adapter);
-        registerForContextMenu(getListView());
+        list.setAdapter(adapter);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                OpenFile(fileList.get(i));
+            }
+        });
+        registerForContextMenu(list);
 
         verifyUserGroup.setVisibility(View.INVISIBLE);
     }
@@ -68,12 +77,6 @@ public class History extends ListActivity {
 
 
         return files;
-    }
-
-    @Override
-    protected void onListItemClick(ListView l, View v, int position, long id) {
-        super.onListItemClick(l, v, position, id);
-        OpenFile(fileList.get(position));
     }
 
     public void OpenFile(final String fileName) {
@@ -129,8 +132,7 @@ public class History extends ListActivity {
             return;
         }
 
-        LoadDetails.UploadDocument(brokerName, fileName, this, activity, verifyUserGroup, model.getApiInvoiceFromModel(), documentTypeList, model.getFactorType());
-
+        LoadDetails.UploadDocument(brokerName, fileName, this, this, verifyUserGroup, model.getApiInvoiceFromModel(), documentTypeList, model.getFactorType());
     }
 
     @Override

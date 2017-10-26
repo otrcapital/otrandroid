@@ -40,6 +40,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 import com.mobile.otrcapitalllc.Helpers.ActivityTags;
 import com.mobile.otrcapitalllc.Helpers.CrashlyticsHelper;
 import com.mobile.otrcapitalllc.Helpers.LogHelper;
+import com.mobile.otrcapitalllc.Helpers.PermissionHelper;
 import com.mobile.otrcapitalllc.Helpers.PreferenceManager;
 import com.mobile.otrcapitalllc.Helpers.RealPathUtil;
 import com.mobile.otrcapitalllc.Helpers.RestClient;
@@ -309,6 +310,10 @@ public class LoadDetails extends Activity {
     }
 
     private void copyImageFile(String path) {
+        if (!PermissionHelper.hasPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            return;
+        }
+
         try {
             FileChannel source;
             FileChannel destination;
@@ -477,6 +482,9 @@ public class LoadDetails extends Activity {
     }
 
     private void DeleteGalleryDuplicates() {
+        if (!PermissionHelper.hasPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            return;
+        }
         File CurrentFile = imageFiles.get(imageFiles.size() - 1);
         // based on the result we either set the preview or show a quick toast splash.
         // Some versions of Android save to the MediaStore as well.  Not sure why!  We don't know what

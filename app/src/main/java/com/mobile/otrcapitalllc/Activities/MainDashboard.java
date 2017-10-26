@@ -303,6 +303,9 @@ public class MainDashboard extends BaseActivity {
     }
 
     private void copyImageFile(String path) {
+        if (!PermissionHelper.hasPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            return;
+        }
         try {
             FileChannel source;
             FileChannel destination;

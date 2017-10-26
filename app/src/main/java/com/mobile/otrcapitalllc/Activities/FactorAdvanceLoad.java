@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -12,6 +13,7 @@ import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -32,6 +34,7 @@ import com.mobile.otrcapitalllc.CustomViews.CustomSwitch;
 import com.mobile.otrcapitalllc.Helpers.ActivityTags;
 import com.mobile.otrcapitalllc.Helpers.BrokerDatabase;
 import com.mobile.otrcapitalllc.Adapters.FilterWithSpaceAdapter;
+import com.mobile.otrcapitalllc.Helpers.PermissionHelper;
 import com.mobile.otrcapitalllc.Models.Broker;
 import com.mobile.otrcapitalllc.Models.CustomError;
 import com.mobile.otrcapitalllc.R;
@@ -175,35 +178,63 @@ public class FactorAdvanceLoad extends BaseActivity {
 
     @OnClick(R.id.scanButton)
     public void scanButton(View view) {
-        photoType = ActivityTags.TAKE_PHOTO_TYPE.CAMERA;
-
-        changeDecimalPartIfNeeded(totalPayET);
-        changeDecimalPartIfNeeded(totalDeductionET);
-
-        CustomError error = checkFields();
-        if (error.isError()) {
-            showAlertDialog(error.getDescription());
+        if (PermissionHelper.hasPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            startCameraScanning();
         } else {
-            if (isNeedPhone()) {
-                showPhoneInputDialog();
-            } else {
-                openNextScreen();
-            }
+            getPermissionsHelper().checkStoragePermissions(new PermissionHelper.RequestResultListener() {
+
+                @Override
+                public void onShouldShowPermissionRationale() {
+                    Snackbar.make(getWindow().getDecorView().findViewById(android.R.id.content), R.string.permission_storage_rationale, Snackbar.LENGTH_INDEFINITE)
+                            .setAction(android.R.string.ok, new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    getPermissionsHelper().requestStoragePermissions(FactorAdvanceLoad.this);
+                                }
+                            }).show();
+                }
+
+                @Override
+                public void onRequestResult(boolean granted) {
+                    if (granted) {
+                        startCameraScanning();
+                    } else {
+                        Snackbar.make(getWindow().getDecorView().findViewById(android.R.id.content), R.string.permissions_not_granted, Snackbar.LENGTH_SHORT)
+                                .show();
+                    }
+                }
+            }, this);
         }
     }
 
     @OnClick(R.id.galleryButton)
     public void galleryButton(View view) {
-        photoType = ActivityTags.TAKE_PHOTO_TYPE.GALLERY;
-        CustomError error = checkFields();
-        if (error.isError()) {
-            showAlertDialog(error.getDescription());
+        if (PermissionHelper.hasPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            startGalleryScanning();
         } else {
-            if (isNeedPhone()) {
-                showPhoneInputDialog();
-            } else {
-                openNextScreen();
-            }
+            getPermissionsHelper().checkStoragePermissions(new PermissionHelper.RequestResultListener() {
+
+                @Override
+                public void onShouldShowPermissionRationale() {
+                    Snackbar.make(getWindow().getDecorView().findViewById(android.R.id.content), R.string.permission_storage_rationale, Snackbar.LENGTH_INDEFINITE)
+                            .setAction(android.R.string.ok, new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    getPermissionsHelper().requestStoragePermissions(FactorAdvanceLoad.this);
+                                }
+                            }).show();
+                }
+
+                @Override
+                public void onRequestResult(boolean granted) {
+                    if (granted) {
+                        startGalleryScanning();
+                    } else {
+                        Snackbar.make(getWindow().getDecorView().findViewById(android.R.id.content), R.string.permissions_not_granted, Snackbar.LENGTH_SHORT)
+                                .show();
+                    }
+                }
+            }, this);
         }
     }
 
@@ -444,6 +475,38 @@ public class FactorAdvanceLoad extends BaseActivity {
             }
         }
         return null;
+    }
+
+    private void startCameraScanning() {
+        photoType = ActivityTags.TAKE_PHOTO_TYPE.CAMERA;
+
+        changeDecimalPartIfNeeded(totalPayET);
+        changeDecimalPartIfNeeded(totalDeductionET);
+
+        CustomError error = checkFields();
+        if (error.isError()) {
+            showAlertDialog(error.getDescription());
+        } else {
+            if (isNeedPhone()) {
+                showPhoneInputDialog();
+            } else {
+                openNextScreen();
+            }
+        }
+    }
+
+    private void startGalleryScanning() {
+        photoType = ActivityTags.TAKE_PHOTO_TYPE.GALLERY;
+        CustomError error = checkFields();
+        if (error.isError()) {
+            showAlertDialog(error.getDescription());
+        } else {
+            if (isNeedPhone()) {
+                showPhoneInputDialog();
+            } else {
+                openNextScreen();
+            }
+        }
     }
 
     private void openNextScreen() {
