@@ -58,9 +58,11 @@ public class History extends ListActivity {
         myDir.mkdirs();
         ArrayList<String> files = new ArrayList<>();
 
-        for (File f : myDir.listFiles()) {
-            if (f.isFile() && PreferenceManager.with(this).getStringWithKey(f.getName()) != null) {
-                files.add(f.getName());
+        if (myDir.listFiles() != null) {
+            for (File f : myDir.listFiles()) {
+                if (f.isFile() && PreferenceManager.with(this).getStringWithKey(f.getName()) != null) {
+                    files.add(f.getName());
+                }
             }
         }
 

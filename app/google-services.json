@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1084924162296",
+    "firebase_url": "https://otr-capital-llc.firebaseio.com",
+    "project_id": "otr-capital-llc",
+    "storage_bucket": "otr-capital-llc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1084924162296:android:fdf38500a935e07d",
+        "android_client_info": {
+          "package_name": "com.mobile.otrcapitalllc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1084924162296-fuk68qrn2mkncalsvb69qg6e2gfqi4me.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mobile.otrcapitalllc",
+            "certificate_hash": "310772ec11831048e1bb6f48df1c51153b27501d"
+          }
+        },
+        {
+          "client_id": "1084924162296-mbhgtu5cbtiv138g3v36v65dmn1u34d8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB3MkWLA3Vfz99SwB1bJKFv9YLLd51Q96Y"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1084924162296-mbhgtu5cbtiv138g3v36v65dmn1u34d8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -113,6 +113,20 @@
             android:exported="false">
         </service>
 
+        <service
+            android:name="com.mobile.otrcapitalllc.Services.FirebaseCloudMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+
+        <service
+            android:name="com.mobile.otrcapitalllc.Services.FirebaseInstanceIdentifierService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service>
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="02e263e038a91f7d4e860c48bc3670eb70371e63"
