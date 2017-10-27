@@ -54,7 +54,8 @@ public class FirebaseCloudMessagingService extends FirebaseMessagingService {
         // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
             String remoteBody = remoteMessage.getNotification().getBody();
-            Log.d(TAG, "Message Notification Body: " + remoteBody);
+
+            sendNotification(remoteBody);
         }
     }
     // [END receive_message]
@@ -74,20 +75,19 @@ public class FirebaseCloudMessagingService extends FirebaseMessagingService {
     private void sendNotification(String messageBody) {
         Intent intent = new Intent(this, History.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
-                PendingIntent.FLAG_ONE_SHOT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent, PendingIntent.FLAG_ONE_SHOT);
 
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(getApplicationContext())
-                        .setContentTitle("FCM Message")
+                        .setSmallIcon(R.drawable.ic_stat_name)
+                        .setContentTitle(getString(R.string.app_name))
                         .setContentText(messageBody)
-                        .setAutoCancel(true)
+                        .setAutoCancel(false)
                         .setSound(defaultSoundUri)
                         .setContentIntent(pendingIntent);
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
     }
 }
