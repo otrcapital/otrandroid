@@ -315,7 +315,7 @@ public class MainDashboard extends BaseActivity {
                 shareIntent.setAction(Intent.ACTION_SEND_MULTIPLE);
                 shareIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, imageUris);
                 shareIntent.setType("image/*");
-                startActivityForResult(Intent.createChooser(shareIntent, "Share images to.."), SHARE_IMAGE);
+                startActivityForResult(Intent.createChooser(shareIntent, "Share image:"), SHARE_IMAGE);
             }
         } else if (requestCode == SHARE_IMAGE) {
             File images = new File(ActivityTags.TEMP_STORAGE_DIR);
