@@ -56,4 +56,36 @@ public class RemoteConfigManager {
     public static String getContactEmail() {
         return FirebaseRemoteConfig.getInstance().getString("contact_email");
     }
+
+    public static String getContactAddress() {
+        return FirebaseRemoteConfig.getInstance().getString("contact_address");
+    }
+
+    //region URLs
+
+    public static String getSignUpURL() {
+        return FirebaseRemoteConfig.getInstance().getString("url_sign_up");
+    }
+
+    public static String getFacebookURL() {
+        return FirebaseRemoteConfig.getInstance().getString("url_facebook");
+    }
+
+    public static String getGooglePlusURL() {
+        return FirebaseRemoteConfig.getInstance().getString("url_google_plus");
+    }
+
+    public static String getTwitterURL() {
+        return FirebaseRemoteConfig.getInstance().getString("url_twitter");
+    }
+
+    public static String getInstagramURL() {
+        return FirebaseRemoteConfig.getInstance().getString("url_instagram");
+    }
+
+    public static String getLinkedinURL() {
+        return FirebaseRemoteConfig.getInstance().getString("url_linkedin");
+    }
+
+    //endregion
 }

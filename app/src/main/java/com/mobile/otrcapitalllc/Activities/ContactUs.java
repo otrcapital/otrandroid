@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
+import android.text.Html;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -30,6 +31,9 @@ public class ContactUs extends BaseActivity {
     @Bind(R.id.emailTV)
     TextView emailTV;
 
+    @Bind(R.id.mailTV)
+    TextView mailTV;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +48,10 @@ public class ContactUs extends BaseActivity {
         callTV.setText(RemoteConfigManager.getContactPhoneNumber());
         faxTV.setText(RemoteConfigManager.getContactFaxNumber());
         emailTV.setText(RemoteConfigManager.getContactEmail());
+
+        String address = RemoteConfigManager.getContactAddress();
+        address = address.replace("\\n", System.getProperty("line.separator"));
+        mailTV.setText(address);
     }
 
     @OnClick(R.id.callArrowBtn)
@@ -120,7 +128,7 @@ public class ContactUs extends BaseActivity {
     public void emailArrowBtn(View view) {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_EMAIL, RemoteConfigManager.getContactEmail());
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[] {RemoteConfigManager.getContactEmail()});
         intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.contact_us_email_subject));
 
         startActivity(Intent.createChooser(intent, getString(R.string.send_email)));
@@ -130,7 +138,7 @@ public class ContactUs extends BaseActivity {
     public void emailTV(View view) {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_EMAIL, RemoteConfigManager.getContactEmail());
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[] {RemoteConfigManager.getContactEmail()});
         intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.contact_us_email_subject));
 
         startActivity(Intent.createChooser(intent, getString(R.string.send_email)));
@@ -139,37 +147,35 @@ public class ContactUs extends BaseActivity {
     @OnClick(R.id.fbImgBtn)
     public void fbImgBtn(View view) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse(getString(R.string.url_facebook)));
+        intent.setData(Uri.parse(RemoteConfigManager.getFacebookURL()));
         startActivity(intent);
     }
 
     @OnClick(R.id.googleplusImgBtn)
     public void googleplusImgBtn(View view) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse("https://plus.google.com/112871732199319272036/about?hl=en"));
+        intent.setData(Uri.parse(RemoteConfigManager.getGooglePlusURL()));
         startActivity(intent);
-
-        //TODO move links to strings
     }
 
     @OnClick(R.id.twitterImgBtn)
     public void twitterImgBtn(View view) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse("https://twitter.com/otrcapitalllc"));
+        intent.setData(Uri.parse(RemoteConfigManager.getTwitterURL()));
         startActivity(intent);
     }
 
     @OnClick(R.id.instagramImgBtn)
     public void instagramImgBtn(View view) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse("https://instagram.com/otrcapital/"));
+        intent.setData(Uri.parse(RemoteConfigManager.getInstagramURL()));
         startActivity(intent);
     }
 
     @OnClick(R.id.linkedinImgBtn)
     public void linkedinImgBtn(View view) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse("https://www.linkedin.com/company/otr-capital"));
+        intent.setData(Uri.parse(RemoteConfigManager.getLinkedinURL()));
         startActivity(intent);
     }
 

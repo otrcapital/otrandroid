@@ -87,35 +87,35 @@ public class LoginScreen extends BaseActivity {
     @OnClick(R.id.fbImgBtn)
     public void fbImgBtn(View view) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse(getString(R.string.url_facebook)));
+        intent.setData(Uri.parse(RemoteConfigManager.getFacebookURL()));
         startActivity(intent);
     }
 
     @OnClick(R.id.googleplusImgBtn)
     public void googleplusImgBtn(View view) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse("https://plus.google.com/112871732199319272036/about?hl=en"));
+        intent.setData(Uri.parse(RemoteConfigManager.getGooglePlusURL()));
         startActivity(intent);
     }
 
     @OnClick(R.id.twitterImgBtn)
     public void twitterImgBtn(View view) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse("https://twitter.com/otrcapitalllc"));
+        intent.setData(Uri.parse(RemoteConfigManager.getTwitterURL()));
         startActivity(intent);
     }
 
     @OnClick(R.id.instagramImgBtn)
     public void instagramImgBtn(View view) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse("https://instagram.com/otrcapital/"));
+        intent.setData(Uri.parse(RemoteConfigManager.getInstagramURL()));
         startActivity(intent);
     }
 
     @OnClick(R.id.linkedinImgBtn)
     public void linkedinImgBtn(View view) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse("https://www.linkedin.com/company/otr-capital"));
+        intent.setData(Uri.parse(RemoteConfigManager.getLinkedinURL()));
         startActivity(intent);
     }
 

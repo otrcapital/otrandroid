@@ -21,7 +21,7 @@ public class SignUp extends BaseActivity {
     @OnClick(R.id.signUpButton)
     public void signUpButton(View view) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse(getString(R.string.url_sign_up)));
+        intent.setData(Uri.parse(RemoteConfigManager.getSignUpURL()));
         startActivity(intent);
     }
 
@@ -73,35 +73,35 @@ public class SignUp extends BaseActivity {
     @OnClick(R.id.fbImgBtn)
     public void fbImgBtn(View view) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse(getString(R.string.url_facebook)));
+        intent.setData(Uri.parse(RemoteConfigManager.getFacebookURL()));
         startActivity(intent);
     }
 
     @OnClick(R.id.googleplusImgBtn)
     public void googleplusImgBtn(View view) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse(getString(R.string.url_plus)));
+        intent.setData(Uri.parse(RemoteConfigManager.getGooglePlusURL()));
         startActivity(intent);
     }
 
     @OnClick(R.id.twitterImgBtn)
     public void twitterImgBtn(View view) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse(getString(R.string.url_twitter)));
+        intent.setData(Uri.parse(RemoteConfigManager.getTwitterURL()));
         startActivity(intent);
     }
 
     @OnClick(R.id.instagramImgBtn)
     public void instagramImgBtn(View view) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse(getString(R.string.url_instagram)));
+        intent.setData(Uri.parse(RemoteConfigManager.getInstagramURL()));
         startActivity(intent);
     }
 
     @OnClick(R.id.linkedinImgBtn)
     public void linkedinImgBtn(View view) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse(getString(R.string.url_linkedin)));
+        intent.setData(Uri.parse(RemoteConfigManager.getLinkedinURL()));
         startActivity(intent);
     }
 
