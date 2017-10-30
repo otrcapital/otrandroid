@@ -1,30 +1,52 @@
 package com.mobile.otrcapitalllc.Activities;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.mobile.otrcapitalllc.Helpers.PermissionHelper;
+import com.mobile.otrcapitalllc.Helpers.RemoteConfigManager;
 import com.mobile.otrcapitalllc.R;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
 public class ContactUs extends BaseActivity {
 
+    @Bind(R.id.callTV)
+    TextView callTV;
+
+    @Bind(R.id.faxTV)
+    TextView faxTV;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_contact_us);
+        ButterKnife.bind(this);
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
+        callTV.setText(RemoteConfigManager.getContactPhoneNumber());
+        faxTV.setText(RemoteConfigManager.getContactFaxNumber());
+    }
+
     @OnClick(R.id.callArrowBtn)
     public void callArrowBtn(View view) {
         final Intent intent = new Intent(Intent.ACTION_CALL);
-        intent.setData(Uri.parse(getString(R.string.office_tel_number)));
+        String phoneNumber = RemoteConfigManager.getFormattedContactPhoneNumber();
+        intent.setData(Uri.parse(phoneNumber));
 
         if (PermissionHelper.hasPermission(this, Manifest.permission.CALL_PHONE)) {
             startActivity(intent);
@@ -58,7 +80,8 @@ public class ContactUs extends BaseActivity {
     @OnClick(R.id.callTV)
     public void callTV(View view) {
         final Intent intent = new Intent(Intent.ACTION_CALL);
-        intent.setData(Uri.parse(getString(R.string.office_tel_number)));
+        String phoneNumber = RemoteConfigManager.getFormattedContactPhoneNumber();
+        intent.setData(Uri.parse(phoneNumber));
 
         if (PermissionHelper.hasPermission(this, Manifest.permission.CALL_PHONE)) {
             startActivity(intent);
@@ -144,18 +167,6 @@ public class ContactUs extends BaseActivity {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(Uri.parse("https://www.linkedin.com/company/otr-capital"));
         startActivity(intent);
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_contact_us);
-        ButterKnife.bind(this);
-
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
     }
 
     @Override

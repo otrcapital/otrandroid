@@ -11,6 +11,7 @@ import android.support.v4.app.ActivityCompat;
 import android.view.View;
 
 import com.mobile.otrcapitalllc.Helpers.PermissionHelper;
+import com.mobile.otrcapitalllc.Helpers.RemoteConfigManager;
 import com.mobile.otrcapitalllc.R;
 
 import butterknife.ButterKnife;
@@ -27,7 +28,8 @@ public class SignUp extends BaseActivity {
     @OnClick(R.id.callBtn)
     public void callBtn(View view) {
         final Intent intent = new Intent(Intent.ACTION_CALL);
-        intent.setData(Uri.parse(getString(R.string.office_tel_number)));
+        String phoneNumber = RemoteConfigManager.getFormattedContactPhoneNumber();
+        intent.setData(Uri.parse(phoneNumber));
 
         if (PermissionHelper.hasPermission(this, Manifest.permission.CALL_PHONE)) {
             startActivity(intent);

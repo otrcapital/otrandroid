@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<defaultsMap>
+    <entry>
+        <key>tel_contact</key>
+        <value>(770) 882-0124</value>
+    </entry>
+
+    <entry>
+        <key>tel_fax</key>
+        <value>(770) 882-0125</value>
+    </entry>
+</defaultsMap>
