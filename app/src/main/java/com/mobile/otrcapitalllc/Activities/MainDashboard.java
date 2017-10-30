@@ -237,8 +237,6 @@ public class MainDashboard extends BaseActivity {
         setContentView(R.layout.activity_main_dashboard);
         ButterKnife.bind(this);
 
-        RemoteConfigManager.initDefaults();
-
         LogHelper.logDebug("Getting customer list from server");
 
         if (PreferenceManager.with(this).getDbUpdateTimestamp() == 0) {
@@ -247,13 +245,6 @@ public class MainDashboard extends BaseActivity {
 
         Intent intent = new Intent(MainDashboard.this, GetBrokers.class);
         startService(intent);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        RemoteConfigManager.fetchDefaults(this);
     }
 
     @Override

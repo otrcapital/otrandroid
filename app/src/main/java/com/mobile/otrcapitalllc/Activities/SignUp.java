@@ -64,7 +64,7 @@ public class SignUp extends BaseActivity {
     public void emailBtn(View view) {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_EMAIL, getString(R.string.office_email_address));
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[] {RemoteConfigManager.getContactEmail()});
         intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.contact_us_email_subject));
 
         startActivity(Intent.createChooser(intent, getString(R.string.send_email)));

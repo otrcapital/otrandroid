@@ -9,4 +9,9 @@
         <key>tel_fax</key>
         <value>(770) 882-0125</value>
     </entry>
+
+    <entry>
+        <key>contact_email</key>
+        <value>info@otrcapital.com</value>
+    </entry>
 </defaultsMap>

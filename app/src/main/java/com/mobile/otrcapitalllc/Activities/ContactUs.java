@@ -27,6 +27,9 @@ public class ContactUs extends BaseActivity {
     @Bind(R.id.faxTV)
     TextView faxTV;
 
+    @Bind(R.id.emailTV)
+    TextView emailTV;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +43,7 @@ public class ContactUs extends BaseActivity {
 
         callTV.setText(RemoteConfigManager.getContactPhoneNumber());
         faxTV.setText(RemoteConfigManager.getContactFaxNumber());
+        emailTV.setText(RemoteConfigManager.getContactEmail());
     }
 
     @OnClick(R.id.callArrowBtn)
@@ -116,7 +120,7 @@ public class ContactUs extends BaseActivity {
     public void emailArrowBtn(View view) {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_EMAIL, getString(R.string.office_email_address));
+        intent.putExtra(Intent.EXTRA_EMAIL, RemoteConfigManager.getContactEmail());
         intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.contact_us_email_subject));
 
         startActivity(Intent.createChooser(intent, getString(R.string.send_email)));
@@ -126,7 +130,7 @@ public class ContactUs extends BaseActivity {
     public void emailTV(View view) {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_EMAIL, getString(R.string.office_email_address));
+        intent.putExtra(Intent.EXTRA_EMAIL, RemoteConfigManager.getContactEmail());
         intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.contact_us_email_subject));
 
         startActivity(Intent.createChooser(intent, getString(R.string.send_email)));

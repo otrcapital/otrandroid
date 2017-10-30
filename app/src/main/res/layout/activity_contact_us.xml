@@ -194,7 +194,7 @@
             android:gravity="center_vertical"
             android:minHeight="40dp"
             android:paddingLeft="35dp"
-            android:text="info@otrcapital.com"
+            tools:text="info@otrcapital.com"
             android:textColor="@android:color/white"
             android:textSize="20sp" />
 

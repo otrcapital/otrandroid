@@ -52,4 +52,8 @@ public class RemoteConfigManager {
     public static String getContactFaxNumber() {
         return FirebaseRemoteConfig.getInstance().getString("tel_fax");
     }
+
+    public static String getContactEmail() {
+        return FirebaseRemoteConfig.getInstance().getString("contact_email");
+    }
 }

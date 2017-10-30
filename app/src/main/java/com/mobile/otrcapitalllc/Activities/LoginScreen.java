@@ -22,6 +22,7 @@ import com.mobile.otrcapitalllc.Helpers.CrashlyticsHelper;
 import com.mobile.otrcapitalllc.Helpers.EventTracker;
 import com.mobile.otrcapitalllc.Helpers.LogHelper;
 import com.mobile.otrcapitalllc.Helpers.PreferenceManager;
+import com.mobile.otrcapitalllc.Helpers.RemoteConfigManager;
 import com.mobile.otrcapitalllc.Helpers.RestClient;
 import com.mobile.otrcapitalllc.R;
 
@@ -124,6 +125,8 @@ public class LoginScreen extends BaseActivity {
         setContentView(R.layout.activity_login_screen);
         ButterKnife.bind(this);
 
+        RemoteConfigManager.initDefaults();
+
         if (!BuildConfig.DEBUG) {
             mButton.setVisibility(View.GONE);
         }
@@ -171,6 +174,13 @@ public class LoginScreen extends BaseActivity {
                 }
             }
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        RemoteConfigManager.fetchDefaults(this);
     }
 
     private boolean isNetworkAvailable() {
