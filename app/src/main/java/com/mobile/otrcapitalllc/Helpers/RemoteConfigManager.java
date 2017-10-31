@@ -22,8 +22,8 @@ public class RemoteConfigManager {
     }
 
     public static void fetchDefaults(final Activity activity) {
-        long cacheExpiration = 0;
-        //TODO remove debug
+        long cacheExpiration = 3600;
+
         FirebaseRemoteConfig.getInstance().fetch(cacheExpiration)
                 .addOnCompleteListener(activity, new OnCompleteListener<Void>() {
 
