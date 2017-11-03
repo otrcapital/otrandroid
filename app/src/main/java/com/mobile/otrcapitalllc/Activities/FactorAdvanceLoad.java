@@ -268,7 +268,10 @@ public class FactorAdvanceLoad extends BaseActivity {
             sb.append("\n\tLoad Number");
         }
 
-        if (TextUtils.isEmpty(totalPayET.getText().toString())) {
+        float totalPayValue = 0;
+        try {
+            totalPayValue = Float.parseFloat(totalPayET.getText().toString());
+        }catch (NumberFormatException e) {
             isError = true;
             if (activityType.equals(ActivityTags.TAG_FACTOR_ADVANCE)) {
                 sb.append("\n\tTotal Load Amount");
@@ -277,17 +280,18 @@ public class FactorAdvanceLoad extends BaseActivity {
             }
         }
 
-        if (TextUtils.isEmpty(totalDeductionET.getText().toString())) {
+        float totalDeductionValue = 0;
+        try {
+            totalDeductionValue = Float.parseFloat(totalDeductionET.getText().toString());
+        }catch (NumberFormatException e) {
             if (activityType.equals(ActivityTags.TAG_FACTOR_ADVANCE)) {
                 isError = true;
                 sb.append("\n\tAdvance Request Amount");
-            } else {
-                //totalDeductionET.setText("0.00");
             }
         }
 
-        if (!isError && Float.parseFloat(totalPayET.getText().toString()) - Float.parseFloat(totalDeductionET.getText()
-                .toString()) <= 0.0) {
+
+        if (!isError && ((totalPayValue - totalDeductionValue) <= 0.0)) {
             isError = true;
             if (activityType.equals(ActivityTags.TAG_FACTOR_ADVANCE)) {
                 sb.append("\n\tAdvance Request cannot be larger than Total Load");
@@ -510,8 +514,18 @@ public class FactorAdvanceLoad extends BaseActivity {
     }
 
     private void openNextScreen() {
-        String strFloatTotalPay = String.format("%.2f", Float.parseFloat(totalPayET.getText().toString()));
-        String strTotalDeductionET = String.format("%.2f", Float.parseFloat(totalDeductionET.getText().toString()));
+        float totalPayValue = 0;
+        try {
+            totalPayValue = Float.parseFloat(totalPayET.getText().toString());
+        }catch (NumberFormatException e) { }
+
+        float totalDeductionValue = 0;
+        try {
+            totalDeductionValue = Float.parseFloat(totalDeductionET.getText().toString());
+        }catch (NumberFormatException e) {}
+
+        String strFloatTotalPay = String.format("%.2f", totalPayValue);
+        String strTotalDeductionET = String.format("%.2f", totalDeductionValue);
 
         float flTotalPayET = Float.parseFloat(strFloatTotalPay);
         float flrTotalDeductionET = Float.parseFloat(strTotalDeductionET);

@@ -15,8 +15,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/padding_logo_top"
-        android:src="@drawable/otr_logo" />
+        android:layout_marginTop="@dimen/padding_triple"
+        android:src="@drawable/otr_logo_small" />
 
     <LinearLayout
         android:id="@+id/socialMediaGroup"

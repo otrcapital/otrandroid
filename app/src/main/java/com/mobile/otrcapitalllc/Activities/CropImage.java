@@ -124,15 +124,16 @@ public class CropImage extends BaseActivity {
         origBitmap = BitmapFactory.decodeFile(imagePath);
         if (origBitmap == null) {
             showErrorDialog();
-        }
-        if (origBitmap.getWidth() > origBitmap.getHeight()) {
-            rotateBitmap(90);
-        }
+        }else {
+            if (origBitmap.getWidth() > origBitmap.getHeight()) {
+                rotateBitmap(90);
+            }
 
-        if (!OpenCVLoader.initDebug()) {
-            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, mLoaderCallback);
+            if (!OpenCVLoader.initDebug()) {
+                OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, mLoaderCallback);
+            }
+            editImageView.setImageBitmap(origBitmap);
         }
-        editImageView.setImageBitmap(origBitmap);
     }
 
     private void showErrorDialog() {
