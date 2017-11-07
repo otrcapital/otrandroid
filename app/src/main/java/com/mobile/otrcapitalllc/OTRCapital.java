@@ -1,6 +1,7 @@
 package com.mobile.otrcapitalllc;
 
 import android.app.Application;
+import android.os.StrictMode;
 
 import com.crashlytics.android.Crashlytics;
 
@@ -22,5 +23,8 @@ public class OTRCapital extends Application {
         if (!BuildConfig.DEBUG) {
             Fabric.with(fabric);
         }
+
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
     }
 }

@@ -22,16 +22,16 @@ public class RemoteConfigManager {
     }
 
     public static void fetchDefaults(final Activity activity) {
-        long cacheExpiration = 3600;
-        FirebaseRemoteConfig.getInstance().fetch(cacheExpiration)
-                .addOnCompleteListener(activity, new OnCompleteListener<Void>() {
-
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            FirebaseRemoteConfig.getInstance().activateFetched();
-                        }
-                    }});
+//        long cacheExpiration = 3600;
+//        FirebaseRemoteConfig.getInstance().fetch(cacheExpiration)
+//                .addOnCompleteListener(activity, new OnCompleteListener<Void>() {
+//
+//                    @Override
+//                    public void onComplete(@NonNull Task<Void> task) {
+//                        if (task.isSuccessful()) {
+//                            FirebaseRemoteConfig.getInstance().activateFetched();
+//                        }
+//                    }});
     }
 
 
