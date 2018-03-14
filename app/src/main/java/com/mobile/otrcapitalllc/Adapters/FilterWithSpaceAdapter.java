@@ -411,7 +411,7 @@ public class FilterWithSpaceAdapter<T> extends BaseAdapter implements
                 text = (TextView) view;
             } else {
                 // Otherwise, find the TextView field within the layout
-                text = (TextView) view.findViewById(mFieldId);
+                text = view.findViewById(mFieldId);
             }
         } catch (ClassCastException e) {
             Log.e("ArrayAdapter",
@@ -506,9 +506,9 @@ public class FilterWithSpaceAdapter<T> extends BaseAdapter implements
                         newValues.add(value);
                         // see if it contains the constraint somewhere in the
                         // value element
-                    } else if (valueText.contains(prefixString)) {
+                    } /*else if (valueText.contains(prefixString)) {
                         newValues.add(value);
-                    }
+                    }*/
                 }
 
                 results.values = newValues;

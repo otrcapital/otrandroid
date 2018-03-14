@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/truck_bg">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/truck_bg"
             android:orientation="vertical">
 
             <ImageView
@@ -28,8 +26,8 @@
                 android:layout_height="fill_parent"
                 android:layout_marginTop="20dp"
                 android:orientation="vertical"
-                android:paddingLeft="@dimen/padding_double"
-                android:paddingRight="@dimen/padding_double">
+                android:paddingEnd="@dimen/padding_double"
+                android:paddingStart="@dimen/padding_double">
 
                 <LinearLayout
                     android:id="@+id/brokerNameGroup"
@@ -43,14 +41,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/height_edit_text"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
                         android:layout_weight="1.5"
                         android:background="@drawable/otr_9_patch_text_field_dark"
                         android:gravity="center_vertical"
                         android:maxLines="2"
                         android:minLines="2"
-                        android:paddingLeft="8dp"
-                        android:paddingRight="4dp"
+                        android:paddingEnd="4dp"
+                        android:paddingStart="8dp"
                         android:text="Broker Name:"
                         android:textAlignment="center"
                         android:textColor="@android:color/white"
@@ -59,7 +57,7 @@
                     <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginEnd="10dp"
                         android:layout_weight="1">
 
                         <AutoCompleteTextView
@@ -73,8 +71,8 @@
                             android:linksClickable="false"
                             android:maxLines="1"
                             android:minLines="1"
-                            android:paddingLeft="4dp"
-                            android:paddingRight="15dp"
+                            android:paddingEnd="15dp"
+                            android:paddingStart="4dp"
                             android:textColor="@android:color/background_dark"
                             android:textColorHint="@android:color/black"
                             android:textCursorDrawable="@null"
@@ -87,7 +85,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="right|center_vertical"
-                            android:layout_marginRight="5dp"
+                            android:layout_marginEnd="5dp"
                             android:background="#00000000"
                             android:clickable="true"
                             android:src="@drawable/cancel_button"
@@ -108,14 +106,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/height_edit_text"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
                         android:layout_weight="1.5"
                         android:background="@drawable/otr_9_patch_text_field_dark"
                         android:gravity="center_vertical"
                         android:maxLines="2"
                         android:minLines="2"
-                        android:paddingLeft="8dp"
-                        android:paddingRight="4dp"
+                        android:paddingEnd="4dp"
+                        android:paddingStart="8dp"
                         android:text="Load #:"
                         android:textAlignment="center"
                         android:textColor="@android:color/white"
@@ -125,18 +123,18 @@
                         android:id="@+id/loadNumberET"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/height_edit_text"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginEnd="10dp"
                         android:layout_weight="1"
                         android:background="@drawable/otr_9_patch_input_field_light"
                         android:hint="*Required"
                         android:maxLines="2"
-                        android:textCursorDrawable="@null"
                         android:minLines="2"
-                        android:paddingLeft="4dp"
-                        android:paddingRight="4dp"
+                        android:paddingEnd="4dp"
+                        android:paddingStart="4dp"
                         android:singleLine="true"
                         android:textColor="@android:color/background_dark"
                         android:textColorHint="@android:color/black"
+                        android:textCursorDrawable="@null"
                         android:textSize="16sp"
                         android:textStyle="italic"/>
                 </LinearLayout>
@@ -154,14 +152,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/height_edit_text"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
                         android:layout_weight="1.5"
                         android:background="@drawable/otr_9_patch_text_field_dark"
                         android:gravity="center_vertical"
                         android:maxLines="2"
                         android:minLines="2"
-                        android:paddingLeft="8dp"
-                        android:paddingRight="4dp"
+                        android:paddingEnd="4dp"
+                        android:paddingStart="8dp"
                         android:text="Total Pay:"
                         android:textAlignment="center"
                         android:textColor="@android:color/white"
@@ -171,19 +169,19 @@
                         android:id="@+id/totalPayET"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/height_edit_text"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginEnd="10dp"
                         android:layout_weight="1"
                         android:background="@drawable/otr_9_patch_input_field_light"
                         android:hint="$"
                         android:inputType="numberDecimal"
                         android:maxLines="2"
                         android:minLines="2"
-                        android:paddingLeft="4dp"
-                        android:paddingRight="4dp"
+                        android:paddingEnd="4dp"
+                        android:paddingStart="4dp"
                         android:singleLine="true"
-                        android:textCursorDrawable="@null"
                         android:textColor="@android:color/background_dark"
                         android:textColorHint="@android:color/black"
+                        android:textCursorDrawable="@null"
                         android:textSize="16sp"
                         android:textStyle="italic"/>
                 </LinearLayout>
@@ -196,8 +194,8 @@
                     android:layout_marginBottom="10dp"
                     android:layout_marginTop="0dp"
                     android:gravity="center"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp"
+                    android:paddingEnd="15dp"
+                    android:paddingStart="15dp"
                     android:text="Add together anything that will add to the total pay such as line haul, lumper fees, detention etc"
                     android:textAlignment="center"
                     android:textColor="@android:color/white"
@@ -216,14 +214,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/height_edit_text"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
                         android:layout_weight="1.5"
                         android:background="@drawable/otr_9_patch_text_field_dark"
                         android:gravity="center_vertical"
                         android:maxLines="2"
                         android:minLines="2"
-                        android:paddingLeft="8dp"
-                        android:paddingRight="4dp"
+                        android:paddingEnd="4dp"
+                        android:paddingStart="8dp"
                         android:text="Total Deduction:"
                         android:textAlignment="center"
                         android:textColor="@android:color/white"
@@ -233,19 +231,19 @@
                         android:id="@+id/totalDeductionET"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/height_edit_text"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginEnd="10dp"
                         android:layout_weight="1"
                         android:background="@drawable/otr_9_patch_input_field_light"
                         android:hint="$"
                         android:inputType="numberDecimal"
                         android:maxLines="2"
                         android:minLines="2"
-                        android:paddingLeft="4dp"
-                        android:paddingRight="4dp"
+                        android:paddingEnd="4dp"
+                        android:paddingStart="4dp"
                         android:singleLine="true"
-                        android:textCursorDrawable="@null"
                         android:textColor="@android:color/background_dark"
                         android:textColorHint="@android:color/black"
+                        android:textCursorDrawable="@null"
                         android:textSize="16sp"
                         android:textStyle="italic"/>
                 </LinearLayout>
@@ -257,8 +255,8 @@
                     android:layout_marginBottom="10dp"
                     android:layout_marginTop="0dp"
                     android:gravity="center"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp"
+                    android:paddingEnd="15dp"
+                    android:paddingStart="15dp"
                     android:text="Add together anything that will decrease total pay such as advances, fees, late delivery, etc"
                     android:textAlignment="center"
                     android:textColor="@android:color/white"
@@ -267,8 +265,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
                     android:orientation="horizontal"
                     android:weightSum="4">
@@ -312,9 +310,9 @@
                 android:layout_height="@dimen/height_confirm_button"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="@dimen/padding_triple"
+                android:layout_marginTop="@dimen/padding_quattro"
                 android:ems="10"
                 android:minWidth="60dp"
-                android:layout_marginTop="@dimen/padding_quattro"
                 android:text="Scan Documents"/>
 
             <Button
@@ -323,11 +321,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/height_confirm_button"
                 android:layout_gravity="center_horizontal"
-                android:ems="10"
                 android:layout_marginBottom="@dimen/padding_triple"
+                android:ems="10"
                 android:minWidth="60dp"
                 android:text="Photo Gallery"/>
 
         </LinearLayout>
     </ScrollView>
-</FrameLayout>
