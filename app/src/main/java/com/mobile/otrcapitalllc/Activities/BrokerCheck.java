@@ -1,9 +1,5 @@
 package com.mobile.otrcapitalllc.Activities;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -26,17 +22,20 @@ import com.mobile.otrcapitalllc.Helpers.Extras;
 import com.mobile.otrcapitalllc.Models.Broker;
 import com.mobile.otrcapitalllc.R;
 
-import butterknife.Bind;
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class BrokerCheck extends BaseActivity {
 
-    @Bind(R.id.brokerNameET)
+    @BindView(R.id.brokerNameET)
     AutoCompleteTextView brokerNameET;
-    @Bind(R.id.mcNumberET)
+    @BindView(R.id.mcNumberET)
     EditText mcNumberET;
-    @Bind(R.id.textClearImgBtn)
+    @BindView(R.id.textClearImgBtn)
     ImageButton textClearImgBtn;
     private Broker brokerToCheck;
     private List<Broker> brokers;

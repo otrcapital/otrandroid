@@ -23,19 +23,19 @@ import com.mobile.otrcapitalllc.R;
 import java.io.File;
 import java.util.ArrayList;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
 public class History extends BaseActivity {
 
-    @Bind(R.id.verifyUserGroup)
+    @BindView(R.id.verifyUserGroup)
     LinearLayout verifyUserGroup;
 
-    @Bind(R.id.verifyUserTV)
+    @BindView(R.id.verifyUserTV)
     TextView verifyUserTV;
 
-    @Bind(R.id.list)
+    @BindView(R.id.list)
     ListView list;
 
     HistoryFilesAdapter adapter;

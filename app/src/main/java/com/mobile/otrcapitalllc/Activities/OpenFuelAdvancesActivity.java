@@ -1,6 +1,5 @@
 package com.mobile.otrcapitalllc.Activities;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,14 +15,14 @@ import com.mobile.otrcapitalllc.R;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
 public class OpenFuelAdvancesActivity extends BaseActivity {
 
-    @Bind(R.id.listView)
+    @BindView(R.id.listView)
     ListView listView;
 
     OpenFuelAdvancesAdapter adapter;

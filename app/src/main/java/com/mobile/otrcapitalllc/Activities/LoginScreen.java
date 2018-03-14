@@ -1,6 +1,5 @@
 package com.mobile.otrcapitalllc.Activities;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -25,7 +24,7 @@ import com.mobile.otrcapitalllc.Helpers.PreferenceManager;
 import com.mobile.otrcapitalllc.Helpers.RestClient;
 import com.mobile.otrcapitalllc.R;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import retrofit.Callback;
@@ -34,23 +33,23 @@ import retrofit.client.Response;
 
 public class LoginScreen extends BaseActivity {
 
-    @Bind(R.id.loginEmailET)
+    @BindView(R.id.loginEmailET)
     EditText loginEmailET;
-    @Bind(R.id.loginPasswordET)
+    @BindView(R.id.loginPasswordET)
     EditText loginPasswordET;
-    @Bind(R.id.loginGroup)
+    @BindView(R.id.loginGroup)
     LinearLayout loginGroup;
-    @Bind(R.id.socialMediaGroup)
+    @BindView(R.id.socialMediaGroup)
     LinearLayout socialMediaGroup;
-    @Bind(R.id.verifyUserGroup)
+    @BindView(R.id.verifyUserGroup)
     LinearLayout verifyUserGroup;
-    @Bind(R.id.signUpImgBtn)
+    @BindView(R.id.signUpImgBtn)
     ImageButton signUpImgBtn;
-    @Bind(R.id.contactUsImgBtn)
+    @BindView(R.id.contactUsImgBtn)
     ImageButton contactUsImgBtn;
-    @Bind(R.id.loginResultTV)
+    @BindView(R.id.loginResultTV)
     TextView loginResultTV;
-    @Bind(R.id.testBtn)
+    @BindView(R.id.testBtn)
     Button mButton;
 
     @OnClick(R.id.testBtn)

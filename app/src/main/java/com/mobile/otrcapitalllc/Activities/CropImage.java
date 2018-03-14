@@ -1,11 +1,5 @@
 package com.mobile.otrcapitalllc.Activities;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.util.ArrayList;
-import java.util.List;
-
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
@@ -40,19 +34,24 @@ import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.utils.Converters;
 
-import butterknife.Bind;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class CropImage extends BaseActivity {
 
-    @Bind(R.id.editImageView)
+    @BindView(R.id.editImageView)
     ImageView editImageView;
-    @Bind(R.id.executeBtn)
+    @BindView(R.id.executeBtn)
     ImageButton executeBtn;
-    @Bind(R.id.undoBtn)
+    @BindView(R.id.undoBtn)
     ImageButton undoBtn;
-    @Bind(R.id.EdgeCornersDV)
+    @BindView(R.id.EdgeCornersDV)
     DrawView EdgeCorners;
     Bitmap origBitmap, warpedBitmap;
     private String imagePath;

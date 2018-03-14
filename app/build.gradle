@@ -10,12 +10,12 @@ android {
             storePassword 'OTRM0ible1000'
         }
     }
-    compileSdkVersion 23
-    buildToolsVersion "25.0.0"
+    compileSdkVersion 27
+    buildToolsVersion '26.0.3'
     defaultConfig {
         applicationId "com.mobile.otrcapitalllc"
         minSdkVersion 17
-        targetSdkVersion 23
+        targetSdkVersion 27
         versionCode 26
         versionName "1.6.1"
         multiDexEnabled true
@@ -27,25 +27,33 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    flavorDimensions "demo", "prod"
+
     productFlavors {
-        demo {}
-        prod {}
+        demo { dimension "demo" }
+        prod { dimension "prod" }
     }
+//    packagingOptions{
+//        exclude 'com/itextpdf/text/pdf/fonts/Symbol.afm'
+//        exclude 'com/itextpdf/text/NOTICE.txt'
+//        exclude 'com/itextpdf/text/AGPL.txt'
+//    }
 }
 
 dependencies {
     //compile fileTree(include: ['*.jar'], dir: 'libs')
 
-    compile files('libs/itextpdf-5.5.6.jar')
-    compile project(':libraries:opencv')
-    compile('com.crashlytics.sdk.android:crashlytics:2.6.5@aar') {
-        transitive = true;
+    implementation files('libs/itextpdf-5.5.6.jar')
+    implementation project(':libraries:opencv')
+    implementation('com.crashlytics.sdk.android:crashlytics:2.6.5@aar') {
+        transitive = true
     }
-    compile 'com.android.support:appcompat-v7:23.1.1'
-    compile 'com.android.support:design:23.1.1'
-    compile 'com.jakewharton:butterknife:7.0.1'
-    compile 'com.squareup.retrofit:retrofit:1.9.0'
-    compile 'com.squareup.okhttp:okhttp:2.5.0'
-    compile 'com.google.firebase:firebase-messaging:10.0.1'
+    implementation 'com.android.support:appcompat-v7:27.1.0'
+    implementation 'com.android.support:design:27.1.0'
+    implementation 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    implementation 'com.squareup.retrofit:retrofit:1.9.0'
+    implementation 'com.squareup.okhttp:okhttp:2.5.0'
+    implementation 'com.google.firebase:firebase-messaging:11.8.0'
 }
 apply plugin: 'com.google.gms.google-services'

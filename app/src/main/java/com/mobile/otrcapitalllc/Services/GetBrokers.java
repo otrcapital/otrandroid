@@ -1,10 +1,5 @@
 package com.mobile.otrcapitalllc.Services;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 import android.app.Activity;
 import android.app.IntentService;
 import android.app.NotificationManager;
@@ -13,7 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
-import android.support.v7.app.NotificationCompat;
+import android.support.v4.app.NotificationCompat;
 
 import com.mobile.otrcapitalllc.Helpers.BrokerDatabase;
 import com.mobile.otrcapitalllc.Helpers.CrashlyticsHelper;
@@ -23,6 +18,11 @@ import com.mobile.otrcapitalllc.Helpers.RestClient;
 import com.mobile.otrcapitalllc.Models.Broker;
 import com.mobile.otrcapitalllc.Models.CustomerViewModel;
 import com.mobile.otrcapitalllc.R;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -54,7 +54,7 @@ public class GetBrokers extends IntentService {
             final String userCredentials = PreferenceManager.with(getApplicationContext()).getUserCredentials();
 
             mNotifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-            mBuilder = new NotificationCompat.Builder(this);
+            mBuilder = new NotificationCompat.Builder(this/*,getString(R.string.notification_channel_id)*/);
             mBuilder.setContentTitle("Updating database").setContentText("Download in progress").setSmallIcon(R.drawable
                     .ic_download);
             mBuilder.setProgress(100, 0, true);

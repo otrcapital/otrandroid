@@ -12,7 +12,6 @@ import android.util.Log;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.mobile.otrcapitalllc.Activities.History;
-import com.mobile.otrcapitalllc.R;
 
 import java.util.Map;
 
@@ -79,7 +78,7 @@ public class FirebaseCloudMessagingService extends FirebaseMessagingService {
 
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder =
-                new NotificationCompat.Builder(getApplicationContext())
+                new NotificationCompat.Builder(getApplicationContext()/*,getString(R.string.notification_channel_id)*/)
                         .setContentTitle("FCM Message")
                         .setContentText(messageBody)
                         .setAutoCancel(true)
@@ -87,7 +86,7 @@ public class FirebaseCloudMessagingService extends FirebaseMessagingService {
                         .setContentIntent(pendingIntent);
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
+        assert notificationManager != null;
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
     }
 }

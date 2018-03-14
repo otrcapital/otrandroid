@@ -12,14 +12,14 @@ import android.widget.TextView;
 
 import com.mobile.otrcapitalllc.R;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class CustomSwitch extends LinearLayout {
 
-    @Bind(R.id.switch_custom)
+    @BindView(R.id.switch_custom)
     Switch mSwitch;
-    @Bind(R.id.textView_switch)
+    @BindView(R.id.textView_switch)
     TextView mTextView;
 
     private Context mContext;
@@ -55,19 +55,19 @@ public class CustomSwitch extends LinearLayout {
         if (!isInEditMode()) ButterKnife.bind(this, view);
     }
 
-    public void setChecked(boolean checked) {
-        mSwitch.setChecked(checked);
-    }
-
     public boolean isChecked() {
         return mSwitch.isChecked();
     }
 
-    public void setText(String text) {
-        mTextView.setText(text);
+    public void setChecked(boolean checked) {
+        mSwitch.setChecked(checked);
     }
 
     public String getText() {
         return mTextView.getText().toString();
+    }
+
+    public void setText(String text) {
+        mTextView.setText(text);
     }
 }

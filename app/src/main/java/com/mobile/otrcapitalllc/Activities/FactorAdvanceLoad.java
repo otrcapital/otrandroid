@@ -1,12 +1,6 @@
 package com.mobile.otrcapitalllc.Activities;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import android.Manifest;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -30,67 +24,66 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.mobile.otrcapitalllc.Adapters.FilterWithSpaceAdapter;
 import com.mobile.otrcapitalllc.CustomViews.CustomSwitch;
 import com.mobile.otrcapitalllc.Helpers.ActivityTags;
 import com.mobile.otrcapitalllc.Helpers.BrokerDatabase;
-import com.mobile.otrcapitalllc.Adapters.FilterWithSpaceAdapter;
 import com.mobile.otrcapitalllc.Helpers.PermissionHelper;
 import com.mobile.otrcapitalllc.Models.Broker;
 import com.mobile.otrcapitalllc.Models.CustomError;
 import com.mobile.otrcapitalllc.R;
 
-import butterknife.Bind;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import butterknife.BindView;
+import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class FactorAdvanceLoad extends BaseActivity {
 
-    class CurrencyFormatInputFilter implements InputFilter {
-        Pattern mPattern;
-
-        public CurrencyFormatInputFilter(int digitsBeforeZero, int digitsAfterZero) {
-            mPattern = Pattern.compile("[0-9]{0," + (digitsBeforeZero - 1) + "}+((\\.[0-9]{0," + (digitsAfterZero - 1) + "})?)||(\\.)?");
-        }
-
+    static final ButterKnife.Setter<CustomSwitch, Integer> UNCHECKED = new ButterKnife.Setter<CustomSwitch, Integer>() {
         @Override
-        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-            int dotPosition = dest.toString().indexOf(".");
-            Matcher matcher = mPattern.matcher(dest);
-
-            if(!matcher.matches() && dotPosition < dstart)
-                return "";
-            return null;
+        public void set(CustomSwitch view, Integer id, int index) {
+            if (view.getId() == id) {
+                view.setChecked(!view.isChecked());
+            } else {
+                if (view.isChecked())
+                    view.setChecked(false);
+            }
         }
-    }
-
-    @Bind(R.id.brokerNameET)
+    };
+    @BindView(R.id.brokerNameET)
     AutoCompleteTextView brokerNameET;
 
-    @Bind(R.id.loadNumberET)
+    @BindView(R.id.loadNumberET)
     EditText loadNumberET;
 
-    @Bind(R.id.totalPayET)
+    @BindView(R.id.totalPayET)
     EditText totalPayET;
 
-    @Bind(R.id.totalDeductionET)
+    @BindView(R.id.totalDeductionET)
     EditText totalDeductionET;
 
-    @Bind(R.id.totalPayInfo)
+    @BindView(R.id.totalPayInfo)
     TextView totalPayInfo;
 
-    @Bind(R.id.totalPayTV)
+    @BindView(R.id.totalPayTV)
     TextView totalPayTV;
 
-    @Bind(R.id.totalDeductionTV)
+    @BindView(R.id.totalDeductionTV)
     TextView totalDeductionTV;
 
-    @Bind(R.id.totalDeductionsInfo)
+    @BindView(R.id.totalDeductionsInfo)
     TextView totalDeductionsInfo;
 
-    @Bind(R.id.textClearImgBtn)
+    @BindView(R.id.textClearImgBtn)
     ImageButton textClearImgBtn;
 
-    @Bind({R.id.custom_switch1, R.id.custom_switch2, R.id.custom_switch3, R.id.custom_switch4})
+    @BindViews({R.id.custom_switch1, R.id.custom_switch2, R.id.custom_switch3, R.id.custom_switch4})
     List<CustomSwitch> switchViews;
 
     List<Broker> brokers;
@@ -561,11 +554,7 @@ public class FactorAdvanceLoad extends BaseActivity {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 cursorComplement = s.length() - editText.getSelectionStart();
-                if (count > after) {
-                    backspacingFlag = true;
-                } else {
-                    backspacingFlag = false;
-                }
+                backspacingFlag = count > after;
             }
 
             @Override
@@ -620,21 +609,6 @@ public class FactorAdvanceLoad extends BaseActivity {
         return null;
     }
 
-    static final ButterKnife.Setter<CustomSwitch, Integer> UNCHECKED = new ButterKnife.Setter<CustomSwitch, Integer>() {
-        @Override
-        public void set(CustomSwitch view, Integer id, int index) {
-            if (view.getId() == id) {
-                view.setChecked(!view.isChecked());
-            } else {
-                if (view.isChecked())
-                    view.setChecked(false);
-            }
-        }
-    };
-
-
-    //region Decimal field functions
-
     private void changeDecimalPartIfNeeded(EditText editText) {
         String string = editText.getText().toString();
 
@@ -647,6 +621,27 @@ public class FactorAdvanceLoad extends BaseActivity {
             }
         }else if (string.length() > 0){
             editText.setText(string + ".00");
+        }
+    }
+
+
+    //region Decimal field functions
+
+    class CurrencyFormatInputFilter implements InputFilter {
+        Pattern mPattern;
+
+        public CurrencyFormatInputFilter(int digitsBeforeZero, int digitsAfterZero) {
+            mPattern = Pattern.compile("[0-9]{0," + (digitsBeforeZero - 1) + "}+((\\.[0-9]{0," + (digitsAfterZero - 1) + "})?)||(\\.)?");
+        }
+
+        @Override
+        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+            int dotPosition = dest.toString().indexOf(".");
+            Matcher matcher = mPattern.matcher(dest);
+
+            if (!matcher.matches() && dotPosition < dstart)
+                return "";
+            return null;
         }
     }
 

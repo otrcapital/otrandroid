@@ -1,13 +1,11 @@
 package com.mobile.otrcapitalllc.Activities;
 
 import android.Manifest;
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
 import android.view.View;
 
 import com.mobile.otrcapitalllc.Helpers.PermissionHelper;
@@ -16,6 +14,7 @@ import com.mobile.otrcapitalllc.R;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+@SuppressLint("MissingPermission")
 public class SignUp extends BaseActivity {
     @OnClick(R.id.signUpButton)
     public void signUpButton(View view) {

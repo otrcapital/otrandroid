@@ -1,13 +1,11 @@
 package com.mobile.otrcapitalllc.Activities;
 
 import android.Manifest;
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -23,36 +21,37 @@ import com.mobile.otrcapitalllc.Helpers.RestClient;
 import com.mobile.otrcapitalllc.Models.CustomerViewModel;
 import com.mobile.otrcapitalllc.R;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
+@SuppressLint("MissingPermission")
 public class BrokerDetails extends BaseActivity {
 
-    @Bind(R.id.brokerNameTV)
+    @BindView(R.id.brokerNameTV)
     TextView brokerNameTV;
-    @Bind(R.id.mcTV)
+    @BindView(R.id.mcTV)
     TextView mcTV;
-    @Bind(R.id.factorableTV)
+    @BindView(R.id.factorableTV)
     TextView factorableTV;
-    @Bind(R.id.dotNumberTV)
+    @BindView(R.id.dotNumberTV)
     TextView dotNumberTV;
-    @Bind(R.id.locationTV)
+    @BindView(R.id.locationTV)
     TextView locationTV;
-    @Bind(R.id.phoneNumberTV)
+    @BindView(R.id.phoneNumberTV)
     TextView phoneNumberTV;
-    @Bind(R.id.detailsGroup)
+    @BindView(R.id.detailsGroup)
     LinearLayout detailsGroup;
-    @Bind(R.id.verifyUserGroup)
+    @BindView(R.id.verifyUserGroup)
     LinearLayout verifyUserGroup;
-    @Bind(R.id.factorLoadButton)
+    @BindView(R.id.factorLoadButton)
     Button factorLoadButton;
-    @Bind(R.id.advanceLoadButton)
+    @BindView(R.id.advanceLoadButton)
     Button advanceLoadButton;
-    @Bind(R.id.networkErrorTV)
+    @BindView(R.id.networkErrorTV)
     TextView networkErrorTV;
 
     private String brokerName, pKey;

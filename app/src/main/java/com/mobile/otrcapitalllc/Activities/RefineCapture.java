@@ -1,6 +1,5 @@
 package com.mobile.otrcapitalllc.Activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -21,14 +20,14 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class RefineCapture extends BaseActivity {
-    @Bind(R.id.editImageView)
+    @BindView(R.id.editImageView)
     ImageView editImageView;
-    @Bind(R.id.undoBtn)
+    @BindView(R.id.undoBtn)
     ImageButton undoBtn;
     private float contrast = 1.0f, brightness = 0.0f;
     private Bitmap imageBMP;

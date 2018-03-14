@@ -9,12 +9,18 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.FileProvider;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.itextpdf.text.BadElementException;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.mobile.otrcapitalllc.Helpers.ActivityTags;
 import com.mobile.otrcapitalllc.Helpers.LogHelper;
 import com.mobile.otrcapitalllc.Helpers.PermissionHelper;
@@ -24,17 +30,19 @@ import com.mobile.otrcapitalllc.Models.HistoryInvoiceModel;
 import com.mobile.otrcapitalllc.R;
 import com.mobile.otrcapitalllc.Services.GetBrokers;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -45,15 +53,13 @@ public class MainDashboard extends BaseActivity {
     private static final int EDIT_IMAGE = 13;
     private static final int SHARE_IMAGE = 14;
     private static final int PICK_PICTURE = 15;
-
-    private ArrayList<File> imageFiles = new ArrayList<File>();
-
-    @Bind(R.id.verifyUserGroup)
+    @BindView(R.id.verifyUserGroup)
     LinearLayout verifyUserGroup;
-    @Bind(R.id.verifyUserTV)
+    @BindView(R.id.verifyUserTV)
     TextView verifyUserTV;
-    @Bind(R.id.progressBar)
+    @BindView(R.id.progressBar)
     ProgressBar progressBar;
+    private ArrayList<File> imageFiles = new ArrayList<>();
     private String activityType;
 
     @OnClick(R.id.factorLoadImgBtn)
@@ -209,7 +215,9 @@ public class MainDashboard extends BaseActivity {
     private void scanFromCamera() {
         Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
         createImageFile();
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(imageFiles.get(imageFiles.size() - 1)));
+        //intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(imageFiles.get(imageFiles.size() - 1)));
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".Helpers.GenericFileProvider", imageFiles.get(imageFiles.size() - 1)));
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         startActivityForResult(intent, TAKE_PICTURE);
     }
 
@@ -259,7 +267,7 @@ public class MainDashboard extends BaseActivity {
                 selectedImage = Uri.fromFile(imageFiles.get(0));
             }
 
-            getContentResolver().notifyChange(selectedImage, null);
+            //getContentResolver().notifyChange(selectedImage, null);
 
             ArrayList<Uri> imageUris = new ArrayList<>();
             imageUris.add(selectedImage);
@@ -269,9 +277,7 @@ public class MainDashboard extends BaseActivity {
             startActivityForResult(intent, REQUEST_CROP_PICTURE);
         } else if ((requestCode == PICK_PICTURE) && (resultCode == RESULT_OK)) {
             String realPath;
-            if (Build.VERSION.SDK_INT < 11) {
-                realPath = RealPathUtil.getRealPathFromURI_BelowAPI11(this, data.getData());
-            } else if (Build.VERSION.SDK_INT < 19) {
+            if (Build.VERSION.SDK_INT < 19) {
                 realPath = RealPathUtil.getRealPathFromURI_API11to18(this, data.getData());
             } else {
                 try {
@@ -301,26 +307,68 @@ public class MainDashboard extends BaseActivity {
 
                 Uri selectedImage;
                 try {
-                    selectedImage = Uri.fromFile(imageFiles.get(imageFiles.size() - 1));
+                    selectedImage = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".Helpers.GenericFileProvider", imageFiles.get(imageFiles.size() - 1));
                 } catch (ArrayIndexOutOfBoundsException e) {
-                    selectedImage = Uri.fromFile(imageFiles.get(0));
+                    selectedImage = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".Helpers.GenericFileProvider", imageFiles.get(0));
                 }
 
-                ArrayList<Uri> imageUris = new ArrayList<>();
-                imageUris.add(selectedImage);
+//                ArrayList<Uri> imageUris = new ArrayList<>();
+//                imageUris.add(selectedImage);
 
+
+                Document document = new Document();
+                String dirpath = android.os.Environment.getExternalStorageDirectory().toString();
+                try {
+                    PdfWriter.getInstance(document, new FileOutputStream(dirpath + "/example.pdf")); //  Change pdf's name.
+                    document.open();
+                    Image img = Image.getInstance(getBytes(getContentResolver().openInputStream(selectedImage)));
+                    float scaler = ((document.getPageSize().getWidth() - document.leftMargin()
+                            - document.rightMargin() - 0) / img.getWidth()) * 100; // 0 means you have no indentation. If you have any, change it.
+                    img.scalePercent(scaler);
+                    img.setAlignment(Image.ALIGN_CENTER | Image.ALIGN_TOP);
+                    document.add(img);
+                    document.close();
+                    String filename = "example.pdf";
+                    File filelocation = new File(dirpath, filename);
+                    Uri path = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".Helpers.GenericFileProvider", filelocation);
+                    Intent emailIntent = new Intent(Intent.ACTION_SEND);
+                    //emailIntent.setType("vnd.android.cursor.dir/email");
+                    emailIntent.setType("application/pdf");
+                    emailIntent.putExtra(Intent.EXTRA_STREAM, path);
+                    emailIntent.putExtra(Intent.EXTRA_SUBJECT, "DOCUMENT SENT USING OTR APP");
+                    startActivityForResult(Intent.createChooser(emailIntent, "Share scan"), SHARE_IMAGE);
+
+                } catch (BadElementException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (DocumentException e) {
+                    e.printStackTrace();
+                }
                 imageFiles.clear();
 
-                Intent shareIntent = new Intent();
-                shareIntent.setAction(Intent.ACTION_SEND_MULTIPLE);
-                shareIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, imageUris);
-                shareIntent.setType("image/*");
-                startActivityForResult(Intent.createChooser(shareIntent, "Share image:"), SHARE_IMAGE);
+//                Intent shareIntent = new Intent();
+//                shareIntent.setAction(Intent.ACTION_SEND_MULTIPLE);
+//                shareIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, imageUris);
+//                shareIntent.setType("image/*");
+//                startActivityForResult(Intent.createChooser(shareIntent, "Share image:"), SHARE_IMAGE);
             }
         } else if (requestCode == SHARE_IMAGE) {
             File images = new File(ActivityTags.TEMP_STORAGE_DIR);
             deleteRecursive(images);
         }
+    }
+
+    public byte[] getBytes(InputStream inputStream) throws IOException {
+        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+        int bufferSize = 1024;
+        byte[] buffer = new byte[bufferSize];
+
+        int len = 0;
+        while ((len = inputStream.read(buffer)) != -1) {
+            byteBuffer.write(buffer, 0, len);
+        }
+        return byteBuffer.toByteArray();
     }
 
     private void deleteRecursive(File fileOrDirectory) {
@@ -341,15 +389,13 @@ public class MainDashboard extends BaseActivity {
             FileChannel destination;
             source = new FileInputStream(new File(path)).getChannel();
             destination = new FileOutputStream(imageFiles.get(imageFiles.size() - 1)).getChannel();
-            if (destination != null && source != null) {
+            if (source != null) {
                 destination.transferFrom(source, 0, source.size());
             }
             if (source != null) {
                 source.close();
             }
-            if (destination != null) {
-                destination.close();
-            }
+            destination.close();
         } catch (IOException ex) {
             ex.printStackTrace();
         }

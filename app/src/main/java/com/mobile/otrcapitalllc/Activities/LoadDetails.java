@@ -1,14 +1,5 @@
 package com.mobile.otrcapitalllc.Activities;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.channels.FileChannel;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
@@ -23,7 +14,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.BaseColumns;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -48,7 +38,16 @@ import com.mobile.otrcapitalllc.Models.ApiInvoiceDataJson;
 import com.mobile.otrcapitalllc.Models.HistoryInvoiceModel;
 import com.mobile.otrcapitalllc.R;
 
-import butterknife.Bind;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.channels.FileChannel;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import retrofit.Callback;
@@ -62,29 +61,29 @@ public class LoadDetails extends Activity {
     private static final int EDIT_IMAGE = 3;
     private static final int PICK_PICTURE = 4;
     private final Activity activity = this;
-    @Bind(R.id.brokerNameTV)
+    @BindView(R.id.brokerNameTV)
     TextView brokerNameTV;
-    @Bind(R.id.loadNumberET)
+    @BindView(R.id.loadNumberET)
     TextView loadNumberET;
-    @Bind(R.id.proofOfDeliveryCB)
+    @BindView(R.id.proofOfDeliveryCB)
     CheckBox proofOfDeliveryCB;
-    @Bind(R.id.billOfLadingCB)
+    @BindView(R.id.billOfLadingCB)
     CheckBox billOfLadingCB;
-    @Bind(R.id.othersCB)
+    @BindView(R.id.othersCB)
     CheckBox othersCB;
-    @Bind(R.id.rateConfirmationCB)
+    @BindView(R.id.rateConfirmationCB)
     CheckBox rateConfirmationCB;
-    @Bind(R.id.proofOfDeliveryGroup)
+    @BindView(R.id.proofOfDeliveryGroup)
     RelativeLayout proofOdDeliveryGroup;
-    @Bind(R.id.othersGroup)
+    @BindView(R.id.othersGroup)
     RelativeLayout othersGRoup;
-    @Bind(R.id.billOfLadingGroup)
+    @BindView(R.id.billOfLadingGroup)
     RelativeLayout billOfLadingGroup;
-    @Bind(R.id.rateConfirmationGroup)
+    @BindView(R.id.rateConfirmationGroup)
     RelativeLayout rateConfirmationGroup;
-    @Bind(R.id.verifyUserGroup)
+    @BindView(R.id.verifyUserGroup)
     LinearLayout verifyUserGroup;
-    @Bind(R.id.verifyUserTV)
+    @BindView(R.id.verifyUserTV)
     TextView verifyUserTV;
     private ArrayList<File> imageFiles = new ArrayList<File>();
     private ArrayList<String> stringArray = new ArrayList<String>();

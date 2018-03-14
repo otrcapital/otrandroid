@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    package="com.mobile.otrcapitalllc"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.mobile.otrcapitalllc">
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -20,8 +19,21 @@
         android:label="@string/app_name"
         android:largeHeap="true"
         android:theme="@style/OTRThemeNoActionBar">
+
+        <provider
+            android:name=".Helpers.GenericFileProvider"
+            android:authorities="com.mobile.otrcapitalllc.Helpers.GenericFileProvider"
+            android:enabled="true"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+
+
         <activity
-            android:name="com.mobile.otrcapitalllc.Activities.LoginScreen"
+            android:name=".Activities.LoginScreen"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -33,75 +45,75 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.mobile.otrcapitalllc.Activities.MainDashboard"
+            android:name=".Activities.MainDashboard"
             android:label="@string/title_activity_main_dashboard"
             android:screenOrientation="portrait"
             android:theme="@style/OTRThemeNoActionBar">
         </activity>
         <activity
-            android:name="com.mobile.otrcapitalllc.Activities.SignUp"
+            android:name=".Activities.SignUp"
             android:label="@string/title_activity_sign_up"
             android:parentActivityName="com.mobile.otrcapitalllc.Activities.LoginScreen"
             android:screenOrientation="portrait"
             android:theme="@style/OTRTheme">
         </activity>
         <activity
-            android:name="com.mobile.otrcapitalllc.Activities.ContactUs"
+            android:name=".Activities.ContactUs"
             android:label="@string/title_activity_contact_us"
             android:screenOrientation="portrait"
             android:theme="@style/OTRTheme">
         </activity>
         <activity
-            android:name="com.mobile.otrcapitalllc.Activities.History"
+            android:name=".Activities.History"
             android:label="@string/title_activity_history"
             android:parentActivityName="com.mobile.otrcapitalllc.Activities.MainDashboard"
             android:screenOrientation="portrait"
             android:theme="@style/OTRTheme">
         </activity>
         <activity
-            android:name="com.mobile.otrcapitalllc.Activities.OpenFuelAdvancesActivity"
+            android:name=".Activities.OpenFuelAdvancesActivity"
             android:label="@string/title_activity_open_fuel_advances"
             android:parentActivityName="com.mobile.otrcapitalllc.Activities.MainDashboard"
             android:screenOrientation="portrait"
             android:theme="@style/OTRTheme">
         </activity>
         <activity
-            android:name="com.mobile.otrcapitalllc.Activities.FactorAdvanceLoad"
+            android:name=".Activities.FactorAdvanceLoad"
             android:label="@string/title_activity_factor_advance_load"
             android:parentActivityName="com.mobile.otrcapitalllc.Activities.MainDashboard"
             android:screenOrientation="portrait"
             android:theme="@style/OTRTheme">
         </activity>
         <activity
-            android:name="com.mobile.otrcapitalllc.Activities.BrokerCheck"
+            android:name=".Activities.BrokerCheck"
             android:label="@string/title_activity_broker_check"
             android:parentActivityName="com.mobile.otrcapitalllc.Activities.MainDashboard"
             android:screenOrientation="portrait"
             android:theme="@style/OTRTheme">
         </activity>
         <activity
-            android:name="com.mobile.otrcapitalllc.Activities.BrokerDetails"
+            android:name=".Activities.BrokerDetails"
             android:label="@string/title_activity_broker_details"
             android:parentActivityName="com.mobile.otrcapitalllc.Activities.BrokerCheck"
             android:screenOrientation="portrait"
             android:theme="@style/OTRTheme">
         </activity>
         <activity
-            android:name="com.mobile.otrcapitalllc.Activities.LoadDetails"
+            android:name=".Activities.LoadDetails"
             android:label="@string/title_activity_load_details"
             android:parentActivityName="com.mobile.otrcapitalllc.Activities.MainDashboard"
             android:screenOrientation="portrait"
             android:theme="@style/OTRTheme">
         </activity>
         <activity
-            android:name="com.mobile.otrcapitalllc.Activities.RefineCapture"
+            android:name=".Activities.RefineCapture"
             android:label="@string/title_activity_refine_capture"
             android:parentActivityName="com.mobile.otrcapitalllc.Activities.LoadDetails"
             android:screenOrientation="portrait"
             android:theme="@style/OTRThemeNoActionBar">
         </activity>
         <activity
-            android:name="com.mobile.otrcapitalllc.Activities.CropImage"
+            android:name=".Activities.CropImage"
             android:label="@string/title_activity_crop_image"
             android:parentActivityName="com.mobile.otrcapitalllc.Activities.LoadDetails"
             android:screenOrientation="portrait"
@@ -109,19 +121,17 @@
         </activity>
 
         <service
-            android:name="com.mobile.otrcapitalllc.Services.GetBrokers"
+            android:name=".Services.GetBrokers"
             android:exported="false">
         </service>
 
-        <service
-            android:name="com.mobile.otrcapitalllc.Services.FirebaseCloudMessagingService">
+        <service android:name=".Services.FirebaseCloudMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
 
-        <service
-            android:name="com.mobile.otrcapitalllc.Services.FirebaseInstanceIdentifierService">
+        <service android:name=".Services.FirebaseInstanceIdentifierService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
             </intent-filter>
