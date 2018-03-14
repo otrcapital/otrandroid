@@ -2,8 +2,9 @@ package com.mobile.otrcapitalllc.Activities;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.support.v4.content.FileProvider;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,7 +16,6 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.mobile.otrcapitalllc.Adapters.HistoryFilesAdapter;
-import com.mobile.otrcapitalllc.Helpers.ActivityTags;
 import com.mobile.otrcapitalllc.Helpers.PreferenceManager;
 import com.mobile.otrcapitalllc.Models.HistoryInvoiceModel;
 import com.mobile.otrcapitalllc.R;
@@ -63,7 +63,7 @@ public class History extends BaseActivity {
     }
 
     private ArrayList<String> getFileList() {
-        File myDir = new File(ActivityTags.EXT_STORAGE_DIR);
+        File myDir = new File(Environment.getExternalStorageDirectory().toString());
         myDir.mkdirs();
         ArrayList<String> files = new ArrayList<>();
 
@@ -82,7 +82,7 @@ public class History extends BaseActivity {
     public void OpenFile(final String fileName) {
         try {
             Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setDataAndType(Uri.fromFile(new File(ActivityTags.EXT_STORAGE_DIR + fileName)), "application/pdf");
+            intent.setDataAndType(FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".Helpers.GenericFileProvider", new File(Environment.getExternalStorageDirectory() + "/" + fileName)), "application/pdf");
             intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(intent);
         } catch (ActivityNotFoundException ex) {
@@ -93,13 +93,13 @@ public class History extends BaseActivity {
     public void EmailFile(final String fileName) {
         Intent emailIntent = new Intent(Intent.ACTION_SEND);
         emailIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        emailIntent.setType("*/*");
-        emailIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(ActivityTags.EXT_STORAGE_DIR + fileName)));
+        emailIntent.setType("application/pdf");
+        emailIntent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".Helpers.GenericFileProvider", new File(Environment.getExternalStorageDirectory() + "/" + fileName)));
         startActivity(Intent.createChooser(emailIntent, getString(R.string.choose_email_provider)));
     }
 
     public void DeleteFile(int position) {
-        File file = new File(ActivityTags.EXT_STORAGE_DIR + fileList.get(position));
+        File file = new File(Environment.getExternalStorageDirectory() + "/" + fileList.get(position));
         if (file.exists()) {
             file.delete();
         }

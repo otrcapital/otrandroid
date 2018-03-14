@@ -7,13 +7,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.BaseColumns;
 import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -38,10 +38,12 @@ import com.mobile.otrcapitalllc.Models.ApiInvoiceDataJson;
 import com.mobile.otrcapitalllc.Models.HistoryInvoiceModel;
 import com.mobile.otrcapitalllc.R;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -96,7 +98,7 @@ public class LoadDetails extends Activity {
     public static void UploadDocument(final String brokerName, final String FileName, final Context ContextActivity, final Activity activity, final View
             VerifyUserGroup, final ApiInvoiceDataJson invoiceData, final ArrayList<String> DocumentType, final String factorType) {
 
-        TypedFile typedFile = new TypedFile("application/pdf", new File(ActivityTags.EXT_STORAGE_DIR + FileName));
+        TypedFile typedFile = new TypedFile("application/pdf", new File(Environment.getExternalStorageDirectory() + "/" + FileName));
         VerifyUserGroup.setVisibility(View.VISIBLE);
         String documentTypesString = "";
         for (String s : DocumentType) {
@@ -181,7 +183,7 @@ public class LoadDetails extends Activity {
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
         } else {
-            createPDFfile();
+            String fileName = createPDFfile();
 
             final String userEmail = PreferenceManager.with(this).getUserEmail();
             final String userPassword = PreferenceManager.with(this).getUserPassword();
@@ -205,7 +207,7 @@ public class LoadDetails extends Activity {
             else
                 factorType = "FAC";
 
-            UploadDocument(brokerNameTV.getText().toString(), pdfFile.getName(), this, activity, verifyUserGroup, invoiceData, GetDocumentTypes(), factorType);
+            UploadDocument(brokerNameTV.getText().toString(), fileName, this, activity, verifyUserGroup, invoiceData, GetDocumentTypes(), factorType);
         }
 
     }
@@ -332,45 +334,56 @@ public class LoadDetails extends Activity {
         }
     }
 
-    private void createPDFfile() {
+    private String createPDFfile() {
         LogHelper.logDebug("Creating PDF file");
 
         String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss").format(new Date());
         String fileName[] = brokerNameTV.getText().toString().split("/");
         fileName[0] += "_" + timeStamp + ".pdf";
-        pdfFile = new File(ActivityTags.EXT_STORAGE_DIR, fileName[0]);
-        {
-            Document document = new Document();
 
-            try {
-                PdfWriter.getInstance(document, new FileOutputStream(pdfFile));
-                document.setMargins(0, 0, 0, 0);
-                document.open();
+        Document document = new Document();
 
-                for (int i = 0; i < imageFiles.size(); i++) {
-                    Bitmap bitmap = BitmapFactory.decodeFile(imageFiles.get(i).getAbsolutePath());
+        try {
+            PdfWriter.getInstance(document, new FileOutputStream(android.os.Environment.getExternalStorageDirectory().toString() + "/" + fileName[0]));
+            document.setMargins(0, 0, 0, 0);
+            document.open();
 
-                    Image image = Image.getInstance(imageFiles.get(i).getAbsolutePath());
-                    image.scaleToFit(document.getPageSize());
-                    document.add(image);
+            for (int i = 0; i < imageFiles.size(); i++) {
+                //Bitmap bitmap = BitmapFactory.decodeFile(imageFiles.get(i).getAbsolutePath());
+                Uri imageUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".Helpers.GenericFileProvider", imageFiles.get(i));
+                Image image = Image.getInstance(getBytes(getContentResolver().openInputStream(imageUri)));
+                image.scaleToFit(document.getPageSize());
+                document.add(image);
 
-                    if (i < (imageFiles.size() - 1)) {
-                        document.newPage();
-                    }
-
+                if (i < (imageFiles.size() - 1)) {
+                    document.newPage();
                 }
 
-                document.close();
-
-            } catch (Exception e) {
-                e.printStackTrace();
             }
 
+            document.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
 
         File images = new File(ActivityTags.TEMP_STORAGE_DIR);
         deleteRecursive(images);
         LogHelper.logDebug("PDF file success");
+        return fileName[0];
+    }
+
+    public byte[] getBytes(InputStream inputStream) throws IOException {
+        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+        int bufferSize = 1024;
+        byte[] buffer = new byte[bufferSize];
+
+        int len = 0;
+        while ((len = inputStream.read(buffer)) != -1) {
+            byteBuffer.write(buffer, 0, len);
+        }
+        return byteBuffer.toByteArray();
     }
 
     private void deleteRecursive(File fileOrDirectory) {
