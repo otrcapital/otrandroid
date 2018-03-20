@@ -309,14 +309,14 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/uploadDocButton"
+            android:id="@+id/submitInvoiceButton"
             style="@style/ButtonBlue_btn"
             android:layout_width="match_parent"
             android:layout_height="@dimen/height_confirm_button"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_weight="1"
-            android:text="Upload Document"
+            android:text="Submit Invoice"
             android:textSize="15sp"/>
 
 

@@ -170,7 +170,7 @@ public class LoadDetails extends Activity {
         });
     }
 
-    @OnClick(R.id.uploadDocButton)
+    @OnClick(R.id.submitInvoiceButton)
     public void uploadDocButton(View view) {
         if (GetDocumentTypes().isEmpty()) {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);

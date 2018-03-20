@@ -176,8 +176,6 @@ public class CropImage extends BaseActivity {
             resultHeight = bottomHeight;
         }
 
-        resultHeight = (int) Math.round(resultWidth * 1.41);
-
         Mat inputMat = new Mat(image.getHeight(), image.getHeight(), CvType.CV_8UC1);
         Utils.bitmapToMat(image, inputMat);
         Mat outputMat = new Mat(resultWidth, resultHeight, CvType.CV_8UC1);
@@ -221,20 +219,37 @@ public class CropImage extends BaseActivity {
         int scaledWidth = editImageView.getMeasuredWidth();
         int scaledHeight = editImageView.getMeasuredHeight();
 
+
+        boolean isVertical = intrinsicWidth / intrinsicHeight <= scaledWidth / scaledHeight;
         //Find the ratio of the original image to the scaled image
         double heightRatio = (double) intrinsicHeight / (double) scaledHeight;
         double widthRatio = (double) intrinsicWidth / (double) scaledWidth;
         Point[] ImagePixels = new Point[4];
 
         for (int i = 0; i < ImagePixels.length; i++) {
-            //get the distance from the left and top of the image bounds
-            int scaledImageOffsetX = ScreenPoints[i].x - imageBounds.left;
-            int scaledImageOffsetY = ScreenPoints[i].y - imageBounds.top;
-
-            //scale these distances according to the ratio of your scaling
-            double originalImageOffsetX = scaledImageOffsetX * widthRatio;
-            double originalImageOffsetY = scaledImageOffsetY * heightRatio;
-
+            double originalImageOffsetX;
+            double originalImageOffsetY;
+            if (!isVertical) {
+                //if image fits horizontal bounds
+                //find point x coordinated on bitmap
+                originalImageOffsetX = widthRatio * ScreenPoints[i].x;
+                //find bitmap height on screen
+                int actualHeight = intrinsicHeight * scaledWidth / intrinsicWidth;
+                //find margin size between top bound of image view and top bound of bitmap
+                int margin = (scaledHeight - actualHeight) / 2;
+                //find point y coordinates on bitmap
+                originalImageOffsetY = (ScreenPoints[i].y - margin) * widthRatio;
+            } else {
+                //if image fits vertical bounds
+                //find point y coordinated on bitmap
+                originalImageOffsetY = heightRatio * ScreenPoints[i].y;
+                //find bitmap width on screen
+                int actualWidth = intrinsicWidth * scaledHeight / intrinsicHeight;
+                //find margin size between left bound of image view and left bound of bitmap
+                int margin = (scaledWidth - actualWidth) / 2;
+                //find point x coordinates on bitmap
+                originalImageOffsetX = (ScreenPoints[i].x - margin) * heightRatio;
+            }
             ImagePixels[i] = new Point(originalImageOffsetX, originalImageOffsetY);
         }
 
