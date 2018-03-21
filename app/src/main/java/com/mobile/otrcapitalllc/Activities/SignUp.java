@@ -9,6 +9,7 @@ import android.support.design.widget.Snackbar;
 import android.view.View;
 
 import com.mobile.otrcapitalllc.Helpers.PermissionHelper;
+import com.mobile.otrcapitalllc.Helpers.RemoteConfigManager;
 import com.mobile.otrcapitalllc.R;
 
 import butterknife.ButterKnife;
@@ -19,14 +20,15 @@ public class SignUp extends BaseActivity {
     @OnClick(R.id.signUpButton)
     public void signUpButton(View view) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse(getString(R.string.url_sign_up)));
+        intent.setData(Uri.parse(RemoteConfigManager.getSignUpURL()));
         startActivity(intent);
     }
 
     @OnClick(R.id.callBtn)
     public void callBtn(View view) {
         final Intent intent = new Intent(Intent.ACTION_CALL);
-        intent.setData(Uri.parse(getString(R.string.office_tel_number)));
+        String phoneNumber = RemoteConfigManager.getFormattedContactPhoneNumber();
+        intent.setData(Uri.parse(phoneNumber));
 
         if (PermissionHelper.hasPermission(this, Manifest.permission.CALL_PHONE)) {
             startActivity(intent);
@@ -61,7 +63,7 @@ public class SignUp extends BaseActivity {
     public void emailBtn(View view) {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_EMAIL, getString(R.string.office_email_address));
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[] {RemoteConfigManager.getContactEmail()});
         intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.contact_us_email_subject));
 
         startActivity(Intent.createChooser(intent, getString(R.string.send_email)));
@@ -70,35 +72,35 @@ public class SignUp extends BaseActivity {
     @OnClick(R.id.fbImgBtn)
     public void fbImgBtn(View view) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse(getString(R.string.url_facebook)));
+        intent.setData(Uri.parse(RemoteConfigManager.getFacebookURL()));
         startActivity(intent);
     }
 
     @OnClick(R.id.googleplusImgBtn)
     public void googleplusImgBtn(View view) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse(getString(R.string.url_plus)));
+        intent.setData(Uri.parse(RemoteConfigManager.getGooglePlusURL()));
         startActivity(intent);
     }
 
     @OnClick(R.id.twitterImgBtn)
     public void twitterImgBtn(View view) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse(getString(R.string.url_twitter)));
+        intent.setData(Uri.parse(RemoteConfigManager.getTwitterURL()));
         startActivity(intent);
     }
 
     @OnClick(R.id.instagramImgBtn)
     public void instagramImgBtn(View view) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse(getString(R.string.url_instagram)));
+        intent.setData(Uri.parse(RemoteConfigManager.getInstagramURL()));
         startActivity(intent);
     }
 
     @OnClick(R.id.linkedinImgBtn)
     public void linkedinImgBtn(View view) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse(getString(R.string.url_linkedin)));
+        intent.setData(Uri.parse(RemoteConfigManager.getLinkedinURL()));
         startActivity(intent);
     }
 

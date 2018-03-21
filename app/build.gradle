@@ -16,8 +16,8 @@ android {
         applicationId "com.mobile.otrcapitalllc"
         minSdkVersion 17
         targetSdkVersion 27
-        versionCode 27
-        versionName "1.7.0"
+        versionCode 32
+        versionName "1.6.4"
         multiDexEnabled true
         signingConfig signingConfigs.config
     }
@@ -33,11 +33,6 @@ android {
         demo { dimension "demo" }
         prod { dimension "prod" }
     }
-//    packagingOptions{
-//        exclude 'com/itextpdf/text/pdf/fonts/Symbol.afm'
-//        exclude 'com/itextpdf/text/NOTICE.txt'
-//        exclude 'com/itextpdf/text/AGPL.txt'
-//    }
 }
 
 dependencies {
@@ -56,4 +51,9 @@ dependencies {
     implementation 'com.squareup.okhttp:okhttp:2.5.0'
     implementation 'com.google.firebase:firebase-messaging:11.8.0'
 }
+
+dependencies {
+    compile 'com.google.firebase:firebase-config:11.8.0'
+}
+
 apply plugin: 'com.google.gms.google-services'

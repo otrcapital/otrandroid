@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.os.StrictMode;
 
 import com.crashlytics.android.Crashlytics;
 
@@ -27,6 +28,9 @@ public class OTRCapital extends Application {
         if (!BuildConfig.DEBUG) {
             Fabric.with(fabric);
         }
+
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             createNotificationChannels();
         }

@@ -141,6 +141,10 @@
             android:name="io.fabric.ApiKey"
             android:value="02e263e038a91f7d4e860c48bc3670eb70371e63"
         />
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_stat_name" />
     </application>
 
 </manifest>

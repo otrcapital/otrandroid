@@ -17,6 +17,7 @@ import com.mobile.otrcapitalllc.Helpers.Extras;
 import com.mobile.otrcapitalllc.Helpers.LogHelper;
 import com.mobile.otrcapitalllc.Helpers.PermissionHelper;
 import com.mobile.otrcapitalllc.Helpers.PreferenceManager;
+import com.mobile.otrcapitalllc.Helpers.RemoteConfigManager;
 import com.mobile.otrcapitalllc.Helpers.RestClient;
 import com.mobile.otrcapitalllc.Models.CustomerViewModel;
 import com.mobile.otrcapitalllc.R;
@@ -65,7 +66,9 @@ public class BrokerDetails extends BaseActivity {
         } else if (factorLoadButton.getText().toString().equals(getString(R.string.call_office))) {
 
             final Intent intent = new Intent(Intent.ACTION_CALL);
-            intent.setData(Uri.parse(getString(R.string.office_tel_number)));
+
+            String phoneNumber = RemoteConfigManager.getFormattedContactPhoneNumber();
+            intent.setData(Uri.parse(phoneNumber));
 
             if (PermissionHelper.hasPermission(this, Manifest.permission.CALL_PHONE)) {
                 startActivity(intent);

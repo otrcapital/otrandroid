@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<defaultsMap>
+    <entry>
+        <key>tel_contact</key>
+        <value>(770) 882-0124</value>
+    </entry>
+
+    <entry>
+        <key>tel_fax</key>
+        <value>(770) 882-0125</value>
+    </entry>
+
+    <entry>
+        <key>contact_email</key>
+        <value>info@otrcapital.com</value>
+    </entry>
+
+    <entry>
+        <key>contact_address</key>
+        <value>OTR Capital, LLC \n1000 Holcomb Woods Parkway\nBldg 300, Suite 315-A\nRoswell, GA 30076</value>
+    </entry>
+
+    <entry>
+        <key>url_sign_up</key>
+        <value>https://otrcapital.com/online-application</value>
+    </entry>
+
+    <entry>
+        <key>url_facebook</key>
+        <value>https://www.facebook.com/pages/OTR-Capital/473947932696034</value>
+    </entry>
+
+    <entry>
+        <key>url_google_plus</key>
+        <value>https://plus.google.com/112871732199319272036?hl=en</value>
+    </entry>
+
+    <entry>
+        <key>url_twitter</key>
+        <value>https://twitter.com/otrcapitalllc</value>
+    </entry>
+
+    <entry>
+        <key>url_instagram</key>
+        <value>https://instagram.com/otrcapital/</value>
+    </entry>
+
+    <entry>
+        <key>url_linkedin</key>
+        <value>https://www.linkedin.com/company/otr-capital</value>
+    </entry>
+
+
+
+</defaultsMap>

@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/truck_bg"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -14,8 +15,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/padding_logo_top"
-        android:src="@drawable/otr_logo" />
+        android:layout_marginTop="@dimen/padding_triple"
+        android:src="@drawable/otr_logo_small" />
 
     <LinearLayout
         android:id="@+id/socialMediaGroup"
@@ -108,7 +109,7 @@
             android:gravity="center_vertical"
             android:minHeight="40dp"
             android:paddingLeft="35dp"
-            android:text="(770) 882-0124"
+            tools:text="(770) 882-0124"
             android:textColor="@android:color/white"
             android:textSize="20sp" />
 
@@ -156,7 +157,7 @@
             android:gravity="center_vertical"
             android:minHeight="40dp"
             android:paddingLeft="35dp"
-            android:text="(770) 882-0125"
+            tools:text="(770) 882-0125"
             android:textColor="@android:color/white"
             android:textSize="20sp" />
 
@@ -193,7 +194,7 @@
             android:gravity="center_vertical"
             android:minHeight="40dp"
             android:paddingLeft="35dp"
-            android:text="info@otrcapital.com"
+            tools:text="info@otrcapital.com"
             android:textColor="@android:color/white"
             android:textSize="20sp" />
 
@@ -236,7 +237,7 @@
             android:gravity="center_vertical"
             android:minHeight="30dp"
             android:paddingLeft="35dp"
-            android:text="@string/address_contact_us"
+            tools:text="Address"
             android:textColor="@android:color/white"
             android:textSize="13sp" />
 
