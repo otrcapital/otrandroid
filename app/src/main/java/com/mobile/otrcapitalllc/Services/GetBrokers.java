@@ -54,7 +54,7 @@ public class GetBrokers extends IntentService {
             final String userCredentials = PreferenceManager.with(getApplicationContext()).getUserCredentials();
 
             mNotifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-            mBuilder = new NotificationCompat.Builder(this/*,getString(R.string.notification_channel_id)*/);
+            mBuilder = new NotificationCompat.Builder(this, getString(R.string.notification_channel_id));
             mBuilder.setContentTitle("Updating database").setContentText("Download in progress").setSmallIcon(R.drawable
                     .ic_download);
             mBuilder.setProgress(100, 0, true);

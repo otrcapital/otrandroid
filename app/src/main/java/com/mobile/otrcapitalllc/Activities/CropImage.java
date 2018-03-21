@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -210,7 +209,6 @@ public class CropImage extends BaseActivity {
 
     private Point[] ScreenPoint2ImagePixels(android.graphics.Point[] ScreenPoints) {
         Drawable drawable = editImageView.getDrawable();
-        Rect imageBounds = drawable.getBounds();
 
         //original height and width of the bitmap
         int intrinsicHeight = drawable.getIntrinsicHeight();
