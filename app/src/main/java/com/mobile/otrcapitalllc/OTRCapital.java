@@ -43,7 +43,7 @@ public class OTRCapital extends Application {
 
         String notificationChannelId = getString(R.string.notification_channel_id);
         CharSequence notificationChannelName = getString(R.string.notification_channel_title);
-        int notificationImportance = NotificationManager.IMPORTANCE_DEFAULT;
+        int notificationImportance = NotificationManager.IMPORTANCE_LOW;
         NotificationChannel notificationChannel = new NotificationChannel(notificationChannelId, notificationChannelName, notificationImportance);
         assert notificationManager != null;
         notificationManager.createNotificationChannel(notificationChannel);

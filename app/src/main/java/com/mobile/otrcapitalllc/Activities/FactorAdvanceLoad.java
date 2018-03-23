@@ -517,8 +517,8 @@ public class FactorAdvanceLoad extends BaseActivity {
             totalDeductionValue = Float.parseFloat(totalDeductionET.getText().toString());
         }catch (NumberFormatException e) {}
 
-        String strFloatTotalPay = String.format("%.2f", totalPayValue);
-        String strTotalDeductionET = String.format("%.2f", totalDeductionValue);
+        String strFloatTotalPay = String.format("%.2f", totalPayValue).replaceAll(",",".");
+        String strTotalDeductionET = String.format("%.2f", totalDeductionValue).replaceAll(",",".");
 
         float flTotalPayET = Float.parseFloat(strFloatTotalPay);
         float flrTotalDeductionET = Float.parseFloat(strTotalDeductionET);

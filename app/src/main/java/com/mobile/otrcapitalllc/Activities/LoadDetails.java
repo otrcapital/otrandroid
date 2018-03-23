@@ -408,7 +408,7 @@ public class LoadDetails extends Activity {
                 selectedImage = Uri.fromFile(imageFiles.get(0));
             }
 
-            getContentResolver().notifyChange(selectedImage, null);
+            //getContentResolver().notifyChange(selectedImage, null);
             DeleteGalleryDuplicates();
 
             Intent intent = new Intent(this, CropImage.class);
@@ -431,7 +431,7 @@ public class LoadDetails extends Activity {
 
             copyImageFile(realPath);
 
-            getContentResolver().notifyChange(data.getData(), null);
+            //getContentResolver().notifyChange(data.getData(), null);
             DeleteGalleryDuplicates();
 
             Intent intent = new Intent(this, CropImage.class);
