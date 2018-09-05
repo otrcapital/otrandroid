@@ -15,10 +15,13 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.mobile.otrcapitalllc.Helpers.ActivityTags;
 import com.mobile.otrcapitalllc.Helpers.BrokerDatabase;
+import com.mobile.otrcapitalllc.Helpers.ErrorToast;
 import com.mobile.otrcapitalllc.Helpers.Extras;
+import com.mobile.otrcapitalllc.Helpers.PreferenceManager;
 import com.mobile.otrcapitalllc.Models.Broker;
 import com.mobile.otrcapitalllc.R;
 
@@ -109,16 +112,10 @@ public class BrokerCheck extends BaseActivity {
         setContentView(R.layout.activity_broker_check);
         ButterKnife.bind(this);
 
-        final List<String> brokerNames = new ArrayList();
-        BrokerDatabase db = new BrokerDatabase(BrokerCheck.this);
-        brokers = db.GetBrokerList();
-
-        for (Broker b : brokers) {
-            brokerNames.add(b.get_brokerName());
+        if (PreferenceManager.with(this).getDbUpdateTimestamp() != 0) {
+            populateAutoCompleteTextView();
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, brokerNames);
-        brokerNameET.setAdapter(adapter);
         brokerNameET.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -148,7 +145,7 @@ public class BrokerCheck extends BaseActivity {
         brokerNameET.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                attachAdapter();
             }
 
             @Override
@@ -189,4 +186,27 @@ public class BrokerCheck extends BaseActivity {
         return false;
     }
 
+    private void attachAdapter() {
+        if (brokerNameET.getAdapter() == null) {
+            if (PreferenceManager.with(this).getDbUpdateTimestamp() != 0) {
+                populateAutoCompleteTextView();
+            } else {
+                ErrorToast.show(this, R.string.error_database_empty, Toast.LENGTH_LONG);
+            }
+        }
+    }
+
+    private void populateAutoCompleteTextView() {
+        final List<String> brokerNames = new ArrayList<>();
+        BrokerDatabase db = new BrokerDatabase(this);
+        brokers = db.GetBrokerList();
+
+        for (Broker b : brokers) {
+            brokerNames.add(b.get_brokerName());
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_dropdown_item_1line, brokerNames);
+        brokerNameET.setAdapter(adapter);
+    }
 }

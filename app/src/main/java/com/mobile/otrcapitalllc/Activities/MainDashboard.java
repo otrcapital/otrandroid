@@ -25,7 +25,6 @@ import com.mobile.otrcapitalllc.Helpers.ActivityTags;
 import com.mobile.otrcapitalllc.Helpers.LogHelper;
 import com.mobile.otrcapitalllc.Helpers.PermissionHelper;
 import com.mobile.otrcapitalllc.Helpers.PreferenceManager;
-import com.mobile.otrcapitalllc.Helpers.RemoteConfigManager;
 import com.mobile.otrcapitalllc.Helpers.RealPathUtil;
 import com.mobile.otrcapitalllc.Models.HistoryInvoiceModel;
 import com.mobile.otrcapitalllc.R;
@@ -247,12 +246,14 @@ public class MainDashboard extends BaseActivity {
 
         LogHelper.logDebug("Getting customer list from server");
 
-        if (PreferenceManager.with(this).getDbUpdateTimestamp() == 0) {
+        if (!PreferenceManager.with(this).isBrokersLoaded()) {
             Toast.makeText(this, "Setting up database, check notification bar for progress", Toast.LENGTH_LONG).show();
+            startBrokersService();
         }
 
-        Intent intent = new Intent(MainDashboard.this, GetBrokers.class);
-        startService(intent);
+        if (PreferenceManager.with(this).getDbUpdateTimestamp() != 0) {
+            startBrokersService();
+        }
     }
 
     @Override
@@ -406,5 +407,10 @@ public class MainDashboard extends BaseActivity {
         Intent intent = new Intent(MainDashboard.this, FactorAdvanceLoad.class);
         intent.putExtra(ActivityTags.TAG_ACTIVITY_TYPE, activityType);
         startActivity(intent);
+    }
+
+    private void startBrokersService(){
+        Intent intent = new Intent(MainDashboard.this, GetBrokers.class);
+        startService(intent);
     }
 }

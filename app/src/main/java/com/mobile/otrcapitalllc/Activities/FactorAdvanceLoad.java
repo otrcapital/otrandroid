@@ -23,12 +23,15 @@ import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mobile.otrcapitalllc.Adapters.FilterWithSpaceAdapter;
 import com.mobile.otrcapitalllc.CustomViews.CustomSwitch;
 import com.mobile.otrcapitalllc.Helpers.ActivityTags;
 import com.mobile.otrcapitalllc.Helpers.BrokerDatabase;
+import com.mobile.otrcapitalllc.Helpers.ErrorToast;
 import com.mobile.otrcapitalllc.Helpers.PermissionHelper;
+import com.mobile.otrcapitalllc.Helpers.PreferenceManager;
 import com.mobile.otrcapitalllc.Models.Broker;
 import com.mobile.otrcapitalllc.Models.CustomError;
 import com.mobile.otrcapitalllc.R;
@@ -86,7 +89,7 @@ public class FactorAdvanceLoad extends BaseActivity {
     @BindViews({R.id.custom_switch1, R.id.custom_switch2, R.id.custom_switch3, R.id.custom_switch4})
     List<CustomSwitch> switchViews;
 
-    List<Broker> brokers;
+    private List<Broker> brokers;
 
     private String activityType;
 
@@ -144,8 +147,6 @@ public class FactorAdvanceLoad extends BaseActivity {
 
         setListeners();
 
-        List<String> brokerNames = new ArrayList();
-        BrokerDatabase db = new BrokerDatabase(FactorAdvanceLoad.this);
         String[] types;
 
         if (activityType.equals(ActivityTags.TAG_FACTOR_ADVANCE)) {
@@ -154,18 +155,12 @@ public class FactorAdvanceLoad extends BaseActivity {
             types = getResources().getStringArray(R.array.factor_load);
         }
 
-        brokers = db.GetBrokerList();
-
-        for (Broker b : brokers) {
-            brokerNames.add(b.get_brokerName());
-        }
-
-        FilterWithSpaceAdapter<String> adapter = new FilterWithSpaceAdapter<>(this, android.R.layout
-                .simple_dropdown_item_1line, brokerNames);
-        brokerNameET.setAdapter(adapter);
-
         for (int i = 0; i < switchViews.size(); i++) {
             switchViews.get(i).setText(types[i]);
+        }
+
+        if (PreferenceManager.with(this).getDbUpdateTimestamp() != 0) {
+            populateAutoCompleteTextView();
         }
     }
 
@@ -391,7 +386,6 @@ public class FactorAdvanceLoad extends BaseActivity {
             }
         });
 
-
         brokerNameET.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -418,7 +412,7 @@ public class FactorAdvanceLoad extends BaseActivity {
         brokerNameET.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                attachAdapter();
             }
 
             @Override
@@ -636,6 +630,31 @@ public class FactorAdvanceLoad extends BaseActivity {
         }else if (string.length() > 0){
             editText.setText(string + ".00");
         }
+    }
+
+    private void attachAdapter() {
+        if (brokerNameET.getAdapter() == null) {
+            if (PreferenceManager.with(FactorAdvanceLoad.this).getDbUpdateTimestamp() != 0) {
+                populateAutoCompleteTextView();
+            } else {
+                ErrorToast.show(this, R.string.error_database_empty, Toast.LENGTH_LONG);
+            }
+        }
+    }
+
+    private void populateAutoCompleteTextView() {
+        List<String> brokerNames = new ArrayList<>();
+        BrokerDatabase db = new BrokerDatabase(FactorAdvanceLoad.this);
+
+        brokers = db.GetBrokerList();
+
+        for (Broker b : brokers) {
+            brokerNames.add(b.get_brokerName());
+        }
+
+        FilterWithSpaceAdapter<String> adapter = new FilterWithSpaceAdapter<>(this, android.R.layout
+                .simple_dropdown_item_1line, brokerNames);
+        brokerNameET.setAdapter(adapter);
     }
 
 

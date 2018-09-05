@@ -20,6 +20,7 @@ public class PreferenceManager {
     private static final String PREFS_USER_CREDENTIALS = "user_credentials";
     private static final String PREFS_NOT_FIRST_RUN = "first_run";
     private static final String PREFS_DB_TIMESTAMP = "db_timestamp";
+    private static final String PREFS_DB_IS_BROKERS_LOADED = "db_is_brokers_loaded";
     private static final String PREFS_OPEN_ADVANCE_LOADS = "PREFS_OPEN_ADVANCE_LOADS";
 
     private SharedPreferences mSharedPreferences;
@@ -110,6 +111,14 @@ public class PreferenceManager {
 
     public String getUserPassword() {
         return mSharedPreferences.getString(PREFS_USER_PASSWORD, null);
+    }
+
+    public boolean isBrokersLoaded() {
+        return mSharedPreferences.getBoolean(PREFS_DB_IS_BROKERS_LOADED, false);
+    }
+
+    public void setBrokersLoaded() {
+        mSharedPreferences.edit().putBoolean(PREFS_DB_IS_BROKERS_LOADED, true).apply();
     }
 
     public String getUserCredentials() {

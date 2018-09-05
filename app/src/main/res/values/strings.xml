@@ -86,4 +86,6 @@
 
 
     <string name="alert_logout">Are you sure you want to logout?</string>
+
+    <string name="error_database_empty">Updating… please wait.</string>
 </resources>

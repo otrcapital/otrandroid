@@ -67,7 +67,8 @@ public class GetBrokers extends IntentService {
                 public void success(List<CustomerViewModel> customerViewModels, Response response) {
                     LogHelper.logDebug("Broker list fetched from the server");
 
-                    PreferenceManager.with(getApplicationContext()).saveDbUpdateTimestamp(System.currentTimeMillis());
+                    PreferenceManager.with(getApplicationContext()).setBrokersLoaded();
+
                     List<Broker> brokers = new ArrayList<>();
 
                     for (CustomerViewModel cvm : customerViewModels) {
@@ -122,6 +123,7 @@ public class GetBrokers extends IntentService {
             }
 
             dbWrite.close();
+            PreferenceManager.with(getApplicationContext()).saveDbUpdateTimestamp(System.currentTimeMillis());
             LogHelper.logDebug("Records updated to local database");
 
             return null;
@@ -140,7 +142,6 @@ public class GetBrokers extends IntentService {
             super.onPostExecute(integer);
             mBuilder.setContentText("Setup complete").setProgress(0, 0, false);
             mNotifyManager.notify(id, mBuilder.build());
-
         }
 
         @Override
