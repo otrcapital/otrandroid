@@ -242,7 +242,7 @@ public class CropImage extends BaseActivity {
         for (int i = 0; i < ImagePixels.length; i++) {
             double originalImageOffsetX;
             double originalImageOffsetY;
-            //if (!isVertical) {
+            if (!isVertical) {
                 //if image fits horizontal bounds
                 //find point x coordinated on bitmap
                 originalImageOffsetX = widthRatio * ScreenPoints[i].x;
@@ -252,11 +252,13 @@ public class CropImage extends BaseActivity {
                 int margin = (scaledHeight - actualHeight) / 2;
                 //find point y coordinates on bitmap
                 originalImageOffsetY = (ScreenPoints[i].y - margin) * widthRatio;
-            //}
+            }
             //
             // WARNING: BELOW "else" CONDITION NEVER HAPPENS, BUT LET IT BE JUST IN CASE
             //
-            /*else {
+            // UPD: HAPPENS ON IMAGE RESOLUTION 16:9
+            //
+            else {
                 //if image fits vertical bounds
                 //find point y coordinated on bitmap
                 originalImageOffsetY = heightRatio * ScreenPoints[i].y;
@@ -266,7 +268,7 @@ public class CropImage extends BaseActivity {
                 int margin = (scaledWidth - actualWidth) / 2;
                 //find point x coordinates on bitmap
                 originalImageOffsetX = (ScreenPoints[i].x - margin) * heightRatio;
-            }*/
+            }
             ImagePixels[i] = new Point(originalImageOffsetX, originalImageOffsetY);
         }
 
