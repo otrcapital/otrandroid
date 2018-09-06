@@ -109,7 +109,11 @@ public class CropImage extends BaseActivity {
     @OnClick(R.id.rotateBtn)
     public void rotateBtn(View view) {
         rotateBitmap(180);
-        editImageView.setImageBitmap(origBitmap);
+        if (warpedBitmap != null) {
+            editImageView.setImageBitmap(warpedBitmap);
+        } else {
+            editImageView.setImageBitmap(origBitmap);
+        }
     }
 
     @Override
@@ -152,15 +156,25 @@ public class CropImage extends BaseActivity {
     }
 
     private void rotateBitmap(int rotation) {
-        int width = origBitmap.getWidth();
-        int height = origBitmap.getHeight();
+        final int width;
+        final int height;
+        if (warpedBitmap != null) {
+            width = warpedBitmap.getWidth();
+            height = warpedBitmap.getHeight();
+        } else {
+            width = origBitmap.getWidth();
+            height = origBitmap.getHeight();
+        }
         Matrix matrix = new Matrix();
         matrix.preRotate(rotation);
 
         LogHelper.logDebug("Image width: " + width + " Height: " + height);
 
-        Bitmap adjustedBitmap = Bitmap.createBitmap(origBitmap, 0, 0, width, height, matrix, true);
-        origBitmap = adjustedBitmap;
+        if (warpedBitmap != null) {
+            warpedBitmap = Bitmap.createBitmap(warpedBitmap, 0, 0, width, height, matrix, true);
+        } else {
+            origBitmap = Bitmap.createBitmap(origBitmap, 0, 0, width, height, matrix, true);
+        }
     }
 
     private Bitmap warp(Bitmap image, Point topLeft, Point topRight, Point bottomLeft, Point bottomRight) {
