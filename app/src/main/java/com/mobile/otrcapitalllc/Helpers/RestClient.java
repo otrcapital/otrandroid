@@ -1,7 +1,6 @@
 package com.mobile.otrcapitalllc.Helpers;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
 
 import com.mobile.otrcapitalllc.BuildConfig;
 import com.mobile.otrcapitalllc.R;
@@ -27,6 +26,7 @@ public class RestClient {
         OkHttpClient okHttpClient = new OkHttpClient();
         okHttpClient.setReadTimeout(60, TimeUnit.SECONDS);
         okHttpClient.setConnectTimeout(60, TimeUnit.SECONDS);
+        okHttpClient.setWriteTimeout(60, TimeUnit.SECONDS);
 
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint(apiUrl)

@@ -233,7 +233,7 @@ public class CropImage extends BaseActivity {
         int scaledHeight = editImageView.getMeasuredHeight();
 
 
-        boolean isVertical = intrinsicWidth / intrinsicHeight <= scaledWidth / scaledHeight;
+        boolean isVertical = ((double)intrinsicWidth) / ((double)intrinsicHeight) <= ((double)scaledWidth) / ((double)scaledHeight);
         //Find the ratio of the original image to the scaled image
         double heightRatio = (double) intrinsicHeight / (double) scaledHeight;
         double widthRatio = (double) intrinsicWidth / (double) scaledWidth;

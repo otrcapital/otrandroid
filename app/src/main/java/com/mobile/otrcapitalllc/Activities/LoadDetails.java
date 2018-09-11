@@ -14,6 +14,7 @@ import android.os.Environment;
 import android.provider.BaseColumns;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -29,6 +30,7 @@ import com.itextpdf.text.Image;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.mobile.otrcapitalllc.Helpers.ActivityTags;
 import com.mobile.otrcapitalllc.Helpers.CrashlyticsHelper;
+import com.mobile.otrcapitalllc.Helpers.GenericFileProvider;
 import com.mobile.otrcapitalllc.Helpers.LogHelper;
 import com.mobile.otrcapitalllc.Helpers.PermissionHelper;
 import com.mobile.otrcapitalllc.Helpers.PreferenceManager;
@@ -287,7 +289,7 @@ public class LoadDetails extends Activity {
         Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
         createImageFile();
         FillPhotoList();
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(imageFiles.get(imageFiles.size() - 1)));
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, GenericFileProvider.getUri(imageFiles.get(imageFiles.size() - 1)));
         startActivityForResult(intent, TAKE_PICTURE);
 
     }
@@ -312,6 +314,10 @@ public class LoadDetails extends Activity {
 
     private void copyImageFile(String path) {
         if (!PermissionHelper.hasPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            return;
+        }
+
+        if (TextUtils.isEmpty(path)) {
             return;
         }
 
@@ -353,6 +359,7 @@ public class LoadDetails extends Activity {
                 Uri imageUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".Helpers.GenericFileProvider", imageFiles.get(i));
                 Image image = Image.getInstance(getBytes(getContentResolver().openInputStream(imageUri)));
                 image.scaleToFit(document.getPageSize());
+                image.setAlignment(Image.ALIGN_CENTER);
                 document.add(image);
 
                 if (i < (imageFiles.size() - 1)) {
@@ -401,12 +408,12 @@ public class LoadDetails extends Activity {
 
         if ((requestCode == TAKE_PICTURE) && (resultCode == RESULT_OK)) {
 
-            Uri selectedImage;
-            try {
-                selectedImage = Uri.fromFile(imageFiles.get(imageFiles.size() - 1));
-            } catch (ArrayIndexOutOfBoundsException e) {
-                selectedImage = Uri.fromFile(imageFiles.get(0));
-            }
+//            Uri selectedImage;
+//            try {
+//                selectedImage = GenericFileProvider.getUri(imageFiles.get(imageFiles.size() - 1));
+//            } catch (ArrayIndexOutOfBoundsException e) {
+//                selectedImage = GenericFileProvider.getUri(imageFiles.get(0));
+//            }
 
             //getContentResolver().notifyChange(selectedImage, null);
             DeleteGalleryDuplicates();
