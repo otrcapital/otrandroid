@@ -16,10 +16,21 @@ android {
         applicationId "com.mobile.otrcapitalllc"
         minSdkVersion 17
         targetSdkVersion 27
-        versionCode 32
-        versionName "1.6.4"
+        versionCode 33
+        versionName "1.6.5"
         multiDexEnabled true
         signingConfig signingConfigs.config
+    }
+    android.applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            def outputFile = output.outputFile
+            if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                def fileName = outputFile.name.replace("app",
+                        "${defaultConfig.applicationId}_${defaultConfig.versionName}")
+                outputFileName = fileName
+            }
+
+        }
     }
     buildTypes {
         release {

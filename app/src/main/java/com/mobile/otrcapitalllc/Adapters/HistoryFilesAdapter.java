@@ -61,12 +61,19 @@ public class HistoryFilesAdapter extends ArrayAdapter<String> {
         viewHolder.documentNameTV.setTag(historyInvoiceComparables.get(position).getFilename());
         viewHolder.fileInfoGroup.setTag(historyInvoiceComparables.get(position).getFilename());
         HistoryInvoiceModel historyInvoiceModel = historyInvoiceComparables.get(position).getHistoryInvoiceModel();
-        viewHolder.documentNameTV.setText((historyInvoiceModel.getBrokerName() != null) ? historyInvoiceModel.getBrokerName() : "Document");
-        viewHolder.statusTV.setText(historyInvoiceModel.getStatus());
-        viewHolder.timestampTV.setText(historyInvoiceModel.getTimestamp());
-        viewHolder.rateTV.setText("Rate: " + String.format("%.02f", historyInvoiceModel.getInvoiceAmount()));
-        viewHolder.loadNoTV.setText("Load#: " + historyInvoiceModel.getPoNumber());
+        if (historyInvoiceModel != null) {
+            viewHolder.documentNameTV.setText((historyInvoiceModel.getBrokerName() != null) ? historyInvoiceModel.getBrokerName() : "Document");
+            viewHolder.statusTV.setText(historyInvoiceModel.getStatus());
+            viewHolder.timestampTV.setText(historyInvoiceModel.getTimestamp());
+            viewHolder.rateTV.setText("Rate: " + String.format("%.02f", historyInvoiceModel.getInvoiceAmount()));
+            viewHolder.loadNoTV.setText("Load#: " + historyInvoiceModel.getPoNumber());
+        }
         return convertView;
+    }
+
+    @Override
+    public int getCount() {
+        return fileNames.size();
     }
 
     public void RemoveFileFromList(int position) {

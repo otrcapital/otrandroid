@@ -83,7 +83,8 @@ public class History extends BaseActivity {
         try {
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setDataAndType(FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".Helpers.GenericFileProvider", new File(Environment.getExternalStorageDirectory() + "/" + fileName)), "application/pdf");
-            intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION |
+                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(intent);
         } catch (ActivityNotFoundException ex) {
             Toast.makeText(this, getString(R.string.no_app_found_to_view_pdf), Toast.LENGTH_LONG).show();
