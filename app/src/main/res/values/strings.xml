@@ -20,6 +20,7 @@
     <string name="email">Email</string>
     <string name="resend">Resend</string>
     <string name="view">View</string>
+    <string name="failed">Failed</string>
 
     <string name="btn_confirm">Confirm</string>
     <string name="alert_message_no_connection">Unable to connect to the server at the moment</string>
@@ -88,4 +89,6 @@
     <string name="alert_logout">Are you sure you want to logout?</string>
 
     <string name="error_database_empty">Updating… please wait.</string>
+    <string name="alert_message_error_po_exists">Press \"OK\" to save it for later try or press \"Retry\" to try again.</string>
+
 </resources>
